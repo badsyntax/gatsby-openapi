@@ -1,8 +1,10 @@
 {
   "name": "gatsby-theme-openapi-core",
-  "version": "1.0.0",
+  "description": "A gatsby theme plugin that creates the theme pages.",
+  "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
+  "author": "Richard Willis <willis.rh@gmail.com>",
   "dependencies": {},
   "peerDependencies": {
     "gatsby": "^2.24.47",

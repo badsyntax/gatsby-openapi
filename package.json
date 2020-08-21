@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "license": "0BSD",
+  "author": "Richard Willis <willis.rh@gmail.com>",
   "scripts": {
     "start": "yarn workspace example-theme-ui start",
     "build": "yarn workspace example-theme-ui build"

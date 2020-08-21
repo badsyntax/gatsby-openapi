@@ -27,3 +27,9 @@ module.exports = {
   ],
 };
 ```
+
+## License
+
+MIT License
+
+Copyright (c) 2020 Richard Willis

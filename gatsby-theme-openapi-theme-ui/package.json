@@ -1,8 +1,10 @@
 {
   "name": "gatsby-theme-openapi-theme-ui",
-  "version": "1.0.0",
+  "description": "A gatsby theme plugin that renders the OpenAPI docs using theme-ui.",
+  "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
+  "author": "Richard Willis <willis.rh@gmail.com>",
   "dependencies": {
     "@theme-ui/presets": "^0.3.0",
     "@theme-ui/prism": "^0.3.0",

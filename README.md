@@ -13,3 +13,9 @@ __NOTE:__ This repo is in the very early stages of development.
 ## Examples
 
 - [example-theme-ui](./example-theme-ui): An example site using the [gatsby-theme-openapi-theme-ui]('./gatsby-theme-openapi-theme-ui) theme
+
+## License
+
+MIT License
+
+Copyright (c) 2020 Richard Willis
