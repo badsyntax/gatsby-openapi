@@ -5,11 +5,13 @@
   "main": "index.js",
   "license": "0BSD",
   "scripts": {
-    "start": "yarn workspace example start",
-    "build": "yarn workspace example build"
+    "start": "yarn workspace example-theme-ui start",
+    "build": "yarn workspace example-theme-ui build"
   },
   "workspaces": [
-    "gatsby-theme-openapi",
-    "example"
+    "gatsby-source-openapi",
+    "gatsby-theme-openapi-core",
+    "gatsby-theme-openapi-theme-ui",
+    "example-theme-ui"
   ]
 }
