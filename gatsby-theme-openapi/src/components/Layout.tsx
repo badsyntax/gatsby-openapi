@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Box, Heading } from 'theme-ui';
 import { Sidebar } from './Sidebar';
-import { useOpenApiInfo } from '../hooks/use-openapi-info';
+import { useOpenApiInfo } from '../hooks/useOpenapiInfo';
 
 export const Layout: React.FunctionComponent = ({ children }) => {
   const { title, version, contact, license } = useOpenApiInfo();

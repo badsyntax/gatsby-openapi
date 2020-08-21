@@ -2,9 +2,9 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import { Layout } from '../components/Layout';
-import { useOpenApiInfo } from '../hooks/use-openapi-info';
-import { useMarkdownReact } from '../hooks/use-markdown-react';
 import { Heading } from 'theme-ui';
+import { useOpenApiInfo } from '../hooks/useOpenapiInfo';
+import { useMarkdownReact } from '../hooks/useMarkdownReact';
 
 const Home: React.FunctionComponent = () => {
   const { contact, license, title, description } = useOpenApiInfo();

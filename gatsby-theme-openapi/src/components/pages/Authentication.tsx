@@ -4,9 +4,9 @@ import { Heading } from 'theme-ui';
 import { graphql } from 'gatsby';
 import { Layout } from '../Layout';
 import { SecuritySchemaTable } from '../SecuritySchemaTable';
-import { useOpenApiInfo } from '../../hooks/use-openapi-info';
 import { OpenApiSecuritySchema } from '../../types';
-import { renderMarkdown } from '../../hooks/use-markdown-react';
+import { useOpenApiInfo } from '../../hooks/useOpenapiInfo';
+import { renderMarkdown } from '../../hooks/useMarkdownReact';
 
 interface SecuritySchema {
   node: OpenApiSecuritySchema;

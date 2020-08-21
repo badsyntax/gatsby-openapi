@@ -1,7 +1,8 @@
 const SwaggerParser = require('@apidevtools/swagger-parser');
 
 exports.OpenApiParser = class OpenApiParser {
-  static parse(specPath) {
-    return SwaggerParser.validate(specPath);
+  static async parse(specPath) {
+    const document = await SwaggerParser.bundle(specPath);
+    return document;
   }
 };

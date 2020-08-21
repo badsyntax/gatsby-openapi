@@ -2,6 +2,17 @@ export interface SiteMetadata {
   title: string;
 }
 
+export type Schema = string;
+
+export interface OpenApiSchema {
+  name: string;
+  schema: Schema;
+}
+
+export interface OpenApiSchemasByName {
+  [name: string]: Schema;
+}
+
 export interface OpenApiSecuritySchema {
   description: string;
   extra: string;
@@ -21,8 +32,8 @@ export interface OpenApiResponseContentExample {
 
 export interface OpenApiResponseContent {
   contentType: string;
-  examples: OpenApiResponseContentExample[];
   schema: string;
+  examples: OpenApiResponseContentExample[];
 }
 
 export interface OpenApiResponse {

@@ -3,63 +3,25 @@ import { Helmet } from 'react-helmet';
 import { graphql } from 'gatsby';
 import { Heading, Text } from 'theme-ui';
 import { Layout } from '../Layout';
-import { useOpenApiInfo } from '../../hooks/use-openapi-info';
+import { useOpenApiInfo } from '../../hooks/useOpenapiInfo';
 import { OpenApiPath } from '../../types';
-import { useMarkdownReact } from '../../hooks/use-markdown-react';
+import { useMarkdownReact } from '../../hooks/useMarkdownReact';
 import { Link } from '../Link';
+import { SchemaExplorer } from '../SchemaExplorer';
+import { useOpenApiSchemasByName } from '../../hooks/useOpenapiSchemasByName';
+import { ResponseExamples } from '../ResponseExamples';
 
-interface Props {
+interface OperationProps {
   data: {
     path: OpenApiPath;
   };
 }
 
-const SCHEMA_TYPE_OBJECT = 'object';
-const SCHEMA_TYPE_ARRAY = 'array';
-
-function renderSchemaTree(schema) {
-  try {
-    switch (schema.type) {
-      case SCHEMA_TYPE_OBJECT:
-        return <ul>{renderSchemaObject(schema)}</ul>;
-      case SCHEMA_TYPE_ARRAY:
-        return <span>Array: {renderSchemaArray(schema)}</span>;
-      default:
-        return (
-          <span>
-            {schema.type}{' '}
-            {schema.description ? `(${schema.description})` : null}
-          </span>
-        );
-    }
-  } catch (e) {
-    return null;
-  }
-}
-
-function renderSchemaArray(schema) {
-  if (schema.items.oneOf) {
-    return schema.items.oneOf.map(renderSchemaTree);
-  }
-  return [renderSchemaTree(schema.items)];
-}
-
-function renderSchemaObject(schema) {
-  return Object.keys(schema.properties).map((key) => {
-    return (
-      <li>
-        {key}: {renderSchemaTree(schema.properties[key])}
-      </li>
-    );
-  });
-}
-
-const Page: React.FunctionComponent<Props> = ({ data }) => {
+const Operation: React.FunctionComponent<OperationProps> = ({ data }) => {
   const { title } = useOpenApiInfo();
   const { path } = data;
   const markdownReact = useMarkdownReact(path.description);
-
-  // console.log('path', path);
+  const schemasByName = useOpenApiSchemasByName();
   return (
     <Layout>
       <Helmet>
@@ -92,12 +54,20 @@ const Page: React.FunctionComponent<Props> = ({ data }) => {
               {response.code} {response.description}
             </Heading>
             {response.content.map((content) => {
+              console.log('content', content);
               return (
                 <>
-                  <div>Content type: {content.contentType}</div>
-                  <div>Schema:</div>
-                  {renderSchemaTree(JSON.parse(content.schema))}
-                  <pre>{JSON.stringify(content.schema, null, 2)}</pre>
+                  <div>Content Type: {content.contentType}</div>
+                  <div>Response Schema:</div>
+                  <SchemaExplorer
+                    schema={JSON.parse(content.schema)}
+                    allSchemasByName={schemasByName}
+                  />
+                  <div>Examples:</div>
+                  <ResponseExamples
+                    content={content}
+                    allSchemasByName={schemasByName}
+                  />
                 </>
               );
             })}
@@ -108,7 +78,7 @@ const Page: React.FunctionComponent<Props> = ({ data }) => {
   );
 };
 
-export default Page;
+export default Operation;
 
 export const query = graphql`
   query($slug: String!) {

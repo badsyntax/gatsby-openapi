@@ -3,11 +3,11 @@ import React from 'react';
 import { Container, Image, jsx } from 'theme-ui';
 import { OpenApiInfo_XLogo } from '../types';
 
-interface Props {
+interface LogoProps {
   logo: OpenApiInfo_XLogo;
 }
 
-export const Logo: React.FunctionComponent<Props> = ({ logo }) => {
+export const Logo: React.FunctionComponent<LogoProps> = ({ logo }) => {
   return (
     <Container
       sx={{

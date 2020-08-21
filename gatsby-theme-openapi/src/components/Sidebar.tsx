@@ -3,7 +3,7 @@ import React from 'react';
 import { jsx } from 'theme-ui';
 import { Sidenav } from '@theme-ui/sidenav';
 import { Nav } from './Nav';
-import { useOpenApiInfo } from '../hooks/use-openapi-info';
+import { useOpenApiInfo } from '../hooks/useOpenapiInfo';
 import { Logo } from './Logo';
 
 export const Sidebar: React.FunctionComponent = () => {

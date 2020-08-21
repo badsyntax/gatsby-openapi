@@ -3,7 +3,7 @@
 Get all endpoints and field data:
 
 ```graphql
-query {
+{
   data: allOpenApiPath {
     endpoints: edges {
       endpoint: node {
@@ -26,6 +26,7 @@ query {
               example
             }
             schema
+          }
         }
       }
     }
@@ -148,6 +149,21 @@ query {
         description
         name
         extra
+      }
+    }
+  }
+}
+```
+
+Get all schemas
+
+```graphql
+query {
+  allOpenApiSchema {
+    edges {
+      node {
+        name
+        schema
       }
     }
   }

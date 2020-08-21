@@ -3,6 +3,7 @@ import React from 'react';
 import { jsx, Text } from 'theme-ui';
 import { useStaticQuery, graphql } from 'gatsby';
 import { Link } from './Link';
+import { useOpenApiSchemas } from '../hooks/useOpenapiSchemas';
 
 const linkStyles = {
   pt: 1,
@@ -52,6 +53,9 @@ export const Nav: React.FunctionComponent = () => {
     `
   );
   const { tags } = tagData.data;
+
+  const allSchemas = useOpenApiSchemas();
+
   return (
     <nav>
       <ul
@@ -82,29 +86,67 @@ export const Nav: React.FunctionComponent = () => {
             Authentication
           </Link>
         </li>
-        {tags.map((tag) => (
-          <li>
-            <Text
-              sx={{
-                fontWeight: 'bold',
-                pt: 1,
-                pb: 1,
-              }}
-            >
-              {tag.tag}
-            </Text>
-            <ul>
-              {tag.endpoints.map(({ endpoint }) => (
+        <li>
+          <Text
+            sx={{
+              fontWeight: 'bold',
+              pt: 1,
+              pb: 1,
+            }}
+          >
+            Operations
+          </Text>
+          <ul>
+            {tags.map((tag) => (
+              <li>
+                <Text
+                  sx={{
+                    fontWeight: 'bold',
+                    pt: 1,
+                    pb: 1,
+                  }}
+                >
+                  {tag.tag}
+                </Text>
+                <ul>
+                  {tag.endpoints.map(({ endpoint }) => (
+                    <li>
+                      <Link
+                        sx={linkStyles}
+                        to={`/operation/${endpoint.fields.slug}`}
+                      >
+                        {/* [{endpoint.method}]  */}
+                        {endpoint.summary}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        </li>
+        <li>
+          <Text
+            sx={{
+              fontWeight: 'bold',
+              pt: 1,
+              pb: 1,
+            }}
+          >
+            Models
+          </Text>
+          <ul>
+            {allSchemas.map((schema) => {
+              return (
                 <li>
-                  <Link sx={linkStyles} to={`/${endpoint.fields.slug}`}>
-                    {/* [{endpoint.method}]  */}
-                    {endpoint.summary}
+                  <Link sx={linkStyles} to={`/model/${schema.name}`}>
+                    {schema.name}
                   </Link>
                 </li>
-              ))}
-            </ul>
-          </li>
-        ))}
+              );
+            })}
+          </ul>
+        </li>
       </ul>
     </nav>
   );

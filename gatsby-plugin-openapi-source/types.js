@@ -1,11 +1,12 @@
-const API_PATH_TYPE = `OpenApiPath`;
-const API_SECURITY_TYPE = `OpenApiSecurity`;
-const API_SECURITY_SCHEMA_TYPE = `OpenApiSecuritySchema`;
-const API_TAG_TYPE = `OpenApiTag`;
-const API_INFO_TYPE = `OpenApiInfo`;
-const API_INFO_CONTACT_TYPE = `OpenApiInfoContact`;
-const API_INFO_LICENSE_TYPE = `OpenApiInfoLicense`;
-const API_INFO_X_LOGO_TYPE = `OpenApiInfoXLogo`;
+const API_PATH_TYPE = 'OpenApiPath';
+const API_SECURITY_TYPE = 'OpenApiSecurity';
+const API_SECURITY_SCHEMA_TYPE = 'OpenApiSecuritySchema';
+const API_SCHEMA_TYPE = 'OpenApiSchema';
+const API_TAG_TYPE = 'OpenApiTag';
+const API_INFO_TYPE = 'OpenApiInfo';
+const API_INFO_CONTACT_TYPE = 'OpenApiInfoContact';
+const API_INFO_LICENSE_TYPE = 'OpenApiInfoLicense';
+const API_INFO_X_LOGO_TYPE = 'OpenApiInfoXLogo';
 
 const types = `
   type ${API_TAG_TYPE} implements Node {
@@ -26,6 +27,12 @@ const types = `
     type: String!
     description: String
     extra: String
+  }
+
+  type ${API_SCHEMA_TYPE} implements Node {
+    id: ID!
+    name: String!
+    schema: String
   }
 
   type ${API_INFO_TYPE} implements Node {
@@ -65,4 +72,5 @@ module.exports = {
   API_INFO_LICENSE_TYPE,
   API_INFO_X_LOGO_TYPE,
   API_SECURITY_SCHEMA_TYPE,
+  API_SCHEMA_TYPE,
 };

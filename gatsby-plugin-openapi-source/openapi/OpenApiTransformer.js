@@ -1,4 +1,4 @@
-const { getExamples, normaliseSchemaExample } = require('./schemaExamples');
+const { getResponseContentExamples } = require('./schemaExamples');
 
 exports.OpenApiTransformer = class OpenApiTransformer {
   constructor(document) {
@@ -49,10 +49,12 @@ exports.OpenApiTransformer = class OpenApiTransformer {
               const contentByResponseType = (response.content || {})[
                 contentType
               ];
-              const examples = getExamples(contentByResponseType);
-              const schemaWithNormalisedExample = normaliseSchemaExample(
-                contentByResponseType.schema
+              const examples = getResponseContentExamples(
+                contentByResponseType
               );
+              const schemaWithNormalisedExample = {
+                ...contentByResponseType.schema,
+              };
               const responseContent = {
                 schema: JSON.stringify(schemaWithNormalisedExample),
                 contentType,

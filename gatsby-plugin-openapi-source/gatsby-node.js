@@ -6,6 +6,7 @@ const {
   API_INFO_TYPE,
   API_SECURITY_TYPE,
   API_SECURITY_SCHEMA_TYPE,
+  API_SCHEMA_TYPE,
   API_TAG_TYPE,
   API_PATH_TYPE,
 } = require('./types');
@@ -61,18 +62,6 @@ exports.sourceNodes = async (
     });
   }
 
-  // function entityToFieldsArray(object) {
-  //   if (Array.isArray(object)) {
-  //     return object.map(entityToFieldsArray);
-  //   }
-  //   if (object.constructor === Object) {
-  //     return Object.keys(object).map((key) => {
-  //       return { key, value: entityToFieldsArray(object[key]) };
-  //     });
-  //   }
-  //   return object;
-  // }
-
   function createSecuritySchemaNodes(api) {
     const { securitySchemes } = api.document.components;
     Object.keys(securitySchemes).forEach((name) => {
@@ -99,6 +88,37 @@ exports.sourceNodes = async (
     });
   }
 
+  function buildSchema(schema, name) {
+    return {
+      name,
+      schema: JSON.stringify(schema),
+    };
+  }
+
+  function buildSchemas(schemas) {
+    return Object.keys(schemas).map((name) => {
+      const schema = buildSchema(schemas[name], name);
+      return schema;
+    });
+  }
+
+  function createSchemaNodes(api) {
+    const { schemas } = api.document.components;
+    buildSchemas(schemas).forEach((schema) => {
+      createNode({
+        ...schema,
+        id: createNodeId(`${API_SCHEMA_TYPE}-${schema.name}`),
+        parent: null,
+        children: [],
+        internal: {
+          type: API_SCHEMA_TYPE,
+          content: JSON.stringify(schema),
+          contentDigest: createContentDigest(schema),
+        },
+      });
+    });
+  }
+
   function createTagNodes(api) {
     api.document.tags.forEach((tag) => {
       createNode({
@@ -117,7 +137,6 @@ exports.sourceNodes = async (
 
   function createPathNodes(api) {
     api.getPathsAsArray().forEach((path) => {
-      console.log('oath', JSON.stringify(path, null, 2));
       createNode({
         ...path,
         id: createNodeId(`${API_PATH_TYPE}-${path.path}-${path.method}`),
@@ -143,6 +162,7 @@ exports.sourceNodes = async (
     createSecurityNodes(transformer);
     createSecuritySchemaNodes(transformer);
     createTagNodes(transformer);
+    createSchemaNodes(transformer);
   } catch (e) {
     console.error(`Error sourcing OpenAPI data: ${e.message}`);
   }
@@ -158,12 +178,13 @@ exports.onCreateNode = ({ node, actions }) => {
       value: slug,
     });
   }
-  // if (node.internal.type === API_SECURITY_SCHEMA_TYPE) {
-  //   const slug = node.operationId;
-  //   createNodeField({
-  //     node,
-  //     name: 'slug',
-  //     value: slug,
-  //   });
-  // }
+  if (node.internal.type === API_SCHEMA_TYPE) {
+    console.log('create slug for ', node);
+    const slug = node.name;
+    createNodeField({
+      node,
+      name: 'slug',
+      value: slug,
+    });
+  }
 };

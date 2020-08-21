@@ -21,15 +21,15 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       return;
     }
 
-    const component = require.resolve('./src/components/pages/Path.tsx');
+    const component = require.resolve('./src/components/pages/Operation.tsx');
 
-    result.data[`paths`].edges.forEach(({ node }) => {
+    result.data.paths.edges.forEach(({ node }) => {
       if (!node.fields.slug) {
-        reporter.warn('Node has a null slug field!');
+        reporter.warn(`Node has a null slug field!: ${JSON.stringify(node)}`);
         return;
       }
       createPage({
-        path: node.fields.slug,
+        path: `operation/${node.fields.slug}`,
         component,
         context: {
           slug: node.fields.slug,
@@ -38,7 +38,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     });
   }
 
-  async function createAuthenticationPage() {
+  function createAuthenticationPage() {
     const component = require.resolve(
       './src/components/pages/Authentication.tsx'
     );
@@ -51,6 +51,46 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     });
   }
 
+  async function createSchemaModelPages() {
+    const result = await graphql(`
+      query {
+        schemas: allOpenApiSchema {
+          edges {
+            node {
+              name
+              schema
+              fields {
+                slug
+              }
+            }
+          }
+        }
+      }
+    `);
+
+    if (result.errors) {
+      reporter.panicOnBuild('Error while querying schemas.');
+      return;
+    }
+
+    const component = require.resolve('./src/components/pages/Model.tsx');
+
+    result.data.schemas.edges.forEach(({ node }) => {
+      if (!node.fields.slug) {
+        reporter.warn(`Node has a null slug field!: ${JSON.stringify(node)}`);
+        return;
+      }
+      createPage({
+        path: `model/${node.fields.slug}`,
+        component,
+        context: {
+          slug: node.fields.slug,
+        },
+      });
+    });
+  }
+
   await createPathPages();
-  await createAuthenticationPage();
+  await createSchemaModelPages();
+  createAuthenticationPage();
 };
