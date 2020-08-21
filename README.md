@@ -14,6 +14,13 @@ __NOTE:__ This repo is in the very early stages of development.
 
 - [example-theme-ui](./example-theme-ui): An example site using the [gatsby-theme-openapi-theme-ui]('./gatsby-theme-openapi-theme-ui) theme
 
+## Goals
+
+- Provide a framework for building API docs with full customisation capabilities (not just tweaking theme variables)
+- Provide some good default themes
+- Provide features to render in a single page, or multiple pages
+- Provide a CLI utility to easily bootstrap/scaffold
+
 ## License
 
 MIT License
