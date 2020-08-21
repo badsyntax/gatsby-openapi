@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet';
 import { Heading } from 'theme-ui';
 import { SchemaExplorer } from '../SchemaExplorer';
 import { useOpenApiSchemasByName } from '../../hooks/useOpenapiSchemasByName';
+import { useMarkdownReact } from '../../hooks/useMarkdownReact';
 
 interface Props {
   data: {
@@ -17,9 +18,7 @@ const Model: React.FunctionComponent<Props> = ({ data }) => {
   const { schema } = data;
   const schemasByName = useOpenApiSchemasByName();
   const schemaObj = JSON.parse(schema.schema);
-
-  console.log('schema', schemaObj);
-
+  const description = useMarkdownReact(schemaObj.description);
   return (
     <Layout>
       <Helmet>
@@ -28,7 +27,7 @@ const Model: React.FunctionComponent<Props> = ({ data }) => {
       <Heading as="h2" mb={3}>
         {schema.name}
       </Heading>
-      <div>Description: {schemaObj.description}</div>
+      {description}
       <div>Type: {schemaObj.type}</div>
       <div>Schema: </div>
       <SchemaExplorer schema={schemaObj} allSchemasByName={schemasByName} />

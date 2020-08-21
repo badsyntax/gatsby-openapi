@@ -98,7 +98,7 @@ export const Nav: React.FunctionComponent = () => {
           </Text>
           <ul>
             {tags.map((tag) => (
-              <li>
+              <li key={`nav-operation-tag-${tag.tag}`}>
                 <Text
                   sx={{
                     fontWeight: 'bold',
@@ -110,7 +110,7 @@ export const Nav: React.FunctionComponent = () => {
                 </Text>
                 <ul>
                   {tag.endpoints.map(({ endpoint }) => (
-                    <li>
+                    <li key={`nav-operation-${endpoint.fields.slug}`}>
                       <Link
                         sx={linkStyles}
                         to={`/operation/${endpoint.fields.slug}`}
@@ -138,7 +138,7 @@ export const Nav: React.FunctionComponent = () => {
           <ul>
             {allSchemas.map((schema) => {
               return (
-                <li>
+                <li key={`nav-model-${schema.name}`}>
                   <Link sx={linkStyles} to={`/model/${schema.name}`}>
                     {schema.name}
                   </Link>

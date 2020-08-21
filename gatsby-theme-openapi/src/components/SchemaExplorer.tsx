@@ -1,19 +1,46 @@
 /** @jsx jsx */
 import React from 'react';
-import { Container, Image, jsx } from 'theme-ui';
-import { Schema, OpenApiSchemasByName } from '../types';
+import { jsx } from 'theme-ui';
+import { OpenApiSchemasByName, ParsedSchema } from '../types';
 import { Link } from './Link';
+import { Table } from './Table';
 
 interface SchemaProps {
-  schema: Record<string, unknown>;
+  schema: ParsedSchema;
   allSchemasByName: OpenApiSchemasByName;
 }
 
 const SCHEMA_TYPE_OBJECT = 'object';
 const SCHEMA_TYPE_ARRAY = 'array';
 
+function renderSchemaRef(ref: string, allSchemasByName: OpenApiSchemasByName) {
+  const refSchemaName = ref.split('/').pop();
+  const refSchema = JSON.parse(allSchemasByName[refSchemaName]);
+  const isComplexSchema =
+    refSchema.type === 'object' || refSchema.type === 'array';
+  return (
+    <span>
+      {!isComplexSchema && (
+        <Link to={`/model/${refSchemaName}`}>
+          {renderSchemaTree(refSchema, allSchemasByName)} ({refSchemaName})
+        </Link>
+      )}
+      {isComplexSchema && renderSchemaTree(refSchema, allSchemasByName)}
+    </span>
+  );
+}
+
+function renderSchemaValue(schema: ParsedSchema) {
+  return (
+    <code>
+      {schema.type}
+      {schema.format && <span>&lt;{schema.format}&gt;</span>}
+    </code>
+  );
+}
+
 function renderSchemaTree(
-  schema: Record<string, unknown>,
+  schema: ParsedSchema,
   allSchemasByName: OpenApiSchemasByName
 ) {
   switch (schema.type) {
@@ -23,27 +50,14 @@ function renderSchemaTree(
       return renderSchemaArray(schema, allSchemasByName);
     default:
       if (schema['$ref']) {
-        const refSchemaName = (schema['$ref'] as string).split('/').pop();
-        const refSchema = allSchemasByName[refSchemaName];
-        return (
-          <span>
-            <Link to={`/model/${refSchemaName}`}>
-              {renderSchemaTree(JSON.parse(refSchema), allSchemasByName)}
-            </Link>
-          </span>
-        );
+        return renderSchemaRef(schema['$ref'] as string, allSchemasByName);
       }
-      return (
-        <span>
-          {schema.type}
-          {/* {schema.description ? ` (${schema.description})` : null} */}
-        </span>
-      );
+      return renderSchemaValue(schema);
   }
 }
 
 interface OneOfType {
-  oneOf: Array<Record<string, unknown>>;
+  oneOf: Array<ParsedSchema>;
   allSchemasByName: OpenApiSchemasByName;
 }
 
@@ -85,15 +99,20 @@ function renderSchemaArray(schema, allSchemasByName) {
 
 function renderSchemaObject(schema, allSchemasByName: OpenApiSchemasByName) {
   return (
-    <ul>
-      {Object.keys(schema.properties).map((key) => {
-        return (
-          <li>
-            {key}: {renderSchemaTree(schema.properties[key], allSchemasByName)}
-          </li>
-        );
-      })}
-    </ul>
+    <Table variant="borderLess">
+      <tbody>
+        {Object.keys(schema.properties).map((key) => {
+          return (
+            <tr>
+              <th>{key}</th>
+              <td>
+                {renderSchemaTree(schema.properties[key], allSchemasByName)}
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </Table>
   );
 }
 

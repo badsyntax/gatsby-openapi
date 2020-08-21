@@ -10,6 +10,7 @@ import { Link } from '../Link';
 import { SchemaExplorer } from '../SchemaExplorer';
 import { useOpenApiSchemasByName } from '../../hooks/useOpenapiSchemasByName';
 import { ResponseExamples } from '../ResponseExamples';
+import { Responses } from '../Responses';
 
 interface OperationProps {
   data: {
@@ -21,7 +22,7 @@ const Operation: React.FunctionComponent<OperationProps> = ({ data }) => {
   const { title } = useOpenApiInfo();
   const { path } = data;
   const markdownReact = useMarkdownReact(path.description);
-  const schemasByName = useOpenApiSchemasByName();
+  const allSchemasByName = useOpenApiSchemasByName();
   return (
     <Layout>
       <Helmet>
@@ -31,49 +32,32 @@ const Operation: React.FunctionComponent<OperationProps> = ({ data }) => {
       </Helmet>
       <Heading as="h2">{path.summary}</Heading>
       {markdownReact}
-      <Text mb={4}>
-        AUTHORIZATIONS:{' '}
-        {path.security.map((security, i) => {
-          return (
-            <>
-              <Link to={`/authentication#${security.name}`}>
-                {security.name}
-              </Link>
-              {i !== path.security.length - 1 ? <span>, </span> : null}
-            </>
-          );
-        })}
-      </Text>
-      <Heading as="h2" mt={4} mb={4}>
+      <Heading as="h2" mt={4} mb={3}>
+        Authorizations
+      </Heading>
+      {Boolean(path.security.length) && (
+        <ul>
+          {path.security.map((security) => {
+            return (
+              <li key={`authorization-${security.name}`}>
+                <Link to={`/authentication#${security.name}`}>
+                  {security.name}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      {!Boolean(path.security.length) && (
+        <div>(No authorizations for this operation.)</div>
+      )}
+      <Heading as="h2" mt={4} mb={3}>
         Responses
       </Heading>
-      {path.responses.map((response) => {
-        return (
-          <>
-            <Heading as="h3" mt={4} mb={2}>
-              {response.code} {response.description}
-            </Heading>
-            {response.content.map((content) => {
-              console.log('content', content);
-              return (
-                <>
-                  <div>Content Type: {content.contentType}</div>
-                  <div>Response Schema:</div>
-                  <SchemaExplorer
-                    schema={JSON.parse(content.schema)}
-                    allSchemasByName={schemasByName}
-                  />
-                  <div>Examples:</div>
-                  <ResponseExamples
-                    content={content}
-                    allSchemasByName={schemasByName}
-                  />
-                </>
-              );
-            })}
-          </>
-        );
-      })}
+      <Responses
+        responses={path.responses}
+        allSchemasByName={allSchemasByName}
+      />
     </Layout>
   );
 };

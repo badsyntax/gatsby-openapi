@@ -4,6 +4,12 @@ export interface SiteMetadata {
 
 export type Schema = string;
 
+export interface ParsedSchema {
+  type: string;
+  format: string;
+  [key: string]: unknown;
+}
+
 export interface OpenApiSchema {
   name: string;
   schema: Schema;

@@ -13,6 +13,8 @@ import { merge } from 'theme-ui';
 import { tailwind } from '@theme-ui/presets';
 import nightOwl from '@theme-ui/prism/presets/night-owl';
 
+console.log('tailwind', tailwind);
+
 const theme = merge(tailwind, {
   initialColorModeName: 'light',
   useCustomProperties: true,
@@ -23,6 +25,10 @@ const theme = merge(tailwind, {
     codeBlockText: tailwind.colors.gray[9],
     backgroundContent: tailwind.colors.gray[1],
     textHeading: tailwind.colors.black,
+    responseOkBG: tailwind.colors.green[1],
+    responseOkText: tailwind.colors.green[7],
+    responseErrorBG: tailwind.colors.red[1],
+    responseErrorText: tailwind.colors.red[7],
     modes: {
       dark: {
         text: tailwind.colors.gray[2],
@@ -61,6 +67,28 @@ const theme = merge(tailwind, {
   },
   sizes: {
     sidebar: 300,
+  },
+  text: {
+    bold: {
+      fontWeight: 700,
+    },
+  },
+  table: {
+    default: {
+      borderCollapse: 'collapse',
+      'td, th': {
+        border: (theme) => `1px solid ${theme.colors.muted}`,
+        textAlign: 'left',
+        padding: 1,
+      },
+    },
+    borderLess: {
+      borderCollapse: 'collapse',
+      'td, th': {
+        textAlign: 'left',
+        padding: 1,
+      },
+    },
   },
   styles: {
     root: {

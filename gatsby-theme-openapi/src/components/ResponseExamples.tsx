@@ -1,13 +1,11 @@
 /** @jsx jsx */
 import React from 'react';
-import { Container, Image, jsx } from 'theme-ui';
+import { jsx } from 'theme-ui';
 import {
-  Schema,
   OpenApiSchemasByName,
   OpenApiResponseContent,
   OpenApiResponseContentExample,
 } from '../types';
-import { Link } from './Link';
 
 interface ResponseExamplesProps {
   content: OpenApiResponseContent;
@@ -43,6 +41,12 @@ function getExampleValue(schema) {
     : schema.format || schema.type;
 }
 
+function getExampleRef(ref: string, allSchemasByName: OpenApiSchemasByName) {
+  const refSchemaName = ref.split('/').pop();
+  const refSchema = allSchemasByName[refSchemaName];
+  return getExample(JSON.parse(refSchema), allSchemasByName);
+}
+
 function getExample(schema, allSchemasByName: OpenApiSchemasByName) {
   switch (schema.type) {
     case SCHEMA_TYPE_OBJECT:
@@ -51,9 +55,7 @@ function getExample(schema, allSchemasByName: OpenApiSchemasByName) {
       return getExampleArray(schema, allSchemasByName);
     default:
       if (schema['$ref']) {
-        const refSchemaName = schema['$ref'].split('/').pop();
-        const refSchema = allSchemasByName[refSchemaName];
-        return getExample(JSON.parse(refSchema), allSchemasByName);
+        return getExampleRef(schema['$ref'], allSchemasByName);
       }
       return getExampleValue(schema);
   }

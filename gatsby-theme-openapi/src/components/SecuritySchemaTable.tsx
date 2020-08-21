@@ -2,6 +2,7 @@
 import React from 'react';
 import { Container, Image, jsx, Heading } from 'theme-ui';
 import { OpenApiInfo_XLogo, OpenApiSecuritySchema } from '../types';
+import { Table } from './Table';
 
 interface SecuritySchemaProps {
   schema: OpenApiSecuritySchema;
@@ -12,16 +13,7 @@ export const SecuritySchemaTable: React.FunctionComponent<SecuritySchemaProps> =
 }) => {
   const extra = JSON.parse(schema.extra);
   return (
-    <table
-      sx={{
-        borderCollapse: 'collapse',
-        'td, th': {
-          border: (theme) => `1px solid ${theme.colors.muted}`,
-          textAlign: 'left',
-          padding: 1,
-        },
-      }}
-    >
+    <Table>
       <tbody>
         <tr>
           <th>Type</th>
@@ -36,6 +28,6 @@ export const SecuritySchemaTable: React.FunctionComponent<SecuritySchemaProps> =
           );
         })}
       </tbody>
-    </table>
+    </Table>
   );
 };
