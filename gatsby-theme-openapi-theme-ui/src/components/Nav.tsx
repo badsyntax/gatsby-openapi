@@ -56,13 +56,13 @@ export const Nav: React.FunctionComponent<NavProps> = ({
           top: 2,
           li: {
             listStyleType: 'none',
+            fontSize: 1,
           },
           ul: {
             position: 'sticky',
             top: 2,
             margin: 0,
             padding: 0,
-            li: { paddingLeft: 3 },
           },
         }}
       />

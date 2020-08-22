@@ -40,6 +40,7 @@ export const Sidebar: React.FunctionComponent = () => {
                 name: endpoint.summary,
                 key: `nav-/operation/${endpoint.fields.slug}`,
                 to: `/operation/${endpoint.fields.slug}`,
+                endpoint,
               };
             }
           ),
@@ -64,11 +65,9 @@ export const Sidebar: React.FunctionComponent = () => {
   return (
     <Sidenav
       sx={{
-        p: '3 0',
-        pt: 2,
-        overflowY: ['auto', 'auto', 'initial'],
+        overflowY: ['auto', 'auto', 'auto'],
         width: 'initial',
-        minHeight: '100vh',
+        height: '100vh',
         flexGrow: 1,
         flexBasis: 'sidebar',
       }}

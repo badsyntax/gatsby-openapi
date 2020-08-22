@@ -1,15 +1,25 @@
 /* eslint jsx-a11y/anchor-has-content: 0 */
 /** @jsx jsx */
 import React from 'react';
-import { jsx } from 'theme-ui';
+import { jsx, Badge, Box } from 'theme-ui';
 import { LinkProps, Link } from './Link';
 import { VscChevronDown, VscChevronRight } from 'react-icons/vsc';
+import { OpenApiResponse, OpenApiPath } from '../types';
+import { RequestMethodBadge } from './RequestMethodBadge';
 
 const linkStyles = {
   pt: 2,
   pb: 2,
   pr: 3,
   pl: 3,
+  display: 'flex',
+  '&:hover': {
+    backgroundColor: 'backgroundContent',
+  },
+};
+
+const navItemStyles = {
+  flexGrow: 1,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -20,6 +30,7 @@ export interface NavItem {
   key: string;
   to?: string;
   items?: NavItem[];
+  endpoint?: OpenApiPath;
 }
 
 interface NavItemProps {
@@ -46,22 +57,49 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
   }
   return (
     <li key={item.key} {...props}>
-      <Link {...linkProps}>
-        {item.name}
-        {item.items &&
-          (selectedItems.indexOf(item) === -1 ? (
-            <VscChevronRight
+      <Link
+        {...linkProps}
+        // className={selectedItems.indexOf(item) >= 0 ? 'active' : null}
+      >
+        {item.endpoint && (
+          <div
+            sx={{
+              minWidth: '32px',
+              pt: 1,
+              mr: 2,
+            }}
+          >
+            <RequestMethodBadge
+              path={item.endpoint}
               sx={{
-                strokeWidth: 1,
+                fontSize: '0.5rem',
+                pb: 0.5,
+                pt: 0.5,
+                pl: 1,
+                pr: 1,
+                textAlign: 'center',
+                display: 'block',
               }}
             />
-          ) : (
-            <VscChevronDown
-              sx={{
-                strokeWidth: 1,
-              }}
-            />
-          ))}
+          </div>
+        )}
+        <Box sx={navItemStyles}>
+          {item.name}
+          {item.items &&
+            (selectedItems.indexOf(item) === -1 ? (
+              <VscChevronRight
+                sx={{
+                  strokeWidth: 1,
+                }}
+              />
+            ) : (
+              <VscChevronDown
+                sx={{
+                  strokeWidth: 1,
+                }}
+              />
+            ))}
+        </Box>
       </Link>
       {item.items && (
         <NavList

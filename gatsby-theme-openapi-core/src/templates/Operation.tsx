@@ -12,6 +12,7 @@ export const query = graphql`
       description
       operationId
       tags
+      path
       security {
         name
         opts

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Heading, Text } from 'theme-ui';
-import { OpenApiResponse, OpenApiSchemasByName } from '../../../types';
+import { OpenApiResponse, OpenApiSchemasByName } from '../types';
 import { SchemaExplorer } from './SchemaExplorer';
 import { ResponseExamples } from './ResponseExamples';
 
@@ -52,8 +52,9 @@ export const Response: React.FunctionComponent<ResponseProps> = ({
       {!isHidden &&
         response.content.map((content) => {
           return (
-            <div>
+            <>
               <Box mb={3}>Content Type: {content.contentType}</Box>
+              <Heading as="h4">Schema:</Heading>
               <Box mb={3}>
                 <SchemaExplorer
                   schema={JSON.parse(content.schema)}
@@ -65,7 +66,7 @@ export const Response: React.FunctionComponent<ResponseProps> = ({
                 content={content}
                 allSchemasByName={allSchemasByName}
               />
-            </div>
+            </>
           );
         })}
     </React.Fragment>
