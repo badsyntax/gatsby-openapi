@@ -67,6 +67,7 @@ const theme = merge(tailwind, {
         border: (theme) => `1px solid ${theme.colors.muted}`,
         textAlign: 'left',
         padding: 1,
+        verticalAlign: 'top',
       },
     },
     borderLess: {
@@ -74,6 +75,7 @@ const theme = merge(tailwind, {
       'td, th': {
         textAlign: 'left',
         padding: 1,
+        verticalAlign: 'top',
       },
     },
   },

@@ -55,6 +55,9 @@ export interface OpenApiPath {
   operationId: string;
   security: OpenApiSecurity[];
   responses: OpenApiResponse[];
+  fields: {
+    slug: string;
+  };
 }
 
 export interface OpenApiInfo_XLogo {

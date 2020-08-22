@@ -12,6 +12,7 @@
     "gatsby-plugin-react-helmet": "^3.3.10",
     "gatsby-plugin-theme-ui": "^0.3.0",
     "react-helmet": "^6.1.0",
+    "react-icons": "^3.11.0",
     "remark-react": "^7.0.1",
     "theme-ui": "^0.3.1"
   },

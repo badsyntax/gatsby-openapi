@@ -1,7 +1,7 @@
 /* eslint jsx-a11y/anchor-has-content: 0 */
 /** @jsx jsx */
 import { jsx } from 'theme-ui';
-import { Link as GatsbyLink } from 'gatsby';
+import { Link as GatsbyLink, GatsbyLinkProps } from 'gatsby';
 
 const styles = {
   color: 'inherit',
@@ -9,13 +9,13 @@ const styles = {
   fontWeight: 'normal',
   '&.active': {
     color: 'primary',
+    backgroundColor: 'backgroundContent',
   },
 };
 
-interface LinkProps {
+export type LinkProps = {
   href?: string;
-  to?: string;
-}
+} & Omit<GatsbyLinkProps<unknown>, 'ref'>;
 
 export const Link: React.FunctionComponent<LinkProps> = ({
   href,
