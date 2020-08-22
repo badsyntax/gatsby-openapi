@@ -3,11 +3,12 @@ import React from 'react';
 import { jsx } from 'theme-ui';
 import { Sidenav } from '@theme-ui/sidenav';
 import { useLocation } from '@reach/router';
-import { Nav, NavItem } from './Nav';
+import { Nav } from './Nav';
 import { useOpenApiInfo } from '../hooks/useOpenapiInfo';
 import { Logo } from './Logo';
 import { useOpenapiPathsByTag } from '../hooks/useOpenapiPathsByTag';
 import { useOpenApiSchemas } from '../hooks/useOpenapiSchemas';
+import { NavItem } from './NavList';
 
 export const Sidebar: React.FunctionComponent = () => {
   const { x_logo } = useOpenApiInfo();
