@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React from 'react';
-import { jsx } from 'theme-ui';
+import { jsx, Alert } from 'theme-ui';
 import { OpenApiSchemasByName, ParsedSchema } from '../types';
 import { Link } from './Link';
 import { Table } from './Table';
@@ -32,45 +32,49 @@ function renderSchemaArray(schema, allSchemasByName) {
 
 function renderSchemaRef(ref: string, allSchemasByName: OpenApiSchemasByName) {
   const refSchemaName = ref.split('/').pop();
-  const refSchema = JSON.parse(allSchemasByName[refSchemaName]);
+  const refSchemaString = allSchemasByName[refSchemaName];
+  if (!refSchemaString) {
+    return <Alert>Error: can't find ref schema: {refSchemaName}</Alert>;
+  }
+  const refSchema = JSON.parse(refSchemaString);
   const isComplexSchema =
     refSchema.type === 'object' || refSchema.type === 'array';
   return (
-    <span>
+    <React.Fragment>
       {!isComplexSchema && (
         <Link to={`/model/${refSchemaName}`}>
           {renderSchemaTree(refSchema, allSchemasByName)} ({refSchemaName})
         </Link>
       )}
       {isComplexSchema && renderSchemaTree(refSchema, allSchemasByName)}
-    </span>
+    </React.Fragment>
   );
 }
 
 function renderSchemaObject(schema, allSchemasByName: OpenApiSchemasByName) {
+  console.log('render schema object');
   return (
     <React.Fragment>
       {'{'}
-      <div
+      <Table
+        variant="borderLess"
         sx={{
           ml: 3,
         }}
       >
-        <Table variant="borderLess">
-          <tbody>
-            {Object.keys(schema.properties).map((key) => {
-              return (
-                <tr>
-                  <th>{key}:</th>
-                  <td>
-                    {renderSchemaTree(schema.properties[key], allSchemasByName)}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
-      </div>
+        <tbody>
+          {Object.keys(schema.properties).map((key) => {
+            return (
+              <tr>
+                <th>{key}:</th>
+                <td>
+                  {renderSchemaTree(schema.properties[key], allSchemasByName)}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </Table>
       {'}'}
     </React.Fragment>
   );
@@ -80,7 +84,9 @@ function renderSchemaValue(schema: ParsedSchema) {
   return (
     <code>
       {schema.type}
-      {schema.format && <span>&lt;{schema.format}&gt;</span>}
+      {schema.format && (
+        <React.Fragment>&lt;{schema.format}&gt;</React.Fragment>
+      )}
     </code>
   );
 }
@@ -130,5 +136,5 @@ export const SchemaExplorer: React.FunctionComponent<SchemaProps> = ({
   schema,
   allSchemasByName,
 }) => {
-  return <div>{renderSchemaTree(schema, allSchemasByName)}</div>;
+  return renderSchemaTree(schema, allSchemasByName);
 };

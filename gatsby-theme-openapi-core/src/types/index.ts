@@ -37,7 +37,7 @@ export interface OpenApiResponseContentExample {
 }
 
 export interface OpenApiResponseContent {
-  contentType: string;
+  type: string;
   schema: string;
   examples: OpenApiResponseContentExample[];
 }
@@ -48,6 +48,16 @@ export interface OpenApiResponse {
   content: OpenApiResponseContent[];
 }
 
+export interface OpenApiRequestBodyContent {
+  schema: string;
+  type: string;
+}
+
+export interface OpenApiRequestBody {
+  content: OpenApiRequestBodyContent[];
+  ref: string;
+}
+
 export interface OpenApiPath {
   method: 'get' | 'put' | 'post' | 'delete';
   summary: string;
@@ -56,6 +66,7 @@ export interface OpenApiPath {
   security: OpenApiSecurity[];
   responses: OpenApiResponse[];
   path: string;
+  requestBody: OpenApiRequestBody;
   fields: {
     slug: string;
   };

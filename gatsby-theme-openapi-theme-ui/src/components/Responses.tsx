@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import React from 'react';
 import { jsx } from 'theme-ui';
-import { OpenApiResponse, OpenApiSchemasByName } from '../../../types';
+import { OpenApiResponse, OpenApiSchemasByName } from '../types';
 import { Response } from './Response';
 
 interface ResponsesProps {

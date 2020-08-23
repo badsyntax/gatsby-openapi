@@ -4,10 +4,10 @@ import { jsx } from 'theme-ui';
 import {
   OpenApiSchemasByName,
   OpenApiResponseContent,
-  OpenApiResponseContentExample,
-} from '../../../types';
+  OpenApiSchemaExample,
+} from '../types';
 
-interface ResponseExamplesProps {
+interface SchemaExamplesProps {
   content: OpenApiResponseContent;
   allSchemasByName: OpenApiSchemasByName;
 }
@@ -64,8 +64,8 @@ function getExample(schema, allSchemasByName: OpenApiSchemasByName) {
 function buildExamples(
   content: OpenApiResponseContent,
   allSchemasByName: OpenApiSchemasByName
-): OpenApiResponseContentExample[] {
-  if (content.examples.length) {
+): OpenApiSchemaExample[] {
+  if (content.examples && content.examples.length) {
     return content.examples;
   }
   return [
@@ -78,21 +78,21 @@ function buildExamples(
   ];
 }
 
-export const ResponseExamples: React.FunctionComponent<ResponseExamplesProps> = ({
+export const SchemaExamples: React.FunctionComponent<SchemaExamplesProps> = ({
   content,
   allSchemasByName,
 }) => {
   const examples = buildExamples(content, allSchemasByName);
   return (
-    <div>
+    <React.Fragment>
       {examples.map((example) => {
         return (
-          <div>
+          <React.Fragment>
             {example.name && <div>{example.name}:</div>}
             <pre>{JSON.stringify(JSON.parse(example.example), null, 2)}</pre>
-          </div>
+          </React.Fragment>
         );
       })}
-    </div>
+    </React.Fragment>
   );
 };

@@ -1,40 +1,79 @@
-const { getResponseContentExamples } = require('./schemaExamples');
+function getContentExamples(content) {
+  if (content.examples) {
+    return Object.keys(content.examples).map((name) => ({
+      name,
+      example: JSON.stringify(content.examples[name].value),
+    }));
+  }
+  if (content.example) {
+    return [
+      {
+        name: null,
+        example: JSON.stringify(content.example),
+      },
+    ];
+  }
+  return [];
+}
 
 function getRequestBodyContentAsArray(requestBodyContent) {
-  return Object.keys(requestBodyContent).map((contentType) => ({
-    type: contentType,
-    schema: JSON.stringify(requestBodyContent[contentType].schema),
-  }));
+  return Object.keys(requestBodyContent).map((contentType) => {
+    const content = {
+      ...requestBodyContent[contentType],
+      type: contentType,
+      examples: getContentExamples(requestBodyContent[contentType]),
+      schema: JSON.stringify(requestBodyContent[contentType].schema),
+    };
+    delete content.example;
+    return content;
+  });
 }
 
 function getRequestBodyAsArray(requestBody) {
-  return requestBody && requestBody.content
-    ? {
-        ...requestBody,
-        content: getRequestBodyContentAsArray(requestBody.content),
-      }
-    : requestBody;
+  if (!requestBody) {
+    return requestBody;
+  }
+  if (requestBody['$ref']) {
+    const newRequestBody = { ...requestBody };
+    const ref = requestBody['$ref'];
+    delete newRequestBody['$ref'];
+    return {
+      ...newRequestBody,
+      ref: JSON.stringify({
+        $ref: ref,
+      }),
+    };
+  }
+  if (!requestBody.content) {
+    return requestBody;
+  }
+  return {
+    ...requestBody,
+    content: getRequestBodyContentAsArray(requestBody.content),
+  };
+}
+
+function getContent(content) {
+  return Object.keys(content || {}).map((type) => {
+    const contentByResponseType = (content || {})[type];
+    const examples = getContentExamples(contentByResponseType);
+    const schemaWithNormalisedExample = {
+      ...contentByResponseType.schema,
+    };
+    const responseContent = {
+      schema: JSON.stringify(schemaWithNormalisedExample),
+      type,
+      examples,
+    };
+    return responseContent;
+  });
 }
 
 function getResponsesAsArray(responses) {
   return responses
     ? Object.keys(responses).map((responseCode) => {
         const response = responses[responseCode];
-        const content = Object.keys(response.content || {}).map(
-          (contentType) => {
-            const contentByResponseType = (response.content || {})[contentType];
-            const examples = getResponseContentExamples(contentByResponseType);
-            const schemaWithNormalisedExample = {
-              ...contentByResponseType.schema,
-            };
-            const responseContent = {
-              schema: JSON.stringify(schemaWithNormalisedExample),
-              contentType,
-              examples,
-            };
-            return responseContent;
-          }
-        );
+        const content = getContent(response.content);
         return {
           ...responses[responseCode],
           code: responseCode,
@@ -92,6 +131,16 @@ exports.OpenApiTransformer = class OpenApiTransformer {
         type: securitySchemes[name].type,
         description: securitySchemes[name].description,
         extra: JSON.stringify(extra),
+      };
+    });
+  }
+
+  getRequestBodiesAsArray() {
+    const { requestBodies } = this.document.components;
+    return Object.keys(requestBodies).map((name) => {
+      return {
+        ...getRequestBodyAsArray(requestBodies[name]),
+        name,
       };
     });
   }

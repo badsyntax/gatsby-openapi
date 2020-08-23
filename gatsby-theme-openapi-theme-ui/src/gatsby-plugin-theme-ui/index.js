@@ -62,27 +62,21 @@ const theme = merge(tailwind, {
   },
   badges: {
     primary: {
-      color: 'background',
       bg: 'primary',
     },
     get: {
       bg: tailwind.colors.green[5],
-      color: 'background',
     },
     post: {
       bg: tailwind.colors.blue[5],
-      color: 'background',
     },
     delete: {
       bg: tailwind.colors.red[5],
-      color: 'background',
     },
     put: {
       bg: tailwind.colors.purple[5],
-      color: 'background',
     },
     outline: {
-      color: 'primary',
       bg: 'transparent',
       boxShadow: 'inset 0 0 0 1px',
       fontSize: '0.65rem',

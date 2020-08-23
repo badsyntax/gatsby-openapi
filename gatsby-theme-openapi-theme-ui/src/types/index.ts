@@ -31,21 +31,40 @@ export interface OpenApiSecurity {
   opts: string[];
 }
 
-export interface OpenApiResponseContentExample {
+export interface OpenApiSchemaExample {
   name: string;
   example: string;
 }
 
 export interface OpenApiResponseContent {
-  contentType: string;
+  type: string;
   schema: string;
-  examples: OpenApiResponseContentExample[];
+  examples: OpenApiSchemaExample[];
 }
 
 export interface OpenApiResponse {
   code: string;
   description: string;
   content: OpenApiResponseContent[];
+}
+
+export interface OpenApiRequestBodyContent {
+  schema: string;
+  type: string;
+  description: string;
+  examples: OpenApiSchemaExample[];
+}
+
+export interface OpenApiRequestBody {
+  content: OpenApiRequestBodyContent[];
+  ref: string;
+  description: string;
+  name: string;
+  required: boolean;
+}
+
+export interface OpenApiRequestBodiesByName {
+  [name: string]: OpenApiRequestBody;
 }
 
 export interface OpenApiPath {
@@ -56,6 +75,7 @@ export interface OpenApiPath {
   security: OpenApiSecurity[];
   responses: OpenApiResponse[];
   path: string;
+  requestBody: OpenApiRequestBody;
   fields: {
     slug: string;
   };

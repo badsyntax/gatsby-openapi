@@ -3,10 +3,6 @@ import markdown from 'remark-parse';
 import remark2react from 'remark-react';
 import { Link } from '../components/Link';
 
-export function useMarkdownReact(contents: string): unknown {
-  return renderMarkdown(contents);
-}
-
 export function renderMarkdown(contents: string): unknown {
   return (
     unified()

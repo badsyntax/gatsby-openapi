@@ -1,16 +1,17 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { PageProps } from 'gatsby';
-import { Heading, Box, Badge } from 'theme-ui';
+import { Heading, Box } from 'theme-ui';
 import { Layout } from '../Layout';
 import { useOpenApiInfo } from '../../hooks/useOpenapiInfo';
 import { OpenApiPath } from '../../types';
-import { useMarkdownReact } from '../../hooks/useMarkdownReact';
 import { Link } from '../Link';
 import { useOpenApiSchemasByName } from '../../hooks/useOpenapiSchemasByName';
 import { Responses } from '../Responses';
-import { RequestInfo } from '../RequestInfo';
+import { RequestBody } from '../RequestBody';
 import { RequestMethodBadge } from '../RequestMethodBadge';
+import { useRequestBodiesByName } from '../../hooks/useRequestBodies';
+import { renderMarkdown } from '../../util/renderMarkdown';
 
 interface OperationDataProps {
   path: OpenApiPath;
@@ -21,8 +22,9 @@ export const Operation: React.FunctionComponent<PageProps<
 >> = ({ data }) => {
   const { title } = useOpenApiInfo();
   const { path } = data;
-  const markdownReact = useMarkdownReact(path.description);
+  const markdownReact = renderMarkdown(path.description);
   const allSchemasByName = useOpenApiSchemasByName();
+  const allRequestBodiesByName = useRequestBodiesByName();
   return (
     <Layout>
       <Helmet>
@@ -63,10 +65,18 @@ export const Operation: React.FunctionComponent<PageProps<
       {!Boolean(path.security.length) && (
         <div>(No authorizations for this operation.)</div>
       )}
-      <Heading as="h2" mt={4} mb={3}>
-        Request
-      </Heading>
-      <RequestInfo path={path} />
+      {path.requestBody && (
+        <React.Fragment>
+          <Heading as="h2" mt={4} mb={3}>
+            Request Body
+          </Heading>
+          <RequestBody
+            path={path}
+            allRequestBodiesByName={allRequestBodiesByName}
+            allSchemasByName={allSchemasByName}
+          />
+        </React.Fragment>
+      )}
       <Heading as="h2" mt={4} mb={3}>
         Responses
       </Heading>

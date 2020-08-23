@@ -60,6 +60,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         },
       });
     });
+
+    reporter.success('create path pages');
   }
 
   function createAuthenticationPage() {
@@ -71,6 +73,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         slug: 'authentication',
       },
     });
+    reporter.success('create authentication page');
   }
 
   async function createSchemaModelPages() {
@@ -110,9 +113,15 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         },
       });
     });
+    reporter.success('create schema model pages');
   }
 
-  await createPathPages();
-  await createSchemaModelPages();
-  createAuthenticationPage();
+  try {
+    await createPathPages();
+    await createSchemaModelPages();
+    createAuthenticationPage();
+    reporter.info('successfully created all pages');
+  } catch (e) {
+    reporter.panicOnBuild(`Error creating pages: ${e.message}`);
+  }
 };

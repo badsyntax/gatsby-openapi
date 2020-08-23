@@ -9,12 +9,14 @@ interface TableProps {
 export const Table: React.FunctionComponent<TableProps> = ({
   children,
   variant = 'default',
+  ...props
 }) => {
   return (
     <table
       sx={{
         variant: `table.${variant}`,
       }}
+      {...props}
     >
       {children}
     </table>

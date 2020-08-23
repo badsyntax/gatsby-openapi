@@ -7,6 +7,9 @@ const API_INFO_TYPE = 'OpenApiInfo';
 const API_INFO_CONTACT_TYPE = 'OpenApiInfoContact';
 const API_INFO_LICENSE_TYPE = 'OpenApiInfoLicense';
 const API_INFO_X_LOGO_TYPE = 'OpenApiInfoXLogo';
+const API_REQUEST_BODY_TYPE = 'OpenApiRequestBody';
+const API_REQUEST_BODY_CONTENT_TYPE = 'OpenApiRequestBodyContent';
+const API_SCHEMA_EXAMPLE = 'OpenApiSchemaExample';
 
 const types = `
   type ${API_TAG_TYPE} implements Node {
@@ -33,6 +36,26 @@ const types = `
     id: ID!
     name: String!
     schema: String
+  }
+
+  type ${API_REQUEST_BODY_TYPE} implements Node {
+    id: ID!
+    name: String!
+    description: String
+    required: Boolean
+    content: [${API_REQUEST_BODY_CONTENT_TYPE}]
+  }
+
+  type ${API_REQUEST_BODY_CONTENT_TYPE} {
+    type: String!
+    description: String
+    schema: String
+    examples: [${API_SCHEMA_EXAMPLE}]
+  }
+
+  type ${API_SCHEMA_EXAMPLE} {
+    name: String
+    example: String!
   }
 
   type ${API_INFO_TYPE} implements Node {
@@ -73,4 +96,7 @@ module.exports = {
   API_INFO_X_LOGO_TYPE,
   API_SECURITY_SCHEMA_TYPE,
   API_SCHEMA_TYPE,
+  API_REQUEST_BODY_TYPE,
+  API_REQUEST_BODY_CONTENT_TYPE,
+  API_SCHEMA_EXAMPLE,
 };

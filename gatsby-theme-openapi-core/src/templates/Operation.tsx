@@ -17,6 +17,13 @@ export const query = graphql`
         name
         opts
       }
+      requestBody {
+        ref
+        content {
+          schema
+          type
+        }
+      }
       x_codeSamples {
         lang
         source
@@ -25,7 +32,7 @@ export const query = graphql`
         code
         description
         content {
-          contentType
+          type
           examples {
             name
             example

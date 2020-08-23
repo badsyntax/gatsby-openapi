@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React from 'react';
-import { Badge, jsx } from 'theme-ui';
+import { Badge, jsx, BadgeProps } from 'theme-ui';
 import { OpenApiPath } from '../types';
 
 const badgeLabel = {
@@ -12,18 +12,16 @@ interface RequestMethodBadge {
   shortLabel?: boolean;
 }
 
-export const RequestMethodBadge: React.FunctionComponent<RequestMethodBadge> = ({
-  path,
-  shortLabel = true,
-  ...props
-}) => {
+export const RequestMethodBadge: React.FunctionComponent<
+  RequestMethodBadge & Omit<BadgeProps, 'ref'>
+> = ({ path, shortLabel = true, ...props }) => {
   return (
     <Badge
       variant={path.method}
-      {...props}
       css={{
         textTransform: 'uppercase',
       }}
+      {...props}
     >
       {(shortLabel && badgeLabel[path.method]) || path.method}
     </Badge>

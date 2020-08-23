@@ -5,8 +5,8 @@ import { Layout } from '../Layout';
 import { SecuritySchemaTable } from '../SecuritySchemaTable';
 import { OpenApiSecuritySchema } from '../../types';
 import { useOpenApiInfo } from '../../hooks/useOpenapiInfo';
-import { renderMarkdown } from '../../hooks/useMarkdownReact';
 import { PageProps } from 'gatsby';
+import { renderMarkdown } from '../../util/renderMarkdown';
 
 export interface SecuritySchema {
   node: OpenApiSecuritySchema;

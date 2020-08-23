@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Heading, Text } from 'theme-ui';
 import { OpenApiResponse, OpenApiSchemasByName } from '../types';
 import { SchemaExplorer } from './SchemaExplorer';
-import { ResponseExamples } from './ResponseExamples';
+import { SchemaExamples } from './SchemaExamples';
 
 interface ResponseProps {
   response: OpenApiResponse;
@@ -53,7 +53,7 @@ export const Response: React.FunctionComponent<ResponseProps> = ({
         response.content.map((content) => {
           return (
             <>
-              <Box mb={3}>Content Type: {content.contentType}</Box>
+              <Box mb={3}>Content Type: {content.type}</Box>
               <Heading as="h4">Schema:</Heading>
               <Box mb={3}>
                 <SchemaExplorer
@@ -62,7 +62,7 @@ export const Response: React.FunctionComponent<ResponseProps> = ({
                 />
               </Box>
               <Heading as="h4">Examples:</Heading>
-              <ResponseExamples
+              <SchemaExamples
                 content={content}
                 allSchemasByName={allSchemasByName}
               />

@@ -9,6 +9,7 @@ const {
   API_SCHEMA_TYPE,
   API_TAG_TYPE,
   API_PATH_TYPE,
+  API_REQUEST_BODY_TYPE,
 } = require('./types');
 
 function sanitizeFieldNames(obj) {
@@ -24,14 +25,14 @@ exports.createSchemaCustomization = ({ actions }) => {
 };
 
 exports.sourceNodes = async (
-  { actions, createContentDigest, createNodeId },
+  { actions, createContentDigest, createNodeId, reporter },
   pluginOptions
 ) => {
   const { createNode } = actions;
 
   function createInfoNode(transformer) {
     const info = sanitizeFieldNames(transformer.document.info);
-    const infoNode = {
+    createNode({
       ...info,
       id: createNodeId(API_INFO_TYPE),
       parent: null,
@@ -41,8 +42,8 @@ exports.sourceNodes = async (
         content: JSON.stringify(info),
         contentDigest: createContentDigest(info),
       },
-    };
-    createNode(infoNode);
+    });
+    reporter.success(`create ${API_INFO_TYPE} node`);
   }
 
   function createSecurityNodes(transformer) {
@@ -59,6 +60,7 @@ exports.sourceNodes = async (
         },
       });
     });
+    reporter.success(`create ${API_SECURITY_TYPE} nodes`);
   }
 
   function createSecuritySchemaNodes(transformer) {
@@ -75,6 +77,7 @@ exports.sourceNodes = async (
         },
       });
     });
+    reporter.success(`create ${API_SECURITY_SCHEMA_TYPE} nodes`);
   }
 
   function createSchemaNodes(transformer) {
@@ -91,6 +94,24 @@ exports.sourceNodes = async (
         },
       });
     });
+    reporter.success(`create ${API_SCHEMA_TYPE} nodes`);
+  }
+
+  function createRequestBodyNodes(transformer) {
+    transformer.getRequestBodiesAsArray().forEach((schema) => {
+      createNode({
+        ...schema,
+        id: createNodeId(`${API_REQUEST_BODY_TYPE}-${schema.name}`),
+        parent: null,
+        children: [],
+        internal: {
+          type: API_REQUEST_BODY_TYPE,
+          content: JSON.stringify(schema),
+          contentDigest: createContentDigest(schema),
+        },
+      });
+    });
+    reporter.success(`create ${API_REQUEST_BODY_TYPE} nodes`);
   }
 
   function createTagNodes(transformer) {
@@ -107,6 +128,7 @@ exports.sourceNodes = async (
         },
       });
     });
+    reporter.success(`create ${API_TAG_TYPE} nodes`);
   }
 
   function createPathNodes(transformer) {
@@ -123,6 +145,7 @@ exports.sourceNodes = async (
         },
       });
     });
+    reporter.success(`create ${API_PATH_TYPE} nodes`);
   }
 
   try {
@@ -135,7 +158,10 @@ exports.sourceNodes = async (
     createSecuritySchemaNodes(transformer);
     createTagNodes(transformer);
     createSchemaNodes(transformer);
+    createRequestBodyNodes(transformer);
+
+    reporter.info('successfully created all OpenAPI nodes');
   } catch (e) {
-    console.error(`Error sourcing OpenAPI data: ${e.message}`);
+    reporter.panicOnBuild(`Error sourcing OpenAPI data: ${e.message}`);
   }
 };

@@ -36,7 +36,7 @@ export function useOpenapiPathsByTag(): OpenApiPathsByTag[] {
                 code
                 description
                 content {
-                  contentType
+                  type
                   examples {
                     name
                     example

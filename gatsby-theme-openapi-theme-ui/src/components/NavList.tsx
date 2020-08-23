@@ -1,11 +1,21 @@
 /* eslint jsx-a11y/anchor-has-content: 0 */
 /** @jsx jsx */
 import React from 'react';
-import { jsx, Badge, Box } from 'theme-ui';
+import { jsx, Box } from 'theme-ui';
 import { LinkProps, Link } from './Link';
 import { VscChevronDown, VscChevronRight } from 'react-icons/vsc';
-import { OpenApiResponse, OpenApiPath } from '../types';
+import { OpenApiPath } from '../types';
 import { RequestMethodBadge } from './RequestMethodBadge';
+
+const fadeInAnimationStyles = {
+  '@keyframes fadeIn': {
+    to: {
+      opacity: 1,
+    },
+  },
+  animation: 'fadeIn 400ms ease-out forwards',
+  opacity: 0,
+};
 
 const linkStyles = {
   pt: 2,
@@ -57,26 +67,23 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
   }
   return (
     <li key={item.key} {...props}>
-      <Link
-        {...linkProps}
-        // className={selectedItems.indexOf(item) >= 0 ? 'active' : null}
-      >
+      <Link {...linkProps}>
         {item.endpoint && (
           <div
             sx={{
-              minWidth: '32px',
+              width: '32px',
               pt: 1,
               mr: 2,
             }}
           >
             <RequestMethodBadge
               path={item.endpoint}
+              pb={0.5}
+              pt={0.5}
+              pl={1}
+              pr={1}
               sx={{
                 fontSize: '0.5rem',
-                pb: 0.5,
-                pt: 0.5,
-                pl: 1,
-                pr: 1,
                 textAlign: 'center',
                 display: 'block',
               }}
@@ -108,6 +115,7 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
           onItemToggle={onItemToggle}
           sx={{
             display: selectedItems.indexOf(item) >= 0 ? 'block' : 'none',
+            ...(selectedItems.indexOf(item) >= 0 && fadeInAnimationStyles),
           }}
         />
       )}
@@ -131,6 +139,7 @@ export const NavList: React.FunctionComponent<NavList> = ({
     <ul {...props}>
       {items.map((item) => (
         <NavItem
+          key={`navitem-${item.key}`}
           selectedItems={selectedItems}
           onItemToggle={onItemToggle}
           item={item}
