@@ -1,10 +1,10 @@
 /** @jsx jsx */
-import React from 'react';
-import { jsx } from 'theme-ui';
+import React, { useState } from 'react';
+import { jsx, Flex } from 'theme-ui';
 
 interface TabItemProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string;
-  key: string;
+  itemKey: string;
 }
 
 export const TabItem: React.FunctionComponent<TabItemProps> = () => null;
@@ -24,6 +24,7 @@ function getTabItems(props): TabItemProps[] {
   React.Children.map(
     React.Children.toArray(props.children),
     (child: React.ReactChild) => {
+      console.log('child', child);
       if (isTabItem(child)) {
         items.push(child.props);
       } else {
@@ -37,21 +38,34 @@ function getTabItems(props): TabItemProps[] {
   return items;
 }
 
-function renderTabItems(tabItems: TabItemProps[]) {
+function renderTabItems(
+  tabItems: TabItemProps[],
+  selectedKey: string,
+  onTabClick: (item: TabItemProps) => void
+) {
   return (
     <React.Fragment>
-      {tabItems.map((tabItem) => {
+      {tabItems.map((tabItem, i) => {
         return (
           <button
             type="button"
+            onClick={() => onTabClick(tabItem)}
             sx={{
               p: 2,
               mr: 2,
               border: 0,
-              background: 'none',
+              backgroundColor: 'transparent',
               fontSize: 1,
               cursor: 'pointer',
-              borderBottom: (theme) => `2px solid ${theme.colors.primary}`,
+              '&:focus': {
+                outline: 'none',
+              },
+              '&:hover': {
+                backgroundColor: (theme) => theme.colors.muted,
+              },
+              ...(tabItem.itemKey === selectedKey && {
+                borderBottom: (theme) => `2px solid ${theme.colors.primary}`,
+              }),
             }}
           >
             {tabItem.label}
@@ -62,16 +76,21 @@ function renderTabItems(tabItems: TabItemProps[]) {
   );
 }
 
+function renderTabContent(tabItems: TabItemProps[], selectedKey: string) {
+  const tabItem = tabItems.find((tabItem) => tabItem.itemKey === selectedKey);
+  return tabItem.children;
+}
+
 export const Tabs: React.FunctionComponent = (props) => {
   const tabItems = getTabItems(props);
+  const [selectedKey, setSelectedKey] = useState(tabItems[0].itemKey);
+  const onTabClick = (item: TabItemProps): void => {
+    setSelectedKey(item.itemKey);
+  };
   return (
-    <div
-      sx={{
-        display: 'flex',
-        mb: 2,
-      }}
-    >
-      {renderTabItems(tabItems)}
-    </div>
+    <React.Fragment>
+      <Flex mb={2}>{renderTabItems(tabItems, selectedKey, onTabClick)}</Flex>
+      {renderTabContent(tabItems, selectedKey)}
+    </React.Fragment>
   );
 };

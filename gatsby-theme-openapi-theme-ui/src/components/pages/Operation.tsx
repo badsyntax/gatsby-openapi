@@ -46,7 +46,7 @@ export const Operation: React.FunctionComponent<PageProps<
         {path.path}
       </Box>
       {markdownReact}
-      <Heading as="h2" mt={4} mb={3}>
+      <Heading as="h3" mt={4} mb={3}>
         Authorizations
       </Heading>
       {Boolean(path.security.length) && (
@@ -67,17 +67,17 @@ export const Operation: React.FunctionComponent<PageProps<
       )}
       {path.requestBody && (
         <React.Fragment>
-          <Heading as="h2" mt={4} mb={3}>
+          <Heading as="h3" mt={4} mb={3}>
             Request Body
           </Heading>
           <RequestBody
-            path={path}
+            requestBody={path.requestBody}
             allRequestBodiesByName={allRequestBodiesByName}
             allSchemasByName={allSchemasByName}
           />
         </React.Fragment>
       )}
-      <Heading as="h2" mt={4} mb={3}>
+      <Heading as="h3" mt={4} mb={3}>
         Responses
       </Heading>
       <Responses
