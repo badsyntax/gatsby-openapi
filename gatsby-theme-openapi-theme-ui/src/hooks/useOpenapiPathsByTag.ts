@@ -12,9 +12,10 @@ interface OpenApiPathsByTag {
 }
 
 export function useOpenapiPathsByTag(): OpenApiPathsByTag[] {
+  return;
   const data = useStaticQuery(graphql`
     query {
-      paths: allOpenApiPath {
+      operations: allOpenApiOperation {
         tags: group(field: tags) {
           tag: fieldValue
           totalCount

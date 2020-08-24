@@ -19,7 +19,5 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "cSpell.language": "en-GB",
-  "cSpell.words": [
-    "openapi"
-  ]
+  "cSpell.words": ["openapi", "apiv"]
 }

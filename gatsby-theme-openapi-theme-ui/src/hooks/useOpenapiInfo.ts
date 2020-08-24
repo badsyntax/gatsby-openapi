@@ -2,6 +2,7 @@ import { graphql, useStaticQuery } from 'gatsby';
 import { OpenApiInfo } from '../types';
 
 export function useOpenApiInfo(): OpenApiInfo {
+  return;
   const data = useStaticQuery(graphql`
     query {
       openApiInfo {

@@ -4,7 +4,7 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: require.resolve('../gatsby-theme-openapi-theme-ui'),
+      resolve: require.resolve('../gatsby-theme-openapi-core'),
       options: {
         specPath: require.resolve('./spec/openapi.yml'),
       },
