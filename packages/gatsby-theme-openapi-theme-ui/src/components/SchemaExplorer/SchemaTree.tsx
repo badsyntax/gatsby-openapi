@@ -1,0 +1,35 @@
+/** @jsx jsx */
+import React from 'react';
+import { OpenAPIV3 } from 'openapi-types';
+import { jsx } from 'theme-ui';
+import { Dereference, isReferenceObject } from '../../types';
+import { SchemaRef } from './SchemaRef';
+import { SchemaObject } from './SchemaObject';
+import { SchemaArray } from './SchemaArray';
+import { SchemaValue } from './SchemaValue';
+
+const SCHEMA_TYPE_OBJECT = 'object';
+const SCHEMA_TYPE_ARRAY = 'array';
+
+interface SchemaTreeProps {
+  schema: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject;
+  dereference: Dereference<OpenAPIV3.SchemaObject>;
+}
+
+export const SchemaTree: React.FunctionComponent<SchemaTreeProps> = ({
+  schema,
+  dereference,
+}) => {
+  if (isReferenceObject(schema)) {
+    // return <div>foo2</div>;
+    return <SchemaRef schema={schema} dereference={dereference} />;
+  }
+  switch (schema.type) {
+    case SCHEMA_TYPE_OBJECT:
+      return <SchemaObject schema={schema} dereference={dereference} />;
+    case SCHEMA_TYPE_ARRAY:
+      return <SchemaArray schema={schema} dereference={dereference} />;
+    default:
+      return <SchemaValue schema={schema} />;
+  }
+};

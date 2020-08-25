@@ -6,13 +6,20 @@
   "license": "0BSD",
   "author": "Richard Willis <willis.rh@gmail.com>",
   "scripts": {
-    "start": "yarn workspace example-theme-ui start",
-    "build": "yarn workspace example-theme-ui build"
+    "start": "npm --prefix ./packages/example-theme-ui run start",
+    "build": "yarn workspace example-theme-ui build",
+    "bootstrap": "lerna bootstrap --hoist"
+  },
+  "engines": {
+    "node": ">=12.0"
   },
   "workspaces": [
     "gatsby-source-openapi",
     "gatsby-theme-openapi-core",
     "gatsby-theme-openapi-theme-ui",
     "example-theme-ui"
-  ]
+  ],
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
 }
