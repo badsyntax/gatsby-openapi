@@ -2,9 +2,12 @@ import { OpenAPIV3 } from 'openapi-types';
 import {
   OpenAPIV3ObjectConvertToArray,
   OpenAPIV3GraphQLObjectAsArray,
-  OpenAPIV3GraphQLServerObject,
   OpenAPIV3GraphQLOperation,
   OpenAPIV3GraphQLSchema,
+  OpenAPIV3GraphQLPath,
+  OpenAPIV3GraphQLSecurity,
+  OpenAPIV3GraphQLComponent,
+  OpenAPIV3GraphQLServer,
 } from '../types';
 
 function sanitizeFieldNames<T>(obj): T {
@@ -55,7 +58,7 @@ export class OpenAPITransformer {
     return sanitizeFieldNames<OpenAPIV3.InfoObject>(this.document.info);
   }
 
-  getPaths(): OpenAPIV3GraphQLObjectAsArray[] {
+  getPaths(): OpenAPIV3GraphQLPath[] {
     return this.getObjectAsArray(this.document.paths);
   }
 
@@ -91,9 +94,7 @@ export class OpenAPITransformer {
     return operations;
   }
 
-  getSecurity(
-    security = this.document.security
-  ): OpenAPIV3GraphQLObjectAsArray[] {
+  getSecurity(security = this.document.security): OpenAPIV3GraphQLSecurity[] {
     return security
       ? security
           .map((securityItem): OpenAPIV3GraphQLObjectAsArray[] => {
@@ -103,13 +104,13 @@ export class OpenAPITransformer {
       : [];
   }
 
-  getComponents(): OpenAPIV3GraphQLObjectAsArray[] {
+  getComponents(): OpenAPIV3GraphQLComponent[] {
     return this.getObjectAsArray(this.document.components);
   }
 
-  getServers(): OpenAPIV3GraphQLServerObject[] {
+  getServers(): OpenAPIV3GraphQLServer[] {
     return (this.document.servers || []).map(
-      ({ url, description, variables }): OpenAPIV3GraphQLServerObject => {
+      ({ url, description, variables }): OpenAPIV3GraphQLServer => {
         return {
           url,
           description,

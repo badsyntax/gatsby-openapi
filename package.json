@@ -7,7 +7,7 @@
   "author": "Richard Willis <willis.rh@gmail.com>",
   "scripts": {
     "start": "npm --prefix ./packages/example-theme-ui run start",
-    "build": "yarn workspace example-theme-ui build",
+    "build": "lerna run build",
     "bootstrap": "lerna bootstrap --hoist"
   },
   "engines": {

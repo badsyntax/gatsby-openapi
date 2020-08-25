@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createPages = exports.onCreateNode = void 0;
-const types_1 = require("../gatsby-source-openapi/types");
+const types_1 = require("gatsby-source-openapi/types");
 exports.onCreateNode = ({ node, actions }) => {
     const { createNodeField } = actions;
     if (node.internal.type === types_1.API_OPERATION_TYPE) {
@@ -51,7 +51,7 @@ exports.createPages = async ({ graphql, actions, reporter, }) => {
                 return;
             }
             createPage({
-                path: `operation/${node.fields.slug}`,
+                path: `operation/${node.fields.slug}/`,
                 component,
                 context: {
                     slug: node.fields.slug,
@@ -100,7 +100,7 @@ exports.createPages = async ({ graphql, actions, reporter, }) => {
                 return;
             }
             createPage({
-                path: `model/${node.fields.slug}`,
+                path: `model/${node.fields.slug}/`,
                 component,
                 context: {
                     slug: node.fields.slug,

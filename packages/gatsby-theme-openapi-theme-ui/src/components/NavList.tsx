@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import React, { useState, useEffect } from 'react';
 import { OpenAPIV3 } from 'openapi-types';
+import { useLocation, useNavigate } from '@reach/router';
 import { jsx, Box } from 'theme-ui';
 import { LinkProps, Link } from './Link';
 import { VscChevronDown, VscChevronRight } from 'react-icons/vsc';
@@ -56,6 +57,7 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
   onItemToggle,
   ...props
 }) => {
+  const navigate = useNavigate();
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const linkProps: LinkProps = {
     to: item.to || '#',
@@ -67,13 +69,13 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
       setShouldAnimate(true);
       onItemToggle(item);
     };
+  } else {
+    linkProps.onClick = (event: React.SyntheticEvent) => {
+      event.preventDefault();
+      navigate(item.to, { replace: false });
+    };
   }
 
-  if (item.name === "Operations") {
-    console.log('item', item);
-    console.log('selectedItems', selectedItems);
-    console.log(selectedItems.indexOf(item))
-  }
   return (
     <li key={item.key} {...props}>
       <Link {...linkProps}>
@@ -124,7 +126,9 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
           onItemToggle={onItemToggle}
           sx={{
             display: selectedItems.indexOf(item) >= 0 ? 'block' : 'none',
-            ...(shouldAnimate && selectedItems.indexOf(item) >= 0 && fadeInAnimationStyles),
+            ...(shouldAnimate &&
+              selectedItems.indexOf(item) >= 0 &&
+              fadeInAnimationStyles),
           }}
         />
       )}
@@ -144,7 +148,6 @@ export const NavList: React.FunctionComponent<NavList> = ({
   onItemToggle,
   ...props
 }) => {
-  console.log('selectedItems', selectedItems);
   return (
     <ul {...props}>
       {items.map((item) => (

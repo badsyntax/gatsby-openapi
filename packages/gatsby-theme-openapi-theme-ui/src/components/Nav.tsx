@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { jsx } from 'theme-ui';
 import { NavItem, NavList } from './NavList';
 
@@ -31,10 +31,6 @@ export const Nav: React.FunctionComponent<NavProps> = ({
   const [selectedItems, setSelectedItems] = useState<NavItem[]>(
     getSelectedItems(items, selectedKey)
   );
-
-  console.log('items', items);
-  console.log('selectedKey', selectedKey);
-  console.log('selectedItems', selectedItems);
 
   const onItemToggle = (item: NavItem) => {
     const selectedIndex = selectedItems.indexOf(item);

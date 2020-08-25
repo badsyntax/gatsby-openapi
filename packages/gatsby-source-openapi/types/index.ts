@@ -20,7 +20,7 @@ export type OpenAPIV3ObjectConvertToArray =
 
 export type JsonString = string;
 
-export interface OpenAPIV3GraphQLServerObject
+export interface OpenAPIV3GraphQLServer
   extends Omit<OpenAPIV3.ServerObject, 'variables'> {
   variables: JsonString;
 }
@@ -29,6 +29,10 @@ export interface OpenAPIV3GraphQLObjectAsArray {
   name: string;
   value: JsonString;
 }
+
+export type OpenAPIV3GraphQLPath = OpenAPIV3GraphQLObjectAsArray;
+export type OpenAPIV3GraphQLSecurity = OpenAPIV3GraphQLObjectAsArray;
+export type OpenAPIV3GraphQLComponent = OpenAPIV3GraphQLObjectAsArray;
 
 export interface OpenAPIV3GraphQLOperation {
   path: string;

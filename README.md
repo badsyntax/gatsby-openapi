@@ -28,6 +28,7 @@ __NOTE:__ This repo is in the very early stages of development.
 ```sh
 npm install
 npm run bootstrap
+npm run build
 ```
 
 2\. Run the example:

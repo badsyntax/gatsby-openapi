@@ -15,9 +15,7 @@ export const SchemaArray: React.FunctionComponent<SchemaArray> = ({
   schema,
   dereference,
 }) => {
-  const items: OpenAPIV3.SchemaObject = isReferenceObject(schema.items)
-    ? dereference(schema.items)
-    : schema.items;
+  const items: OpenAPIV3.SchemaObject = dereference(schema.items);
   return (
     <React.Fragment>
       <code>[</code>
