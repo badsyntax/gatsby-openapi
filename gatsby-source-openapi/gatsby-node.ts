@@ -6,20 +6,13 @@ import { OpenAPITransformer } from './openapi/OpenAPITransformer';
 import {
   graphQlTypes,
   API_INFO_TYPE,
+  API_PATH_TYPE,
   API_SECURITY_TYPE,
-  API_SECURITY_SCHEMA_TYPE,
-  API_SCHEMA_TYPE,
+  API_COMPONENT_TYPE,
   API_TAG_TYPE,
-  API_OPERATION_TYPE,
-  API_REQUEST_BODY_SCHEMA_TYPE,
+  API_SERVER_TYPE,
+  API_EXTERNAL_DOCS_TYPE,
 } from './types';
-
-function sanitizeFieldNames(obj) {
-  return Object.keys(obj).reduce((newObj, key) => {
-    newObj[key.replace('-', '_')] = obj[key];
-    return newObj;
-  }, {});
-}
 
 export const createSchemaCustomization = ({
   actions,
@@ -39,7 +32,7 @@ export const sourceNodes = async (
   const { createNode } = actions;
 
   function createInfoNode(transformer: OpenAPITransformer) {
-    const info = sanitizeFieldNames(transformer.document.info);
+    const info = transformer.getInfo();
     createNode({
       ...info,
       id: createNodeId(API_INFO_TYPE),
@@ -51,6 +44,27 @@ export const sourceNodes = async (
       },
     });
     reporter.success(`create ${API_INFO_TYPE} node`);
+  }
+
+  function createExternalDocsNode(transformer: OpenAPITransformer) {
+    const externalDocs = transformer.document.externalDocs;
+    if (externalDocs) {
+      createNode({
+        ...externalDocs,
+        id: createNodeId(API_EXTERNAL_DOCS_TYPE),
+        children: [],
+        internal: {
+          type: API_EXTERNAL_DOCS_TYPE,
+          content: JSON.stringify(externalDocs),
+          contentDigest: createContentDigest(externalDocs),
+        },
+      });
+      reporter.success(`create ${API_EXTERNAL_DOCS_TYPE} node`);
+    } else {
+      reporter.warn(
+        `skipped ${API_EXTERNAL_DOCS_TYPE} node, no externalDocs found in schema`
+      );
+    }
   }
 
   function createSecurityNodes(transformer: OpenAPITransformer) {
@@ -69,54 +83,6 @@ export const sourceNodes = async (
     reporter.success(`create ${API_SECURITY_TYPE} nodes`);
   }
 
-  function createSecuritySchemaNodes(transformer: OpenAPITransformer) {
-    transformer.getSecuritySchemas().forEach((securitySchema) => {
-      createNode({
-        ...securitySchema,
-        id: createNodeId(`${API_SECURITY_SCHEMA_TYPE}-${securitySchema.name}`),
-        children: [],
-        internal: {
-          type: API_SECURITY_SCHEMA_TYPE,
-          content: JSON.stringify(securitySchema),
-          contentDigest: createContentDigest(securitySchema),
-        },
-      });
-    });
-    reporter.success(`create ${API_SECURITY_SCHEMA_TYPE} nodes`);
-  }
-
-  function createSchemaNodes(transformer: OpenAPITransformer) {
-    transformer.getSchemas().forEach((schema) => {
-      createNode({
-        ...schema,
-        id: createNodeId(`${API_SCHEMA_TYPE}-${schema.name}`),
-        children: [],
-        internal: {
-          type: API_SCHEMA_TYPE,
-          content: JSON.stringify(schema),
-          contentDigest: createContentDigest(schema),
-        },
-      });
-    });
-    reporter.success(`create ${API_SCHEMA_TYPE} nodes`);
-  }
-
-  function createRequestBodySchemaNodes(transformer: OpenAPITransformer) {
-    transformer.getRequestBodySchemas().forEach((schema) => {
-      createNode({
-        ...schema,
-        id: createNodeId(`${API_REQUEST_BODY_SCHEMA_TYPE}-${schema.name}`),
-        children: [],
-        internal: {
-          type: API_REQUEST_BODY_SCHEMA_TYPE,
-          content: JSON.stringify(schema),
-          contentDigest: createContentDigest(schema),
-        },
-      });
-    });
-    reporter.success(`create ${API_REQUEST_BODY_SCHEMA_TYPE} nodes`);
-  }
-
   function createTagNodes(transformer: OpenAPITransformer) {
     (transformer.document?.tags || []).forEach((tag) => {
       createNode({
@@ -133,22 +99,52 @@ export const sourceNodes = async (
     reporter.success(`create ${API_TAG_TYPE} nodes`);
   }
 
-  function createOperationNodes(transformer: OpenAPITransformer) {
-    transformer.getOperations().forEach((operation) => {
+  function createServerNodes(transformer: OpenAPITransformer) {
+    transformer.getServers().forEach((server) => {
       createNode({
-        ...operation,
-        id: createNodeId(
-          `${API_OPERATION_TYPE}-${operation.path}-${operation.method}`
-        ),
+        ...server,
+        id: createNodeId(`${API_SERVER_TYPE}-${server.url}`),
         children: [],
         internal: {
-          type: API_OPERATION_TYPE,
-          content: JSON.stringify(operation),
-          contentDigest: createContentDigest(operation),
+          type: API_SERVER_TYPE,
+          content: JSON.stringify(server),
+          contentDigest: createContentDigest(server),
         },
       });
     });
-    reporter.success(`create ${API_OPERATION_TYPE} nodes`);
+    reporter.success(`create ${API_SERVER_TYPE} nodes`);
+  }
+
+  function createPathNodes(transformer: OpenAPITransformer) {
+    transformer.getPaths().forEach((path) => {
+      createNode({
+        ...path,
+        id: createNodeId(`${API_PATH_TYPE}-${path.name}`),
+        children: [],
+        internal: {
+          type: API_PATH_TYPE,
+          content: JSON.stringify(path),
+          contentDigest: createContentDigest(path),
+        },
+      });
+    });
+    reporter.success(`create ${API_PATH_TYPE} nodes`);
+  }
+
+  function createComponentNodes(transformer: OpenAPITransformer) {
+    transformer.getComponents().forEach((component) => {
+      createNode({
+        ...component,
+        id: createNodeId(`${API_COMPONENT_TYPE}-${component.name}`),
+        children: [],
+        internal: {
+          type: API_COMPONENT_TYPE,
+          content: JSON.stringify(component),
+          contentDigest: createContentDigest(component),
+        },
+      });
+    });
+    reporter.success(`create ${API_COMPONENT_TYPE} nodes`);
   }
 
   try {
@@ -158,12 +154,12 @@ export const sourceNodes = async (
     const transformer = new OpenAPITransformer(document);
 
     createInfoNode(transformer);
-    createOperationNodes(transformer);
+    createPathNodes(transformer);
     createSecurityNodes(transformer);
-    createSecuritySchemaNodes(transformer);
+    createExternalDocsNode(transformer);
+    createComponentNodes(transformer);
     createTagNodes(transformer);
-    createSchemaNodes(transformer);
-    createRequestBodySchemaNodes(transformer);
+    createServerNodes(transformer);
   } catch (e) {
     reporter.panicOnBuild(`Error sourcing OpenAPI data: ${e.message}`);
   }
