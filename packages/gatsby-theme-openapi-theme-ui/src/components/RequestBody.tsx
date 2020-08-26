@@ -36,7 +36,6 @@ export const RequestBody: React.FunctionComponent<RequestBodyProps> = ({
           dereferencedRequestBody.content[contentType];
         return (
           <React.Fragment key={contentType}>
-            {/* <Box mb={2}>Type: {contentType}</Box> */}
             <Tabs>
               {media.schema && (
                 <TabItem label="Schema" itemKey="tabs-schema">
@@ -44,7 +43,7 @@ export const RequestBody: React.FunctionComponent<RequestBodyProps> = ({
                 </TabItem>
               )}
               <TabItem label="Example" itemKey="tabs-example">
-                <SchemaMediaExamples media={media} />
+                <SchemaMediaExamples media={media} type={contentType} />
               </TabItem>
             </Tabs>
           </React.Fragment>

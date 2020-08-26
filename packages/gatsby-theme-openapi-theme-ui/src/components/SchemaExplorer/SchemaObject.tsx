@@ -20,13 +20,14 @@ export const SchemaObject: React.FunctionComponent<SchemaObject> = ({
 }) => {
   return (
     <React.Fragment>
-      <code>{'{'}</code>
       {schema.properties && (
         <Table
           variant="borderLess"
-          sx={{
-            ml: 3,
-          }}
+          sx={
+            {
+              // ml: 1,
+            }
+          }
         >
           <tbody>
             {Object.keys(schema.properties).map((key) => {
@@ -48,7 +49,6 @@ export const SchemaObject: React.FunctionComponent<SchemaObject> = ({
           </tbody>
         </Table>
       )}
-      <code>{'}'}</code>
     </React.Fragment>
   );
 };

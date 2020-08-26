@@ -68,7 +68,7 @@ export const Response: React.FunctionComponent<ResponseProps> = ({
                     </TabItem>
                   )}
                   <TabItem label="Example" itemKey="tabs-example">
-                    <SchemaMediaExamples media={media} />
+                    <SchemaMediaExamples media={media} type={mediaType} />
                   </TabItem>
                 </Tabs>
               </Box>

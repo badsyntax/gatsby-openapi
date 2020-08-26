@@ -3,13 +3,16 @@ import React from 'react';
 import { useDeferenceOpenApiSchema } from '../hooks/useDeferenceOpenApiSchema';
 import { getExampleFromSchema } from '../util/examples';
 import { SchemaExample } from './SchemaExample';
+import { TabItem, Tabs } from './Tabs';
 
 interface SchemaMediaExamplesProps {
   media: OpenAPIV3.MediaTypeObject;
+  type?: string;
 }
 
 export const SchemaMediaExamples: React.FunctionComponent<SchemaMediaExamplesProps> = ({
   media,
+  type,
 }) => {
   const dereferenceExample = useDeferenceOpenApiSchema<
     OpenAPIV3.ExampleObject
@@ -17,26 +20,25 @@ export const SchemaMediaExamples: React.FunctionComponent<SchemaMediaExamplesPro
   const dereferenceSchema = useDeferenceOpenApiSchema<OpenAPIV3.SchemaObject>();
   if (media.examples) {
     return (
-      <React.Fragment>
+      <Tabs>
         {Object.keys(media.examples).map((name) => {
           const example = dereferenceExample(media.examples![name]);
           return (
-            <React.Fragment key={name}>
-              {name}
-              <SchemaExample example={example.value} />
-            </React.Fragment>
+            <TabItem itemKey={name} label={name}>
+              <SchemaExample example={example.value} type={type} />
+            </TabItem>
           );
         })}
-      </React.Fragment>
+      </Tabs>
     );
   }
   if (media.example) {
-    return <SchemaExample example={media.example} />;
+    return <SchemaExample example={media.example} type={type} />;
   }
   if (media.schema) {
     const schema = dereferenceSchema(media.schema);
     const example = getExampleFromSchema(schema, dereferenceSchema);
-    return <SchemaExample example={example} />;
+    return <SchemaExample example={example} type={type} />;
   }
   return null;
 };
