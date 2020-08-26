@@ -1,6 +1,6 @@
 import { merge } from 'theme-ui';
 import { tailwind } from '@theme-ui/presets';
-import nightOwl from '@theme-ui/prism/presets/night-owl';
+import syntaxHighlightPreset from '@theme-ui/prism/presets/theme-ui';
 
 const theme = merge(tailwind, {
   initialColorModeName: 'light',
@@ -115,8 +115,15 @@ const theme = merge(tailwind, {
       MozOsxFontSmoothing: 'grayscale',
     },
     pre: {
-      ...nightOwl,
-      padding: 3,
+      ...syntaxHighlightPreset,
+      backgroundColor: 'codeBlockBG',
+      p: 2,
+      '.operator': {
+        backgroundColor: 'codeBlockBG',
+      },
+    },
+    code: {
+      ...syntaxHighlightPreset,
     },
     p: {
       fontSize: [1, 2],

@@ -13,7 +13,9 @@ export const SchemaValue: React.FunctionComponent<SchemaValue> = ({
   expandEnum,
 }) => {
   return (
-    <code>
+    <code sx={{
+      color: 'primary'
+    }}>
       {(!schema.enum || !expandEnum) && (
         <React.Fragment>
           {schema.type}

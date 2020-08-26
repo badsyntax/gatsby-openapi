@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /** @jsx jsx */
+import Prism from '@theme-ui/prism';
 import React from 'react';
 import { jsx } from 'theme-ui';
 
@@ -31,14 +32,5 @@ export const SchemaExample: React.FunctionComponent<SchemaExampleProps> = ({
   }
   const formattedExample =
     type && formatters[type] ? formatters[type](example) : String(example);
-  return (
-    <pre
-      sx={{
-        backgroundColor: 'codeBlockBG',
-        p: 2,
-      }}
-    >
-      {formattedExample}
-    </pre>
-  );
+  return <Prism className="language-json">{formattedExample}</Prism>;
 };

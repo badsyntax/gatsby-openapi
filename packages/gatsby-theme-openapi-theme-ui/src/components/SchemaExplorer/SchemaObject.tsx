@@ -34,7 +34,7 @@ export const SchemaObject: React.FunctionComponent<SchemaObject> = ({
               return (
                 <tr key={key}>
                   <th>
-                    <code>{key}:</code>
+                    <code>{key}</code><code>:</code>
                   </th>
                   <td>
                     <SchemaTree
