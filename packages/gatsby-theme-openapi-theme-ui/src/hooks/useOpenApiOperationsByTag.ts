@@ -1,19 +1,20 @@
 import { graphql, useStaticQuery } from 'gatsby';
+import { GraphQLOpenApiOperationWithFields } from 'gatsby-source-openapi/types';
 import { OpenAPIV3 } from 'openapi-types';
-import { Edges, OperationWithFields } from '../types';
+import { Edges } from '../types';
 
 export interface OpenApiOperationsByTag {
   [key: string]: OpenApiOperationByTag[];
 }
 
 export interface OpenApiOperationByTag
-  extends Omit<OperationWithFields, 'operation'> {
+  extends Omit<GraphQLOpenApiOperationWithFields, 'operation'> {
   operation: OpenAPIV3.OperationObject;
 }
 
 export function useOpenApiOperationsByTag(): OpenApiOperationsByTag {
   const data: {
-    allOpenApiOperation: Edges<OperationWithFields>;
+    allOpenApiOperation: Edges<GraphQLOpenApiOperationWithFields>;
   } = useStaticQuery(graphql`
     query {
       allOpenApiOperation {

@@ -4,9 +4,10 @@ import { GatsbyLinkProps, Link as GatsbyLink } from 'gatsby';
 import { jsx } from 'theme-ui';
 
 const styles = {
-  color: 'inherit',
-  textDecoration: 'none',
+  color: 'primary',
+  textDecoration: 'underline',
   fontWeight: 'normal',
+  textDecorationColor: (theme) => theme.colors.primary,
   '&.active': {
     color: 'primary',
     backgroundColor: 'backgroundContent',

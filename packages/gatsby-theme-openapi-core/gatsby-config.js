@@ -5,6 +5,8 @@ module.exports = (themeOptions) => {
         resolve: 'gatsby-source-openapi',
         options: {
           specPath: themeOptions.specPath,
+          generateCodeSamples: themeOptions.generateCodeSamples,
+          codeSampleTargets: themeOptions.codeSampleTargets,
         },
       },
     ],

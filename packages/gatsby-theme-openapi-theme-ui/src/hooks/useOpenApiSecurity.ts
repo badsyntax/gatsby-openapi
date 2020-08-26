@@ -1,11 +1,11 @@
-import { OpenAPIV3 } from 'openapi-types';
 import { graphql, useStaticQuery } from 'gatsby';
+import { GraphQLOpenApiObjectAsArray } from 'gatsby-source-openapi/types';
+import { OpenAPIV3 } from 'openapi-types';
 import { Edges } from '../types';
-import { OpenAPIV3GraphQLObjectAsArray } from 'gatsby-source-openapi/types';
 
 export function useOpenApiSecurity(): OpenAPIV3.SecurityRequirementObject[] {
   const data: {
-    allOpenApiSecurity: Edges<OpenAPIV3GraphQLObjectAsArray>;
+    allOpenApiSecurity: Edges<GraphQLOpenApiObjectAsArray>;
   } = useStaticQuery(graphql`
     query {
       allOpenApiSecurity {

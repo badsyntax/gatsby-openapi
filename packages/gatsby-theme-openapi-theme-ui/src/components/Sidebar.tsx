@@ -7,8 +7,8 @@ import { useOpenApiInfo } from '../hooks/useOpenapiInfo';
 import { useOpenApiOperationsByTag } from '../hooks/useOpenApiOperationsByTag';
 import { useOpenApiSchemas } from '../hooks/useOpenapiSchemas';
 import { Logo } from './Logo';
-import { Nav } from './Nav';
-import { NavItem } from './NavList';
+import { Nav } from './Nav/Nav';
+import { NavItem } from './Nav/NavItem';
 
 export const Sidebar: React.FunctionComponent = () => {
   const { x_logo } = useOpenApiInfo();

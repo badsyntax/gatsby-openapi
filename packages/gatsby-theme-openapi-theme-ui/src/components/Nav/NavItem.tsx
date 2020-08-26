@@ -4,9 +4,11 @@ import { useNavigate } from '@reach/router';
 import React, { useState } from 'react';
 import { VscChevronDown, VscChevronRight } from 'react-icons/vsc';
 import { Box, jsx } from 'theme-ui';
-import { OpenApiOperationByTag } from '../hooks/useOpenApiOperationsByTag';
-import { Link, LinkProps } from './Link';
-import { RequestMethodBadge } from './RequestMethodBadge';
+import { OpenApiOperationByTag } from '../../hooks/useOpenApiOperationsByTag';
+import { LinkProps } from '../Link';
+import { RequestMethodBadge } from '../RequestMethodBadge';
+import { NavLink } from './NavLink';
+import { NavList } from './NavList';
 
 const fadeInAnimationStyles = {
   '@keyframes fadeIn': {
@@ -36,6 +38,12 @@ const navItemStyles = {
   justifyContent: 'space-between',
 };
 
+export interface NavItemProps {
+  item: NavItem;
+  selectedItems: NavItem[];
+  onItemToggle: (item: NavItem) => void;
+}
+
 export interface NavItem {
   name: string;
   key: string;
@@ -44,13 +52,7 @@ export interface NavItem {
   operation?: OpenApiOperationByTag;
 }
 
-interface NavItemProps {
-  item: NavItem;
-  selectedItems: NavItem[];
-  onItemToggle: (item: NavItem) => void;
-}
-
-const NavItem: React.FunctionComponent<NavItemProps> = ({
+export const NavItem: React.FunctionComponent<NavItemProps> = ({
   item,
   selectedItems,
   onItemToggle,
@@ -80,7 +82,7 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
 
   return (
     <li key={item.key} {...props}>
-      <Link {...linkProps}>
+      <NavLink {...linkProps}>
         {item.operation && (
           <div
             sx={{
@@ -120,7 +122,7 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
               />
             ))}
         </Box>
-      </Link>
+      </NavLink>
       {item.items && (
         <NavList
           items={item.items}
@@ -135,31 +137,5 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
         />
       )}
     </li>
-  );
-};
-
-interface NavList {
-  items: NavItem[];
-  selectedItems: NavItem[];
-  onItemToggle: (item: NavItem) => void;
-}
-
-export const NavList: React.FunctionComponent<NavList> = ({
-  items,
-  selectedItems,
-  onItemToggle,
-  ...props
-}) => {
-  return (
-    <ul {...props}>
-      {items.map((item) => (
-        <NavItem
-          key={`navitem-${item.key}`}
-          selectedItems={selectedItems}
-          onItemToggle={onItemToggle}
-          item={item}
-        />
-      ))}
-    </ul>
   );
 };

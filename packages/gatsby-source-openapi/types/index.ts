@@ -1,17 +1,34 @@
+import { PluginOptions } from 'gatsby';
 import { OpenAPIV3 } from 'openapi-types';
 
-export const API_PATH_TYPE = 'OpenApiPath';
-export const API_OPERATION_TYPE = 'OpenApiOperation';
-export const API_COMPONENT_TYPE = 'OpenApiComponent';
-export const API_SECURITY_TYPE = 'OpenApiSecurity';
-export const API_SCHEMA_TYPE = 'OpenApiSchema';
-export const API_TAG_TYPE = 'OpenApiTag';
-export const API_INFO_TYPE = 'OpenApiInfo';
-export const API_SERVER_TYPE = 'OpenApiServer';
-export const API_EXTERNAL_DOCS_TYPE = 'OpenApiExternalDocs';
-export const API_INFO_CONTACT_TYPE = 'OpenApiInfoContact';
-export const API_INFO_LICENSE_TYPE = 'OpenApiInfoLicense';
-export const API_INFO_X_LOGO_TYPE = 'OpenApiInfoXLogo';
+export const GRAPHQL_NODE_OPENAPI_PATH = 'OpenApiPath';
+export const GRAPHQL_NODE_OPENAPI_OPERATION = 'OpenApiOperation';
+export const GRAPHQL_NODE_OPENAPI_COMPONENT = 'OpenApiComponent';
+export const GRAPHQL_NODE_OPENAPI_SECURITY = 'OpenApiSecurity';
+export const GRAPHQL_NODE_OPENAPI_SCHEMA = 'OpenApiSchema';
+export const GRAPHQL_NODE_OPENAPI_TAG = 'OpenApiTag';
+export const GRAPHQL_NODE_OPENAPI_INFO = 'OpenApiInfo';
+export const GRAPHQL_NODE_OPENAPI_SERVER = 'OpenApiServer';
+export const GRAPHQL_NODE_OPENAPI_EXTERNAL_DOCS = 'OpenApiExternalDocs';
+export const GRAPHQL_NODE_OPENAPI_INFO_CONTACT = 'OpenApiInfoContact';
+export const GRAPHQL_NODE_OPENAPI_INFO_LICENSE = 'OpenApiInfoLicense';
+export const GRAPHQL_NODE_OPENAPI_INFO_X_LOGO = 'OpenApiInfoXLogo';
+
+export interface OpenApiInfo_XLogo {
+  altText: string;
+  url: string;
+}
+
+export interface OpenApiXCodeSample {
+  lang: string;
+  label?: string;
+  source: string;
+}
+
+export interface OpenApiOperationObjectWithExtensions
+  extends OpenAPIV3.OperationObject {
+  x_codeSamples?: OpenApiXCodeSample[];
+}
 
 export type OpenAPIV3ObjectConvertToArray =
   | OpenAPIV3.PathsObject
@@ -56,88 +73,89 @@ export interface GraphQLSiteMetadata {
   title: string;
 }
 
-export interface OpenApiInfo_XLogo {
-  altText: string;
-  url: string;
-}
-
 export interface GraphQLOpenApiInfo extends OpenAPIV3.InfoObject {
   x_logo: OpenApiInfo_XLogo;
 }
 
+export type CustomPluginOptions = PluginOptions & {
+  specPath: string;
+  generateCodeSamples?: boolean;
+  codeSampleTargets?: string[];
+};
+
 export const graphQlTypes = `
 
-  type ${API_COMPONENT_TYPE} implements Node {
+  type ${GRAPHQL_NODE_OPENAPI_COMPONENT} implements Node {
     id: ID!
     name: String!
     value: String!
   }
 
-  type ${API_SCHEMA_TYPE} implements Node {
+  type ${GRAPHQL_NODE_OPENAPI_SCHEMA} implements Node {
     id: ID!
     name: String!
     schema: String!
   }
 
-  type ${API_OPERATION_TYPE} implements Node {
+  type ${GRAPHQL_NODE_OPENAPI_OPERATION} implements Node {
     id: ID!
     path: String!
     method: String!
   }
 
-  type ${API_PATH_TYPE} implements Node {
+  type ${GRAPHQL_NODE_OPENAPI_PATH} implements Node {
     id: ID!
     name: String!
     value: String
   }
 
-  type ${API_TAG_TYPE} implements Node {
+  type ${GRAPHQL_NODE_OPENAPI_TAG} implements Node {
     id: ID!
     name: String!
     description: String
   }
 
-  type ${API_SERVER_TYPE} implements Node {
+  type ${GRAPHQL_NODE_OPENAPI_SERVER} implements Node {
     id: ID!
     url: String!
     description: String
     variables: String
   }
 
-  type ${API_SECURITY_TYPE} implements Node {
+  type ${GRAPHQL_NODE_OPENAPI_SECURITY} implements Node {
     id: ID!
     name: String!
     value: String!
   }
 
-  type ${API_EXTERNAL_DOCS_TYPE} implements Node {
+  type ${GRAPHQL_NODE_OPENAPI_EXTERNAL_DOCS} implements Node {
     id: ID!
     url: String!
     description: String
   }
 
-  type ${API_INFO_TYPE} implements Node {
+  type ${GRAPHQL_NODE_OPENAPI_INFO} implements Node {
     id: ID!
     title: String
     description: String
-    contact: ${API_INFO_CONTACT_TYPE}
-    license: ${API_INFO_LICENSE_TYPE}
+    contact: ${GRAPHQL_NODE_OPENAPI_INFO_CONTACT}
+    license: ${GRAPHQL_NODE_OPENAPI_INFO_LICENSE}
     version: String
-    x_logo: ${API_INFO_X_LOGO_TYPE}
+    x_logo: ${GRAPHQL_NODE_OPENAPI_INFO_X_LOGO}
   }
 
-  type ${API_INFO_CONTACT_TYPE} {
+  type ${GRAPHQL_NODE_OPENAPI_INFO_CONTACT} {
     name: String
     url: String
     email: String
   }
 
-  type ${API_INFO_LICENSE_TYPE} {
+  type ${GRAPHQL_NODE_OPENAPI_INFO_LICENSE} {
     name: String
     url: String
   }
 
-  type ${API_INFO_X_LOGO_TYPE} {
+  type ${GRAPHQL_NODE_OPENAPI_INFO_X_LOGO} {
     url: String!
     altText: String
   }

@@ -1,5 +1,7 @@
+import OpenAPISnippet from 'openapi-snippet';
 import { OpenAPIV3 } from 'openapi-types';
 import {
+  CustomPluginOptions,
   GraphQLOpenApiComponent,
   GraphQLOpenApiObjectAsArray,
   GraphQLOpenApiOperation,
@@ -7,6 +9,7 @@ import {
   GraphQLOpenApiSchema,
   GraphQLOpenApiSecurity,
   GraphQLOpenApiServer,
+  OpenApiOperationObjectWithExtensions,
   OpenAPIV3ObjectConvertToArray,
 } from '../types';
 
@@ -52,7 +55,10 @@ function getObjectAsArray(
 }
 
 export class OpenAPITransformer {
-  constructor(public readonly document: OpenAPIV3.Document) {}
+  constructor(
+    public readonly document: OpenAPIV3.Document,
+    private readonly pluginOptions: Required<CustomPluginOptions>
+  ) {}
 
   getInfo(): OpenAPIV3.InfoObject {
     return sanitizeFieldNames<OpenAPIV3.InfoObject>(this.document.info);
@@ -74,6 +80,31 @@ export class OpenAPITransformer {
       : [];
   }
 
+  getOperationWithExtensions(
+    path: string,
+    method: string,
+    operation: OpenApiOperationObjectWithExtensions
+  ): OpenApiOperationObjectWithExtensions {
+    const newOperation: OpenApiOperationObjectWithExtensions = {
+      ...operation,
+      x_codeSamples: this.pluginOptions.generateCodeSamples
+        ? OpenAPISnippet.getEndpointSnippets(
+            this.document,
+            path,
+            method,
+            this.pluginOptions.codeSampleTargets
+          ).snippets.map((snippet) => {
+            return {
+              lang: snippet.id,
+              source: snippet.content,
+              label: snippet.title,
+            };
+          })
+        : operation.x_codeSamples,
+    };
+    return newOperation;
+  }
+
   getOperations(): GraphQLOpenApiOperation[] {
     const operations: GraphQLOpenApiOperation[] = [];
     Object.keys(this.document.paths).forEach((path) => {
@@ -82,11 +113,18 @@ export class OpenAPITransformer {
       ];
       Object.keys(pathItemObject).forEach((method) => {
         if (isOperationObject(pathItemObject[method])) {
-          const pathItem: OpenAPIV3.OperationObject = pathItemObject[method];
+          const operationObject = sanitizeFieldNames<
+            OpenApiOperationObjectWithExtensions
+          >(pathItemObject[method]);
+          const operation: OpenApiOperationObjectWithExtensions = this.getOperationWithExtensions(
+            path,
+            method,
+            operationObject
+          );
           operations.push({
             path,
             method,
-            operation: JSON.stringify(pathItem),
+            operation: JSON.stringify(operation),
           });
         }
       });

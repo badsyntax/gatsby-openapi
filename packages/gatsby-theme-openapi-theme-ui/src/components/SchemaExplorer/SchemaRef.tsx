@@ -24,20 +24,18 @@ export const SchemaRef: React.FunctionComponent<SchemaRefProps> = ({
   return (
     <React.Fragment>
       {!isComplexSchema && (
-        <Link to={`/model/${refSchemaName}`}>
+        <React.Fragment>
           <SchemaTree
             schema={refSchema}
             dereference={dereference}
             expandEnum={expandEnum}
           />
-          <code
-            sx={{
-              ml: 1,
-            }}
-          >
-            ({refSchemaName})
-          </code>
-        </Link>
+          <code sx={{ ml: 2 }}>(</code>
+          <Link to={`/model/${refSchemaName}`}>
+            <code>{refSchemaName}</code>
+          </Link>
+          <code>)</code>
+        </React.Fragment>
       )}
       {isComplexSchema && (
         <SchemaTree

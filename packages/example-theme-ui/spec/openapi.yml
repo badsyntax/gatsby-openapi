@@ -23,7 +23,7 @@ externalDocs:
   description: Find out more about Mail-in-a-box.
   url: https://mailinabox.email/
 servers:
-  - url: https://{host}/admin
+  - url: https://{host}
     variables:
       host:
         default: box.example.com

@@ -1,13 +1,13 @@
 import { CreateNodeArgs, NodePluginArgs } from 'gatsby';
 import {
-  API_OPERATION_TYPE,
-  API_SCHEMA_TYPE,
+  GRAPHQL_NODE_OPENAPI_OPERATION,
+  GRAPHQL_NODE_OPENAPI_SCHEMA,
 } from 'gatsby-source-openapi/types';
 import { OpenAPIV3 } from 'openapi-types';
 
 export const onCreateNode = ({ node, actions }: CreateNodeArgs): void => {
   const { createNodeField } = actions;
-  if (node.internal.type === API_OPERATION_TYPE) {
+  if (node.internal.type === GRAPHQL_NODE_OPENAPI_OPERATION) {
     const operation: OpenAPIV3.OperationObject = JSON.parse(
       node.operation as string
     );
@@ -18,7 +18,7 @@ export const onCreateNode = ({ node, actions }: CreateNodeArgs): void => {
       value: slug,
     });
   }
-  if (node.internal.type === API_SCHEMA_TYPE) {
+  if (node.internal.type === GRAPHQL_NODE_OPENAPI_SCHEMA) {
     const slug = node.name;
     createNodeField({
       node,

@@ -1,6 +1,6 @@
 import { OpenAPIV3 } from 'openapi-types';
 import React from 'react';
-import { useOpenApiSecurity } from '../hooks/useOpenApiSecurity';
+import { useOpenApiOperationSecurity } from '../hooks/useOpenApiOperationSecurity';
 import { Link } from './Link';
 
 interface OperationSecurityListProps {
@@ -10,8 +10,7 @@ interface OperationSecurityListProps {
 export const OperationSecurityList: React.FunctionComponent<OperationSecurityListProps> = ({
   operation,
 }) => {
-  const defaultSecurity = useOpenApiSecurity();
-  const security = operation.security || defaultSecurity;
+  const security = useOpenApiOperationSecurity(operation);
   const hasSecurity = Boolean(security && security.length);
   const items: React.ReactElement[] = [];
   security.forEach((security) => {

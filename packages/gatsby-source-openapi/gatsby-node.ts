@@ -1,20 +1,21 @@
-import { NodePluginArgs, PluginOptions } from 'gatsby';
+import { NodePluginArgs } from 'gatsby';
 import { OpenAPIV3 } from 'openapi-types';
 import { OpenApiParser } from './openapi/OpenApiParser';
 import { OpenAPITransformer } from './openapi/OpenAPITransformer';
-
 import {
+  CustomPluginOptions,
   graphQlTypes,
-  API_INFO_TYPE,
-  API_PATH_TYPE,
-  API_SECURITY_TYPE,
-  API_COMPONENT_TYPE,
-  API_TAG_TYPE,
-  API_SERVER_TYPE,
-  API_EXTERNAL_DOCS_TYPE,
-  API_OPERATION_TYPE,
-  API_SCHEMA_TYPE,
+  GRAPHQL_NODE_OPENAPI_COMPONENT,
+  GRAPHQL_NODE_OPENAPI_EXTERNAL_DOCS,
+  GRAPHQL_NODE_OPENAPI_INFO,
+  GRAPHQL_NODE_OPENAPI_OPERATION,
+  GRAPHQL_NODE_OPENAPI_PATH,
+  GRAPHQL_NODE_OPENAPI_SCHEMA,
+  GRAPHQL_NODE_OPENAPI_SECURITY,
+  GRAPHQL_NODE_OPENAPI_SERVER,
+  GRAPHQL_NODE_OPENAPI_TAG,
 } from './types';
+import { defaultPluginOptions } from './util/defaultPluginOptions';
 
 export const createSchemaCustomization = ({
   actions,
@@ -23,29 +24,26 @@ export const createSchemaCustomization = ({
   createTypes(graphQlTypes);
 };
 
-type CustomPluginOptions = PluginOptions & {
-  specPath: string;
-};
-
 export const sourceNodes = async (
   { actions, createContentDigest, createNodeId, reporter }: NodePluginArgs,
   pluginOptions: CustomPluginOptions
 ): Promise<void> => {
   const { createNode } = actions;
+  const pluginOptionsWithDefaults = defaultPluginOptions(pluginOptions);
 
   function createInfoNode(transformer: OpenAPITransformer) {
     const info = transformer.getInfo();
     createNode({
       ...info,
-      id: createNodeId(API_INFO_TYPE),
+      id: createNodeId(GRAPHQL_NODE_OPENAPI_INFO),
       children: [],
       internal: {
-        type: API_INFO_TYPE,
+        type: GRAPHQL_NODE_OPENAPI_INFO,
         content: JSON.stringify(info),
         contentDigest: createContentDigest(info),
       },
     });
-    reporter.success(`create ${API_INFO_TYPE} node`);
+    reporter.success(`create ${GRAPHQL_NODE_OPENAPI_INFO} node`);
   }
 
   function createExternalDocsNode(transformer: OpenAPITransformer) {
@@ -53,18 +51,18 @@ export const sourceNodes = async (
     if (externalDocs) {
       createNode({
         ...externalDocs,
-        id: createNodeId(API_EXTERNAL_DOCS_TYPE),
+        id: createNodeId(GRAPHQL_NODE_OPENAPI_EXTERNAL_DOCS),
         children: [],
         internal: {
-          type: API_EXTERNAL_DOCS_TYPE,
+          type: GRAPHQL_NODE_OPENAPI_EXTERNAL_DOCS,
           content: JSON.stringify(externalDocs),
           contentDigest: createContentDigest(externalDocs),
         },
       });
-      reporter.success(`create ${API_EXTERNAL_DOCS_TYPE} node`);
+      reporter.success(`create ${GRAPHQL_NODE_OPENAPI_EXTERNAL_DOCS} node`);
     } else {
       reporter.warn(
-        `skipped ${API_EXTERNAL_DOCS_TYPE} node, no externalDocs found in schema`
+        `skipped ${GRAPHQL_NODE_OPENAPI_EXTERNAL_DOCS} node, no externalDocs found in schema`
       );
     }
   }
@@ -73,64 +71,64 @@ export const sourceNodes = async (
     transformer.getSecurity().forEach((security) => {
       createNode({
         ...security,
-        id: createNodeId(`${API_SECURITY_TYPE}-${security.name}`),
+        id: createNodeId(`${GRAPHQL_NODE_OPENAPI_SECURITY}-${security.name}`),
         children: [],
         internal: {
-          type: API_SECURITY_TYPE,
+          type: GRAPHQL_NODE_OPENAPI_SECURITY,
           content: JSON.stringify(security),
           contentDigest: createContentDigest(security),
         },
       });
     });
-    reporter.success(`create ${API_SECURITY_TYPE} nodes`);
+    reporter.success(`create ${GRAPHQL_NODE_OPENAPI_SECURITY} nodes`);
   }
 
   function createTagNodes(transformer: OpenAPITransformer) {
     (transformer.document?.tags || []).forEach((tag) => {
       createNode({
         ...tag,
-        id: createNodeId(`${API_TAG_TYPE}-${tag.name}`),
+        id: createNodeId(`${GRAPHQL_NODE_OPENAPI_TAG}-${tag.name}`),
         children: [],
         internal: {
-          type: API_TAG_TYPE,
+          type: GRAPHQL_NODE_OPENAPI_TAG,
           content: JSON.stringify(tag),
           contentDigest: createContentDigest(tag),
         },
       });
     });
-    reporter.success(`create ${API_TAG_TYPE} nodes`);
+    reporter.success(`create ${GRAPHQL_NODE_OPENAPI_TAG} nodes`);
   }
 
   function createServerNodes(transformer: OpenAPITransformer) {
     transformer.getServers().forEach((server) => {
       createNode({
         ...server,
-        id: createNodeId(`${API_SERVER_TYPE}-${server.url}`),
+        id: createNodeId(`${GRAPHQL_NODE_OPENAPI_SERVER}-${server.url}`),
         children: [],
         internal: {
-          type: API_SERVER_TYPE,
+          type: GRAPHQL_NODE_OPENAPI_SERVER,
           content: JSON.stringify(server),
           contentDigest: createContentDigest(server),
         },
       });
     });
-    reporter.success(`create ${API_SERVER_TYPE} nodes`);
+    reporter.success(`create ${GRAPHQL_NODE_OPENAPI_SERVER} nodes`);
   }
 
   function createPathNodes(transformer: OpenAPITransformer) {
     transformer.getPaths().forEach((path) => {
       createNode({
         ...path,
-        id: createNodeId(`${API_PATH_TYPE}-${path.name}`),
+        id: createNodeId(`${GRAPHQL_NODE_OPENAPI_PATH}-${path.name}`),
         children: [],
         internal: {
-          type: API_PATH_TYPE,
+          type: GRAPHQL_NODE_OPENAPI_PATH,
           content: JSON.stringify(path),
           contentDigest: createContentDigest(path),
         },
       });
     });
-    reporter.success(`create ${API_PATH_TYPE} nodes`);
+    reporter.success(`create ${GRAPHQL_NODE_OPENAPI_PATH} nodes`);
   }
 
   function createOperationNodes(transformer: OpenAPITransformer) {
@@ -138,56 +136,60 @@ export const sourceNodes = async (
       createNode({
         ...operation,
         id: createNodeId(
-          `${API_OPERATION_TYPE}-${operation.path}-${operation.method}`
+          `${GRAPHQL_NODE_OPENAPI_OPERATION}-${operation.path}-${operation.method}`
         ),
         children: [],
         internal: {
-          type: API_OPERATION_TYPE,
+          type: GRAPHQL_NODE_OPENAPI_OPERATION,
           content: JSON.stringify(operation),
           contentDigest: createContentDigest(operation),
         },
       });
     });
-    reporter.success(`create ${API_OPERATION_TYPE} nodes`);
+    reporter.success(`create ${GRAPHQL_NODE_OPENAPI_OPERATION} nodes`);
   }
 
   function createComponentNodes(transformer: OpenAPITransformer) {
     transformer.getComponents().forEach((component) => {
       createNode({
         ...component,
-        id: createNodeId(`${API_COMPONENT_TYPE}-${component.name}`),
+        id: createNodeId(`${GRAPHQL_NODE_OPENAPI_COMPONENT}-${component.name}`),
         children: [],
         internal: {
-          type: API_COMPONENT_TYPE,
+          type: GRAPHQL_NODE_OPENAPI_COMPONENT,
           content: JSON.stringify(component),
           contentDigest: createContentDigest(component),
         },
       });
     });
-    reporter.success(`create ${API_COMPONENT_TYPE} nodes`);
+    reporter.success(`create ${GRAPHQL_NODE_OPENAPI_COMPONENT} nodes`);
   }
 
   function createSchemaNodes(transformer: OpenAPITransformer) {
     transformer.getSchemas().forEach((schema) => {
       createNode({
         ...schema,
-        id: createNodeId(`${API_SCHEMA_TYPE}-${schema.name}`),
+        id: createNodeId(`${GRAPHQL_NODE_OPENAPI_SCHEMA}-${schema.name}`),
         children: [],
         internal: {
-          type: API_SCHEMA_TYPE,
+          type: GRAPHQL_NODE_OPENAPI_SCHEMA,
           content: JSON.stringify(schema),
           contentDigest: createContentDigest(schema),
         },
       });
     });
-    reporter.success(`create ${API_SCHEMA_TYPE} nodes`);
+    reporter.success(`create ${GRAPHQL_NODE_OPENAPI_SCHEMA} nodes`);
   }
 
   try {
     const document = (await OpenApiParser.parse(
-      pluginOptions.specPath
+      pluginOptionsWithDefaults.specPath
     )) as OpenAPIV3.Document;
-    const transformer = new OpenAPITransformer(document);
+
+    const transformer = new OpenAPITransformer(
+      document,
+      pluginOptionsWithDefaults
+    );
 
     createInfoNode(transformer);
     createPathNodes(transformer);

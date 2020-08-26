@@ -1,7 +1,8 @@
 /** @jsx jsx */
 import React, { useState } from 'react';
 import { jsx } from 'theme-ui';
-import { NavItem, NavList } from './NavList';
+import { NavItem } from './NavItem';
+import { NavList } from './NavList';
 
 const getSelectedItems = (items: NavItem[], selectedKey: string): NavItem[] => {
   return items.reduce<NavItem[]>((previousValue, item) => {

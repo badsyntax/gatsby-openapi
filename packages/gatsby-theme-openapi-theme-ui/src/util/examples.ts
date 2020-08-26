@@ -42,7 +42,7 @@ function getExampleArray(
 
 function getExampleValue(schema: OpenAPIV3.SchemaObject): ExampleValue {
   return schema.example !== undefined
-    ? schema.example
+    ? String(schema.example)
     : schema.format || schema.type;
 }
 

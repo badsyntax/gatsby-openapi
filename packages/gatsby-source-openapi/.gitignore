@@ -72,3 +72,4 @@ yarn-error.log
 /gatsby-node.js
 /openapi/**/*.js
 /types/**/*.js
+/util/**/*.js
