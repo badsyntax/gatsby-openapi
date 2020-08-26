@@ -1,7 +1,7 @@
 import { graphql, useStaticQuery } from 'gatsby';
-import { SiteMetadata } from '../types';
+import { GraphQLSiteMetadata } from 'gatsby-source-openapi/types';
 
-export function useSiteMetadata(): SiteMetadata {
+export function useSiteMetadata(): GraphQLSiteMetadata {
   const data = useStaticQuery(graphql`
     query {
       site {

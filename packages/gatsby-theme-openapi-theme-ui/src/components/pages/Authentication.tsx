@@ -1,30 +1,22 @@
-import React from 'react';
+import { AuthenticationProps } from 'gatsby-theme-openapi-core/src/components/pages/Authentication';
 import { OpenAPIV3 } from 'openapi-types';
-
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Heading } from 'theme-ui';
+import { useDeferenceOpenApiSchema } from '../../hooks/useDeferenceOpenApiSchema';
+import { useOpenApiInfo } from '../../hooks/useOpenapiInfo';
+import { isOAuth2SecurityScheme } from '../../types';
+import { renderMarkdown } from '../../util/renderMarkdown';
 import { Layout } from '../Layout';
 import { SecuritySchemaTable } from '../SecuritySchemaTable';
-import { useOpenApiInfo } from '../../hooks/useOpenapiInfo';
-import { PageProps } from 'gatsby';
-import { renderMarkdown } from '../../util/renderMarkdown';
-import { JsonString } from 'gatsby-source-openapi/types';
-import { useDeferenceOpenApiSchema } from '../../hooks/useDeferenceOpenApiSchema';
-import { isOAuth2SecurityScheme } from '../../types';
-
-export interface AuthenticationDataProps {
-  securitySchemes: {
-    value: JsonString;
-  };
-}
 
 interface SecuritySchemes {
   [key: string]: OpenAPIV3.ReferenceObject | OpenAPIV3.SecuritySchemeObject;
 }
 
-export const Authentication: React.FunctionComponent<PageProps<
-  AuthenticationDataProps
->> = ({ data }) => {
+export const Authentication: React.FunctionComponent<AuthenticationProps> = ({
+  data,
+}) => {
   const { title } = useOpenApiInfo();
   const deference = useDeferenceOpenApiSchema<OpenAPIV3.SecuritySchemeObject>();
   const securitySchemes: SecuritySchemes = JSON.parse(
@@ -54,6 +46,7 @@ export const Authentication: React.FunctionComponent<PageProps<
             </Heading>
             <SecuritySchemaTable scheme={securityScheme.scheme} />
             {!isOAuth2SecurityScheme(securityScheme.scheme) &&
+              securityScheme.scheme.description &&
               renderMarkdown(securityScheme.scheme.description)}
           </React.Fragment>
         );

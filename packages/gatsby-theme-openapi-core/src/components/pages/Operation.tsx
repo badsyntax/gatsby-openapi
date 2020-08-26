@@ -1,13 +1,13 @@
-import React from 'react';
-import { OpenApiPath } from '../../types';
 import { PageProps } from 'gatsby';
+import { OperationWithFields } from 'gatsby-source-openapi/types';
+import React from 'react';
 
 interface OperationDataProps {
-  path: OpenApiPath;
+  operation: OperationWithFields;
 }
 
-export const Operation: React.FunctionComponent<PageProps<
-  OperationDataProps
->> = () => {
+export type OperationProps = PageProps<OperationDataProps>;
+
+export const Operation: React.FunctionComponent<OperationProps> = () => {
   return <div>Operation</div>;
 };

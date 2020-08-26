@@ -1,93 +1,126 @@
 /** @jsx jsx */
-import React from 'react';
 import { OpenAPIV3 } from 'openapi-types';
+import React from 'react';
 import { jsx } from 'theme-ui';
-
-interface SchemaExamplesProps {
-  media: OpenAPIV3.MediaTypeObject;
-}
+import { useDeferenceOpenApiSchema } from '../hooks/useDeferenceOpenApiSchema';
+import { Dereference } from '../types';
 
 const SCHEMA_TYPE_OBJECT = 'object';
 const SCHEMA_TYPE_ARRAY = 'array';
 
-// function getExampleObject(schema, allSchemasByName: OpenApiSchemasByName) {
-//   return Object.keys(schema.properties).reduce(
-//     (obj, propertyName) => ({
-//       ...obj,
-//       [propertyName]: getExample(
-//         schema.properties[propertyName],
-//         allSchemasByName
-//       ),
-//     }),
-//     {}
-//   );
-// }
+function getExampleObject(
+  schema: OpenAPIV3.NonArraySchemaObject,
+  dereference: Dereference<OpenAPIV3.SchemaObject>
+) {
+  return Object.keys(schema.properties || {}).reduce((obj, propertyName) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const subSchema = dereference(schema.properties![propertyName]);
+    return {
+      ...obj,
+      [propertyName]: getExampleFromSchema(subSchema, dereference),
+    };
+  }, {});
+}
 
-// function getExampleArray(schema, allSchemasByName: OpenApiSchemasByName) {
-//   if (schema.items.oneOf) {
-//     return schema.items.oneOf.map(getExample);
-//   }
-//   return [getExample(schema.items, allSchemasByName)];
-// }
+function getExampleArray(
+  schema: OpenAPIV3.ArraySchemaObject,
+  dereference: Dereference<OpenAPIV3.SchemaObject>
+) {
+  const itemsSchema = dereference(schema.items);
+  if (itemsSchema.oneOf) {
+    return itemsSchema.oneOf.map((item) => {
+      const itemSchema = dereference(item);
+      return getExampleFromSchema(itemSchema, dereference);
+    });
+  }
+  return [getExampleFromSchema(itemsSchema, dereference)];
+}
 
-// function getExampleValue(schema) {
-//   return schema.example !== undefined
-//     ? schema.example
-//     : schema.format || schema.type;
-// }
+function getExampleValue(schema: OpenAPIV3.SchemaObject) {
+  return schema.example !== undefined
+    ? schema.example
+    : schema.format || schema.type;
+}
 
-// function getExampleRef(ref: string, allSchemasByName: OpenApiSchemasByName) {
-//   const refSchemaName = ref.split('/').pop();
-//   const refSchema = allSchemasByName[refSchemaName];
-//   return getExample(JSON.parse(refSchema), allSchemasByName);
-// }
+function getExampleFromSchema(
+  schema: OpenAPIV3.SchemaObject,
+  dereference: Dereference<OpenAPIV3.SchemaObject>
+) {
+  switch (schema.type) {
+    case SCHEMA_TYPE_OBJECT:
+      return getExampleObject(schema, dereference);
+    case SCHEMA_TYPE_ARRAY:
+      return getExampleArray(schema, dereference);
+    default:
+      return getExampleValue(schema);
+  }
+}
 
-// function getExample(schema, allSchemasByName: OpenApiSchemasByName) {
-//   switch (schema.type) {
-//     case SCHEMA_TYPE_OBJECT:
-//       return getExampleObject(schema, allSchemasByName);
-//     case SCHEMA_TYPE_ARRAY:
-//       return getExampleArray(schema, allSchemasByName);
-//     default:
-//       if (schema['$ref']) {
-//         return getExampleRef(schema['$ref'], allSchemasByName);
-//       }
-//       return getExampleValue(schema);
-//   }
-// }
+interface SchemaExampleProps {
+  example: any;
+}
 
-// function buildExamples(
-//   content: OpenApiResponseContent,
-//   allSchemasByName: OpenApiSchemasByName
-// ): OpenApiSchemaExample[] {
-//   if (content.examples && content.examples.length) {
-//     return content.examples;
-//   }
-//   return [
-//     {
-//       name: null,
-//       example: JSON.stringify(
-//         getExample(JSON.parse(content.schema), allSchemasByName)
-//       ),
-//     },
-//   ];
-// }
+const SchemaExample: React.FunctionComponent<SchemaExampleProps> = ({
+  example,
+}) => {
+  return (
+    <pre
+      sx={{
+        backgroundColor: 'codeBlockBG',
+        p: 2,
+      }}
+    >
+      {typeof example === 'string' ? example : JSON.stringify(example, null, 2)}
+    </pre>
+  );
+};
 
-export const SchemaExamples: React.FunctionComponent<SchemaExamplesProps> = ({
+interface SchemaMediaExamplesProps {
+  media: OpenAPIV3.MediaTypeObject;
+}
+
+export const SchemaMediaExamples: React.FunctionComponent<SchemaMediaExamplesProps> = ({
   media,
 }) => {
-  return <div>examples</div>;
-  // const examples = buildExamples(content, allSchemasByName);
-  // return (
-  //   <React.Fragment>
-  //     {examples.map((example) => {
-  //       return (
-  //         <React.Fragment>
-  //           {example.name && <div>{example.name}:</div>}
-  //           <pre>{JSON.stringify(JSON.parse(example.example), null, 2)}</pre>
-  //         </React.Fragment>
-  //       );
-  //     })}
-  //   </React.Fragment>
-  // );
+  const dereferenceExample = useDeferenceOpenApiSchema<
+    OpenAPIV3.ExampleObject
+  >();
+  const dereferenceSchema = useDeferenceOpenApiSchema<OpenAPIV3.SchemaObject>();
+  if (media.examples) {
+    return (
+      <React.Fragment>
+        {Object.keys(media.examples).map((name) => {
+          const example = dereferenceExample(media.examples![name]);
+          return (
+            <React.Fragment key={name}>
+              {name}
+              <SchemaExample example={example.value} />
+            </React.Fragment>
+          );
+        })}
+      </React.Fragment>
+    );
+  }
+  if (media.example) {
+    return <SchemaExample example={media.example} />;
+  }
+  if (media.schema) {
+    const schema = dereferenceSchema(media.schema);
+    const example = getExampleFromSchema(schema, dereferenceSchema);
+    return <SchemaExample example={example} />;
+  }
+  return null;
+};
+
+interface SchemaSingleExampleProps {
+  schema: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject;
+}
+
+export const SchemaSingleExample: React.FunctionComponent<SchemaSingleExampleProps> = ({
+  schema,
+}) => {
+  const dereferenceSchema = useDeferenceOpenApiSchema<OpenAPIV3.SchemaObject>();
+  const dereferencedSchema = dereferenceSchema(schema);
+  const example = getExampleFromSchema(dereferencedSchema, dereferenceSchema);
+  return <SchemaExample example={example} />;
 };

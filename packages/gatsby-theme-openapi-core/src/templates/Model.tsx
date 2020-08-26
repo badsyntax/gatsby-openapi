@@ -1,5 +1,4 @@
 import { graphql } from 'gatsby';
-
 import { Model } from '../components/pages/Model';
 
 export default Model;

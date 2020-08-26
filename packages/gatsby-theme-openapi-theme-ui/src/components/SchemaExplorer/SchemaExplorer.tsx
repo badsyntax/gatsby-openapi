@@ -1,7 +1,7 @@
 /** @jsx jsx */
-import React from 'react';
 import { OpenAPIV3 } from 'openapi-types';
-import { jsx } from 'theme-ui';
+import React from 'react';
+import { Box, jsx } from 'theme-ui';
 import { useDeferenceOpenApiSchema } from '../../hooks/useDeferenceOpenApiSchema';
 import { SchemaTree } from './SchemaTree';
 
@@ -13,5 +13,14 @@ export const SchemaExplorer: React.FunctionComponent<SchemaExplorerProps> = ({
   schema,
 }) => {
   const dereference = useDeferenceOpenApiSchema<OpenAPIV3.SchemaObject>();
-  return <SchemaTree schema={schema} dereference={dereference} />;
+  return (
+    <Box
+      sx={{
+        backgroundColor: 'codeBlockBG',
+        p: 2,
+      }}
+    >
+      <SchemaTree schema={schema} dereference={dereference} />
+    </Box>
+  );
 };

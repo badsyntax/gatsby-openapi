@@ -1,8 +1,8 @@
 /** @jsx jsx */
-import React from 'react';
 import { OpenAPIV3 } from 'openapi-types';
+import React from 'react';
 import { jsx } from 'theme-ui';
-import { Dereference, isReferenceObject } from '../../types';
+import { Dereference } from '../../types';
 import { OneOfType } from './SchemaOneOf';
 import { SchemaTree } from './SchemaTree';
 

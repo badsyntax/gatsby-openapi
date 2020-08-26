@@ -1,11 +1,13 @@
-import React from 'react';
-import { OpenApiSchema } from '../../types';
 import { PageProps } from 'gatsby';
+import { GraphQLOpenApiSchema } from 'gatsby-source-openapi/types';
+import React from 'react';
 
 export interface ModelDataProps {
-  schema: OpenApiSchema;
+  schema: GraphQLOpenApiSchema;
 }
 
-export const Model: React.FunctionComponent<PageProps<ModelDataProps>> = () => {
+export type ModelProps = PageProps<ModelDataProps>;
+
+export const Model: React.FunctionComponent<ModelProps> = () => {
   return <div>model</div>;
 };

@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
 import { OpenAPIV3 } from 'openapi-types';
-
+import React, { useState } from 'react';
 import { Box, Heading, Text } from 'theme-ui';
-// import { OpenApiResponse, OpenApiSchemasByName } from '../types';
-import { SchemaExamples } from './SchemaExamples';
+import { SchemaMediaExamples } from './SchemaExamples';
 import { SchemaExplorer } from './SchemaExplorer/SchemaExplorer';
+import { TabItem, Tabs } from './Tabs';
 
 interface ResponseProps {
   response: OpenAPIV3.ResponseObject;
-  // allSchemasByName: OpenApiSchemasByName;
   code: string;
 }
 
 export const Response: React.FunctionComponent<ResponseProps> = ({
   response,
-  // allSchemasByName,
   code,
 }) => {
   const [isHidden, setIsHidden] = useState<boolean>(true);
@@ -54,19 +51,21 @@ export const Response: React.FunctionComponent<ResponseProps> = ({
         </Heading>
       </Box>
       {!isHidden &&
-        Object.keys(response.content).map((media) => {
+        Object.keys(response.content).map((mediaType) => {
+          const media = response.content[mediaType];
           return (
-            <React.Fragment key={media}>
-              <Box mb={3}>Content Type: {media}</Box>
-              <Heading as="h4">Schema:</Heading>
+            <React.Fragment key={mediaType}>
+              <Box mb={3}>Content Type: {mediaType}</Box>
               <Box mb={3}>
-                <SchemaExplorer
-                  schema={response.content[media].schema}
-                  // allSchemasByName={allSchemasByName}
-                />
+                <Tabs>
+                  <TabItem label="Schema" itemKey="tabs-schema">
+                    <SchemaExplorer schema={media.schema} />
+                  </TabItem>
+                  <TabItem label="Example" itemKey="tabs-example">
+                    <SchemaMediaExamples media={media} />
+                  </TabItem>
+                </Tabs>
               </Box>
-              <Heading as="h4">Examples:</Heading>
-              <SchemaExamples media={response.content[media]} />
             </React.Fragment>
           );
         })}

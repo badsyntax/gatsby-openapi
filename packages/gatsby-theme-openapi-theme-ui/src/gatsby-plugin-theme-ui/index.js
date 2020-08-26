@@ -88,7 +88,8 @@ const theme = merge(tailwind, {
       'td, th': {
         border: (theme) => `1px solid ${theme.colors.muted}`,
         textAlign: 'left',
-        padding: 1,
+        pr: 1,
+        pl: 1,
         verticalAlign: 'top',
       },
     },
@@ -96,7 +97,8 @@ const theme = merge(tailwind, {
       borderCollapse: 'collapse',
       'td, th': {
         textAlign: 'left',
-        padding: 1,
+        pr: 1,
+        pl: 1,
         verticalAlign: 'top',
       },
     },

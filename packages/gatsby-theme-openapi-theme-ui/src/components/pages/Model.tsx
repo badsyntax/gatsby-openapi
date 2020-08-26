@@ -1,35 +1,40 @@
+import { ModelProps } from 'gatsby-theme-openapi-core/src/components/pages/Model';
+import { OpenAPIV3 } from 'openapi-types';
 import React from 'react';
-import { PageProps } from 'gatsby';
+import { Helmet } from 'react-helmet';
 import { Heading } from 'theme-ui';
 import { Layout } from '../../components/Layout';
-import { Helmet } from 'react-helmet';
-import { useOpenApiSchemasByName } from '../../hooks/useOpenapiSchemasByName';
+import { useOpenApiInfo } from '../../hooks/useOpenapiInfo';
 import { renderMarkdown } from '../../util/renderMarkdown';
+import { SchemaSingleExample } from '../SchemaExamples';
 import { SchemaExplorer } from '../SchemaExplorer/SchemaExplorer';
+import { TabItem, Tabs } from '../Tabs';
 
-export interface ModelDataProps {
-  schema: OpenApiSchema;
-}
-
-export const Model: React.FunctionComponent<PageProps<ModelDataProps>> = ({
-  data,
-}) => {
+export const Model: React.FunctionComponent<ModelProps> = ({ data }) => {
   const { schema } = data;
-  const schemasByName = useOpenApiSchemasByName();
-  const schemaObj = JSON.parse(schema.schema);
-  const description = renderMarkdown(schemaObj.description);
+  const schemaObj: OpenAPIV3.SchemaObject = JSON.parse(schema.schema);
+  const description =
+    schemaObj.description && renderMarkdown(schemaObj.description);
+  const { title } = useOpenApiInfo();
   return (
     <Layout>
       <Helmet>
-        <title>{/* {title} - {path.summary} */}</title>
+        <title>
+          {title} - {schema.name}
+        </title>
       </Helmet>
       <Heading as="h2" mb={3}>
         {schema.name}
       </Heading>
       {description}
-      <div>Type: {schemaObj.type}</div>
-      <div>Schema: </div>
-      <SchemaExplorer schema={schemaObj} />
+      <Tabs>
+        <TabItem label="Schema" itemKey="tabs-schema">
+          <SchemaExplorer schema={schemaObj} />
+        </TabItem>
+        <TabItem label="Example" itemKey="tabs-example">
+          <SchemaSingleExample schema={schemaObj} />
+        </TabItem>
+      </Tabs>
     </Layout>
   );
 };

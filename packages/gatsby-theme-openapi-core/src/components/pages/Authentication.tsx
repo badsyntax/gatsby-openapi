@@ -1,19 +1,14 @@
-import React from 'react';
-import { OpenApiSecuritySchema } from '../../types';
 import { PageProps } from 'gatsby';
-
-export interface SecuritySchema {
-  node: OpenApiSecuritySchema;
-}
+import React from 'react';
 
 export interface AuthenticationDataProps {
-  securitySchemas: {
-    schemas: SecuritySchema[];
+  securitySchemes: {
+    value: string;
   };
 }
 
-export const Authentication: React.FunctionComponent<PageProps<
-  AuthenticationDataProps
->> = () => {
+export type AuthenticationProps = PageProps<AuthenticationDataProps>;
+
+export const Authentication: React.FunctionComponent<AuthenticationProps> = () => {
   return <div>auth</div>;
 };

@@ -1,9 +1,9 @@
 /** @jsx jsx */
-import React from 'react';
 import { OpenAPIV3 } from 'openapi-types';
+import React from 'react';
 import { jsx } from 'theme-ui';
-import { Table } from './Table';
 import { isOAuth2SecurityScheme } from '../types';
+import { Table } from './Table';
 
 interface SecuritySchemaProps {
   scheme: OpenAPIV3.SecuritySchemeObject;

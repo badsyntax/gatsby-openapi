@@ -1,6 +1,6 @@
-import unified from 'unified';
 import markdown from 'remark-parse';
 import remark2react from 'remark-react';
+import unified from 'unified';
 import { Link } from '../components/Link';
 
 export function renderMarkdown(contents: string): unknown {

@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React from 'react';
-import { Badge, jsx, BadgeProps } from 'theme-ui';
+import { Badge, BadgeProps, jsx } from 'theme-ui';
 
 const badgeLabel = {
   delete: 'del',

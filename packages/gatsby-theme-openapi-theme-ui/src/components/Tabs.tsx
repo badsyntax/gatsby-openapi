@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React, { useState } from 'react';
-import { jsx, Flex } from 'theme-ui';
+import { Flex, jsx } from 'theme-ui';
 
 interface TabItemProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string;

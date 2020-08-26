@@ -1,6 +1,6 @@
-import { OpenAPIV3 } from 'openapi-types';
 import { graphql, useStaticQuery } from 'gatsby';
-import { OperationWithFields, Edges } from '../types';
+import { OpenAPIV3 } from 'openapi-types';
+import { Edges, OperationWithFields } from '../types';
 
 export interface OpenApiOperationsByTag {
   [key: string]: OpenApiOperationByTag[];
@@ -32,7 +32,7 @@ export function useOpenApiOperationsByTag(): OpenApiOperationsByTag {
   `);
   return data.allOpenApiOperation.edges.reduce((previousValue, { node }) => {
     const operation: OpenAPIV3.OperationObject = JSON.parse(node.operation);
-    operation.tags.forEach((tag) => {
+    (operation.tags || []).forEach((tag) => {
       if (!previousValue[tag]) {
         previousValue[tag] = [];
       }

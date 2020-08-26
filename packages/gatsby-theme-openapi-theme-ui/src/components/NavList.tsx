@@ -1,13 +1,12 @@
 /* eslint jsx-a11y/anchor-has-content: 0 */
 /** @jsx jsx */
-import React, { useState, useEffect } from 'react';
-import { OpenAPIV3 } from 'openapi-types';
-import { useLocation, useNavigate } from '@reach/router';
-import { jsx, Box } from 'theme-ui';
-import { LinkProps, Link } from './Link';
+import { useNavigate } from '@reach/router';
+import React, { useState } from 'react';
 import { VscChevronDown, VscChevronRight } from 'react-icons/vsc';
-import { RequestMethodBadge } from './RequestMethodBadge';
+import { Box, jsx } from 'theme-ui';
 import { OpenApiOperationByTag } from '../hooks/useOpenApiOperationsByTag';
+import { Link, LinkProps } from './Link';
+import { RequestMethodBadge } from './RequestMethodBadge';
 
 const fadeInAnimationStyles = {
   '@keyframes fadeIn': {
@@ -72,7 +71,10 @@ const NavItem: React.FunctionComponent<NavItemProps> = ({
   } else {
     linkProps.onClick = (event: React.SyntheticEvent) => {
       event.preventDefault();
-      navigate(item.to, { replace: false });
+      if (item.to) {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        navigate(item.to, { replace: false });
+      }
     };
   }
 

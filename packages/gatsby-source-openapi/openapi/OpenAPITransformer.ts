@@ -1,13 +1,13 @@
 import { OpenAPIV3 } from 'openapi-types';
 import {
+  GraphQLOpenApiComponent,
+  GraphQLOpenApiObjectAsArray,
+  GraphQLOpenApiOperation,
+  GraphQLOpenApiPath,
+  GraphQLOpenApiSchema,
+  GraphQLOpenApiSecurity,
+  GraphQLOpenApiServer,
   OpenAPIV3ObjectConvertToArray,
-  OpenAPIV3GraphQLObjectAsArray,
-  OpenAPIV3GraphQLOperation,
-  OpenAPIV3GraphQLSchema,
-  OpenAPIV3GraphQLPath,
-  OpenAPIV3GraphQLSecurity,
-  OpenAPIV3GraphQLComponent,
-  OpenAPIV3GraphQLServer,
 } from '../types';
 
 function sanitizeFieldNames<T>(obj): T {
@@ -41,10 +41,10 @@ export class OpenAPITransformer {
 
   getObjectAsArray(
     openApiObject: OpenAPIV3ObjectConvertToArray | undefined
-  ): OpenAPIV3GraphQLObjectAsArray[] {
+  ): GraphQLOpenApiObjectAsArray[] {
     return openApiObject
       ? Object.keys(openApiObject).map(
-          (name): OpenAPIV3GraphQLObjectAsArray => {
+          (name): GraphQLOpenApiObjectAsArray => {
             return {
               name,
               value: JSON.stringify(openApiObject[name]),
@@ -58,11 +58,11 @@ export class OpenAPITransformer {
     return sanitizeFieldNames<OpenAPIV3.InfoObject>(this.document.info);
   }
 
-  getPaths(): OpenAPIV3GraphQLPath[] {
+  getPaths(): GraphQLOpenApiPath[] {
     return this.getObjectAsArray(this.document.paths);
   }
 
-  getSchemas(): OpenAPIV3GraphQLSchema[] {
+  getSchemas(): GraphQLOpenApiSchema[] {
     const schemas = this.document.components?.schemas;
     return schemas
       ? Object.keys(schemas).map((name) => {
@@ -74,8 +74,8 @@ export class OpenAPITransformer {
       : [];
   }
 
-  getOperations(): OpenAPIV3GraphQLOperation[] {
-    const operations: OpenAPIV3GraphQLOperation[] = [];
+  getOperations(): GraphQLOpenApiOperation[] {
+    const operations: GraphQLOpenApiOperation[] = [];
     Object.keys(this.document.paths).forEach((path) => {
       const pathItemObject: OpenAPIV3.PathItemObject = this.document.paths[
         path
@@ -94,23 +94,23 @@ export class OpenAPITransformer {
     return operations;
   }
 
-  getSecurity(security = this.document.security): OpenAPIV3GraphQLSecurity[] {
+  getSecurity(security = this.document.security): GraphQLOpenApiSecurity[] {
     return security
       ? security
-          .map((securityItem): OpenAPIV3GraphQLObjectAsArray[] => {
+          .map((securityItem): GraphQLOpenApiObjectAsArray[] => {
             return this.getObjectAsArray(securityItem);
           })
           .flat()
       : [];
   }
 
-  getComponents(): OpenAPIV3GraphQLComponent[] {
+  getComponents(): GraphQLOpenApiComponent[] {
     return this.getObjectAsArray(this.document.components);
   }
 
-  getServers(): OpenAPIV3GraphQLServer[] {
+  getServers(): GraphQLOpenApiServer[] {
     return (this.document.servers || []).map(
-      ({ url, description, variables }): OpenAPIV3GraphQLServer => {
+      ({ url, description, variables }): GraphQLOpenApiServer => {
         return {
           url,
           description,

@@ -1,19 +1,16 @@
 /** @jsx jsx */
-import React from 'react';
 import { OpenAPIV3 } from 'openapi-types';
+import React from 'react';
 import { jsx } from 'theme-ui';
-// import { OpenApiResponse, OpenApiSchemasByName } from '../types';
-import { Response } from './Response';
 import { useDeferenceOpenApiSchema } from '../hooks/useDeferenceOpenApiSchema';
+import { Response } from './Response';
 
 interface ResponsesProps {
   responses: OpenAPIV3.ResponsesObject;
-  // allSchemasByName: OpenApiSchemasByName;
 }
 
 export const Responses: React.FunctionComponent<ResponsesProps> = ({
   responses,
-  // allSchemasByName,
 }) => {
   const deference = useDeferenceOpenApiSchema<OpenAPIV3.ResponseObject>();
 

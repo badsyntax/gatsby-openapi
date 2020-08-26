@@ -1,7 +1,7 @@
 /** @jsx jsx */
+import { OpenApiInfo_XLogo } from 'gatsby-theme-openapi-core/src/types';
 import React from 'react';
 import { Container, Image, jsx } from 'theme-ui';
-import { OpenApiInfo_XLogo } from '../types';
 
 interface LogoProps {
   logo: OpenApiInfo_XLogo;

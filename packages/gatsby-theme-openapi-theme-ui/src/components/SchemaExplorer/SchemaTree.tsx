@@ -1,11 +1,11 @@
 /** @jsx jsx */
-import React from 'react';
 import { OpenAPIV3 } from 'openapi-types';
+import React from 'react';
 import { jsx } from 'theme-ui';
 import { Dereference, isReferenceObject } from '../../types';
-import { SchemaRef } from './SchemaRef';
-import { SchemaObject } from './SchemaObject';
 import { SchemaArray } from './SchemaArray';
+import { SchemaObject } from './SchemaObject';
+import { SchemaRef } from './SchemaRef';
 import { SchemaValue } from './SchemaValue';
 
 const SCHEMA_TYPE_OBJECT = 'object';
@@ -21,7 +21,6 @@ export const SchemaTree: React.FunctionComponent<SchemaTreeProps> = ({
   dereference,
 }) => {
   if (isReferenceObject(schema)) {
-    // return <div>foo2</div>;
     return <SchemaRef schema={schema} dereference={dereference} />;
   }
   switch (schema.type) {

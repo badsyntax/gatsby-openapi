@@ -1,7 +1,7 @@
 /* eslint jsx-a11y/anchor-has-content: 0 */
 /** @jsx jsx */
+import { GatsbyLinkProps, Link as GatsbyLink } from 'gatsby';
 import { jsx } from 'theme-ui';
-import { Link as GatsbyLink, GatsbyLinkProps } from 'gatsby';
 
 const styles = {
   color: 'inherit',

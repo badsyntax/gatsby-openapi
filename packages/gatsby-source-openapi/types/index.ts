@@ -20,29 +20,48 @@ export type OpenAPIV3ObjectConvertToArray =
 
 export type JsonString = string;
 
-export interface OpenAPIV3GraphQLServer
+export interface GraphQLOpenApiServer
   extends Omit<OpenAPIV3.ServerObject, 'variables'> {
   variables: JsonString;
 }
 
-export interface OpenAPIV3GraphQLObjectAsArray {
+export interface GraphQLOpenApiObjectAsArray {
   name: string;
   value: JsonString;
 }
 
-export type OpenAPIV3GraphQLPath = OpenAPIV3GraphQLObjectAsArray;
-export type OpenAPIV3GraphQLSecurity = OpenAPIV3GraphQLObjectAsArray;
-export type OpenAPIV3GraphQLComponent = OpenAPIV3GraphQLObjectAsArray;
+export type GraphQLOpenApiPath = GraphQLOpenApiObjectAsArray;
+export type GraphQLOpenApiSecurity = GraphQLOpenApiObjectAsArray;
+export type GraphQLOpenApiComponent = GraphQLOpenApiObjectAsArray;
 
-export interface OpenAPIV3GraphQLOperation {
+export interface GraphQLOpenApiOperation {
   path: string;
   method: string;
   operation: JsonString;
 }
 
-export interface OpenAPIV3GraphQLSchema {
+export interface GraphQLOpenApiSchema {
   name: string;
   schema: JsonString;
+}
+
+export interface GraphQLSiteMetadata {
+  title: string;
+}
+
+export interface OpenApiInfo_XLogo {
+  altText: string;
+  url: string;
+}
+
+export interface GraphQLOpenApiInfo extends OpenAPIV3.InfoObject {
+  x_logo: OpenApiInfo_XLogo;
+}
+
+export interface OperationWithFields extends GraphQLOpenApiOperation {
+  fields: {
+    slug: string;
+  };
 }
 
 export const graphQlTypes = `

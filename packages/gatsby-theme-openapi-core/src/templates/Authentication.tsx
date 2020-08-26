@@ -1,5 +1,4 @@
 import { graphql } from 'gatsby';
-
 import { Authentication } from '../components/pages/Authentication';
 
 export default Authentication;

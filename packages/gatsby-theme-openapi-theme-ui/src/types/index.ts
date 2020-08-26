@@ -1,5 +1,4 @@
 import { OpenAPIV3 } from 'openapi-types';
-import { OpenAPIV3GraphQLOperation } from 'gatsby-source-openapi/types';
 
 export function isOAuth2SecurityScheme(
   obj: OpenAPIV3.SecuritySchemeObject
@@ -19,17 +18,12 @@ export interface Edges<Node> {
   }>;
 }
 
-export interface OperationWithFields extends OpenAPIV3GraphQLOperation {
-  fields: {
-    slug: string;
-  };
-}
-
 export type DereferenceObject =
   | OpenAPIV3.ReferenceObject
   | OpenAPIV3.SecuritySchemeObject
   | OpenAPIV3.ResponseObject
-  | OpenAPIV3.SchemaObject;
+  | OpenAPIV3.SchemaObject
+  | OpenAPIV3.ExampleObject;
 
 export type Dereference<T> = (obj: DereferenceObject) => T;
 

@@ -1,15 +1,15 @@
 /** @jsx jsx */
 import React from 'react';
-import {
-  OpenApiSchemasByName,
-  OpenApiRequestBodiesByName,
-  OpenApiRequestBody,
-} from '../types';
 import { jsx } from 'theme-ui';
-import { SchemaExplorer } from './SchemaExplorer';
+// import {
+//   OpenApiRequestBodiesByName,
+//   OpenApiRequestBody,
+//   OpenApiSchemasByName,
+// } from '../types';
 import { getRequestBodyContent } from '../util/getRequestBodyContent';
 import { SchemaExamples } from './SchemaExamples';
-import { Tabs, TabItem } from './Tabs';
+import { SchemaExplorer } from './SchemaExplorer';
+import { TabItem, Tabs } from './Tabs';
 
 interface RequestBodyProps {
   requestBody: OpenApiRequestBody;

@@ -1,7 +1,7 @@
 /** @jsx jsx */
+import { OpenAPIV3 } from 'openapi-types';
 import React from 'react';
 import { jsx } from 'theme-ui';
-import { OpenAPIV3 } from 'openapi-types';
 
 interface SchemaValue {
   schema: OpenAPIV3.SchemaObject;

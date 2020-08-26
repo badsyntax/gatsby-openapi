@@ -1,5 +1,4 @@
 import { graphql } from 'gatsby';
-
 import { Operation } from '../components/pages/Operation';
 
 export default Operation;

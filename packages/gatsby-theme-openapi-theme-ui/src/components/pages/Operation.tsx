@@ -1,33 +1,24 @@
-import React from 'react';
+import { OperationProps } from 'gatsby-theme-openapi-core/src/components/pages/Operation';
 import { OpenAPIV3 } from 'openapi-types';
-
+import React from 'react';
 import { Helmet } from 'react-helmet';
-import { PageProps } from 'gatsby';
-import { Heading, Box } from 'theme-ui';
-import { Layout } from '../Layout';
+import { Box, Heading } from 'theme-ui';
 import { useOpenApiInfo } from '../../hooks/useOpenapiInfo';
-import { OperationWithFields } from '../../types';
-import { Link } from '../Link';
-import { useOpenApiSchemasByName } from '../../hooks/useOpenapiSchemasByName';
-import { RequestMethodBadge } from '../RequestMethodBadge';
-// import { useRequestBodiesByName } from '../../hooks/useRequestBodies';
 import { renderMarkdown } from '../../util/renderMarkdown';
+import { Layout } from '../Layout';
 import { OperationSecurityList } from '../OperationSecurityList';
-import { useOpenApiSecurity } from '../../hooks/useOpenApiSecurity';
+import { RequestMethodBadge } from '../RequestMethodBadge';
 import { Responses } from '../Responses';
 
-interface OperationDataProps {
-  operation: OperationWithFields;
-}
-
-export const Operation: React.FunctionComponent<PageProps<
-  OperationDataProps
->> = ({ data }) => {
+export const Operation: React.FunctionComponent<OperationProps> = ({
+  data,
+}) => {
   const { title } = useOpenApiInfo();
   const operationObject: OpenAPIV3.OperationObject = JSON.parse(
     data.operation.operation
   );
-  const description = renderMarkdown(operationObject.description);
+  const description =
+    operationObject.description && renderMarkdown(operationObject.description);
   return (
     <Layout>
       <Helmet>
@@ -68,7 +59,9 @@ export const Operation: React.FunctionComponent<PageProps<
       <Heading as="h3" mt={4} mb={3}>
         Responses
       </Heading>
-      <Responses responses={operationObject.responses} />
+      {operationObject.responses && (
+        <Responses responses={operationObject.responses} />
+      )}
     </Layout>
   );
 };

@@ -4,7 +4,7 @@ import { jsx } from 'theme-ui';
 import { NavItem, NavList } from './NavList';
 
 const getSelectedItems = (items: NavItem[], selectedKey: string): NavItem[] => {
-  return items.reduce((previousValue, item) => {
+  return items.reduce<NavItem[]>((previousValue, item) => {
     if (item.items) {
       const selectedItems = getSelectedItems(item.items, selectedKey);
       if (selectedItems.length) {
@@ -32,7 +32,7 @@ export const Nav: React.FunctionComponent<NavProps> = ({
     getSelectedItems(items, selectedKey)
   );
 
-  const onItemToggle = (item: NavItem) => {
+  const onItemToggle = (item: NavItem): void => {
     const selectedIndex = selectedItems.indexOf(item);
     const mewSelectedItems = selectedItems.slice();
     if (selectedIndex >= 0) {

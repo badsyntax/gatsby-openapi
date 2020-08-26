@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import React from 'react';
-import { Flex, Box, Heading, jsx } from 'theme-ui';
-import { Sidebar } from './Sidebar';
+import { Box, Flex, Heading, jsx } from 'theme-ui';
 import { useOpenApiInfo } from '../hooks/useOpenapiInfo';
+import { Sidebar } from './Sidebar';
 
 export const Layout: React.FunctionComponent = ({ children }) => {
   const { title, version, contact, license } = useOpenApiInfo();
