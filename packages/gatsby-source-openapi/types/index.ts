@@ -40,6 +40,13 @@ export interface GraphQLOpenApiOperation {
   operation: JsonString;
 }
 
+export interface GraphQLOpenApiOperationWithFields
+  extends GraphQLOpenApiOperation {
+  fields: {
+    slug: string;
+  };
+}
+
 export interface GraphQLOpenApiSchema {
   name: string;
   schema: JsonString;
@@ -56,12 +63,6 @@ export interface OpenApiInfo_XLogo {
 
 export interface GraphQLOpenApiInfo extends OpenAPIV3.InfoObject {
   x_logo: OpenApiInfo_XLogo;
-}
-
-export interface OperationWithFields extends GraphQLOpenApiOperation {
-  fields: {
-    slug: string;
-  };
 }
 
 export const graphQlTypes = `

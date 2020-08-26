@@ -1,9 +1,9 @@
 import { PageProps } from 'gatsby';
-import { OperationWithFields } from 'gatsby-source-openapi/types';
+import { GraphQLOpenApiOperationWithFields } from 'gatsby-source-openapi/types';
 import React from 'react';
 
 interface OperationDataProps {
-  operation: OperationWithFields;
+  operation: GraphQLOpenApiOperationWithFields;
 }
 
 export type OperationProps = PageProps<OperationDataProps>;

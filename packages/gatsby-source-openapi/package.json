@@ -33,6 +33,48 @@
     "eslint-plugin-prettier": "^3.1.4",
     "gatsby": "^2.24.47",
     "prettier": "^2.0.5",
+    "prettier-plugin-organize-imports": "^1.1.1",
     "typescript": "^4.0.2"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": false,
+      "es6": true,
+      "node": true
+    },
+    "parserOptions": {
+      "project": "./tsconfig.json",
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
+    "extends": [
+      "react-app",
+      "plugin:@typescript-eslint/recommended",
+      "prettier/@typescript-eslint",
+      "plugin:prettier/recommended"
+    ],
+    "rules": {
+      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "import/order": [
+        "error",
+        {
+          "groups": [
+            "builtin",
+            "external",
+            "parent",
+            "sibling",
+            "index"
+          ]
+        }
+      ],
+      "curly": "error"
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "tabWidth": 2,
+    "printWidth": 80,
+    "useTabs": false
   }
 }

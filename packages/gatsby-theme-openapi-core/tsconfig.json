@@ -4,6 +4,7 @@
     "target": "ES2018",
     "lib": ["ES2019.array", "DOM"],
     "module": "commonjs",
+    "jsx": "react",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -17,6 +18,5 @@
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "exclude": ["node_modules"],
-  "include": ["./gatsby-node.ts"]
+  "exclude": ["node_modules"]
 }

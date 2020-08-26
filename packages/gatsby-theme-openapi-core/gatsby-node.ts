@@ -1,10 +1,9 @@
-import { OpenAPIV3 } from 'openapi-types';
-import { NodePluginArgs, CreateNodeArgs } from 'gatsby';
-
+import { CreateNodeArgs, NodePluginArgs } from 'gatsby';
 import {
   API_OPERATION_TYPE,
   API_SCHEMA_TYPE,
 } from 'gatsby-source-openapi/types';
+import { OpenAPIV3 } from 'openapi-types';
 
 export const onCreateNode = ({ node, actions }: CreateNodeArgs): void => {
   const { createNodeField } = actions;
