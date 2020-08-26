@@ -7,8 +7,10 @@ import { useOpenApiInfo } from '../../hooks/useOpenapiInfo';
 import { renderMarkdown } from '../../util/renderMarkdown';
 import { Layout } from '../Layout';
 import { OperationSecurityList } from '../OperationSecurityList';
+import { RequestBody } from '../RequestBody';
 import { RequestMethodBadge } from '../RequestMethodBadge';
 import { Responses } from '../Responses';
+import { TabItem, Tabs } from '../Tabs';
 
 export const Operation: React.FunctionComponent<OperationProps> = ({
   data,
@@ -40,28 +42,21 @@ export const Operation: React.FunctionComponent<OperationProps> = ({
         {data.operation.path}
       </Box>
       {description}
-      <Heading as="h3" mt={4} mb={3}>
-        Authorizations
-      </Heading>
-      <OperationSecurityList operation={operationObject} />
-      {operationObject.requestBody && (
-        <React.Fragment>
-          <Heading as="h3" mt={4} mb={3}>
-            Request Body
-          </Heading>
-          {/* <RequestBody
-            requestBody={path.requestBody}
-            allRequestBodiesByName={allRequestBodiesByName}
-            allSchemasByName={allSchemasByName}
-          /> */}
-        </React.Fragment>
-      )}
-      <Heading as="h3" mt={4} mb={3}>
-        Responses
-      </Heading>
-      {operationObject.responses && (
-        <Responses responses={operationObject.responses} />
-      )}
+      <Tabs>
+        <TabItem label="Authorizations" itemKey="authorizations">
+          <OperationSecurityList operation={operationObject} />
+        </TabItem>
+        {operationObject.requestBody && (
+          <TabItem label="Body" itemKey="body">
+            <RequestBody requestBody={operationObject.requestBody} />
+          </TabItem>
+        )}
+        {operationObject.responses && (
+          <TabItem label="Responses" itemKey="responses">
+            <Responses responses={operationObject.responses} />
+          </TabItem>
+        )}
+      </Tabs>
     </Layout>
   );
 };

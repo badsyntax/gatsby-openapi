@@ -1,8 +1,8 @@
 import { OpenAPIV3 } from 'openapi-types';
 import React, { useState } from 'react';
 import { Box, Heading, Text } from 'theme-ui';
-import { SchemaMediaExamples } from './SchemaExamples';
 import { SchemaExplorer } from './SchemaExplorer/SchemaExplorer';
+import { SchemaMediaExamples } from './SchemaMediaExamples';
 import { TabItem, Tabs } from './Tabs';
 
 interface ResponseProps {
@@ -51,16 +51,22 @@ export const Response: React.FunctionComponent<ResponseProps> = ({
         </Heading>
       </Box>
       {!isHidden &&
+        response.content &&
         Object.keys(response.content).map((mediaType) => {
-          const media = response.content[mediaType];
+          const media = response.content![mediaType];
           return (
             <React.Fragment key={mediaType}>
               <Box mb={3}>Content Type: {mediaType}</Box>
               <Box mb={3}>
                 <Tabs>
-                  <TabItem label="Schema" itemKey="tabs-schema">
-                    <SchemaExplorer schema={media.schema} />
-                  </TabItem>
+                  {media.schema && (
+                    <TabItem label="Schema" itemKey="tabs-schema">
+                      <SchemaExplorer
+                        schema={media.schema}
+                        expandEnum={false}
+                      />
+                    </TabItem>
+                  )}
                   <TabItem label="Example" itemKey="tabs-example">
                     <SchemaMediaExamples media={media} />
                   </TabItem>

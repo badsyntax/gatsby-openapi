@@ -14,21 +14,41 @@ const SCHEMA_TYPE_ARRAY = 'array';
 interface SchemaTreeProps {
   schema: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject;
   dereference: Dereference<OpenAPIV3.SchemaObject>;
+  expandEnum: boolean;
 }
 
 export const SchemaTree: React.FunctionComponent<SchemaTreeProps> = ({
   schema,
   dereference,
+  expandEnum,
 }) => {
   if (isReferenceObject(schema)) {
-    return <SchemaRef schema={schema} dereference={dereference} />;
+    return (
+      <SchemaRef
+        schema={schema}
+        dereference={dereference}
+        expandEnum={expandEnum}
+      />
+    );
   }
   switch (schema.type) {
     case SCHEMA_TYPE_OBJECT:
-      return <SchemaObject schema={schema} dereference={dereference} />;
+      return (
+        <SchemaObject
+          schema={schema}
+          dereference={dereference}
+          expandEnum={expandEnum}
+        />
+      );
     case SCHEMA_TYPE_ARRAY:
-      return <SchemaArray schema={schema} dereference={dereference} />;
+      return (
+        <SchemaArray
+          schema={schema}
+          dereference={dereference}
+          expandEnum={expandEnum}
+        />
+      );
     default:
-      return <SchemaValue schema={schema} />;
+      return <SchemaValue schema={schema} expandEnum={expandEnum} />;
   }
 };

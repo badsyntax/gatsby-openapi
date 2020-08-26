@@ -9,11 +9,13 @@ import { SchemaTree } from './SchemaTree';
 interface SchemaArray {
   schema: OpenAPIV3.ArraySchemaObject;
   dereference: Dereference<OpenAPIV3.SchemaObject>;
+  expandEnum: boolean;
 }
 
 export const SchemaArray: React.FunctionComponent<SchemaArray> = ({
   schema,
   dereference,
+  expandEnum,
 }) => {
   const items: OpenAPIV3.SchemaObject = dereference(schema.items);
   return (
@@ -22,7 +24,11 @@ export const SchemaArray: React.FunctionComponent<SchemaArray> = ({
       {items.oneOf ? (
         <OneOfType oneOf={items.oneOf} dereference={dereference} />
       ) : (
-        <SchemaTree schema={items} dereference={dereference} />
+        <SchemaTree
+          schema={items}
+          dereference={dereference}
+          expandEnum={expandEnum}
+        />
       )}
       <code>]</code>
     </React.Fragment>

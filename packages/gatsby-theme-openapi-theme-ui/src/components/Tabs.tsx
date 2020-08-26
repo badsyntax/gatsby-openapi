@@ -21,9 +21,8 @@ function isTabItem(item: React.ReactNode): item is React.ReactElement {
 function getTabItems(props): TabItemProps[] {
   const items: TabItemProps[] = [];
 
-  React.Children.map(
-    React.Children.toArray(props.children),
-    (child: React.ReactChild) => {
+  if (props.children) {
+    React.Children.map(props.children, (child: React.ReactChild) => {
       if (isTabItem(child)) {
         items.push(child.props);
       } else {
@@ -31,8 +30,8 @@ function getTabItems(props): TabItemProps[] {
           'The children of a Tab component must be of type TabItem to be rendered.'
         );
       }
-    }
-  );
+    });
+  }
 
   return items;
 }
@@ -44,11 +43,12 @@ function renderTabItems(
 ) {
   return (
     <React.Fragment>
-      {tabItems.map((tabItem, i) => {
+      {tabItems.map((tabItem) => {
         return (
           <button
             type="button"
             onClick={() => onTabClick(tabItem)}
+            key={`button-${tabItem.itemKey}`}
             sx={{
               p: 2,
               mr: 2,
@@ -60,7 +60,7 @@ function renderTabItems(
                 outline: 'none',
               },
               '&:hover': {
-                backgroundColor: (theme) => theme.colors.muted,
+                backgroundColor: (theme) => theme.colors.codeBlockBG,
               },
               ...(tabItem.itemKey === selectedKey && {
                 borderBottom: (theme) => `2px solid ${theme.colors.primary}`,
@@ -77,7 +77,7 @@ function renderTabItems(
 
 function renderTabContent(tabItems: TabItemProps[], selectedKey: string) {
   const tabItem = tabItems.find((tabItem) => tabItem.itemKey === selectedKey);
-  return tabItem.children;
+  return tabItem ? tabItem.children : null;
 }
 
 export const Tabs: React.FunctionComponent = (props) => {
@@ -88,7 +88,7 @@ export const Tabs: React.FunctionComponent = (props) => {
   };
   return (
     <React.Fragment>
-      <Flex mb={2}>{renderTabItems(tabItems, selectedKey, onTabClick)}</Flex>
+      <Flex mb={3}>{renderTabItems(tabItems, selectedKey, onTabClick)}</Flex>
       {renderTabContent(tabItems, selectedKey)}
     </React.Fragment>
   );

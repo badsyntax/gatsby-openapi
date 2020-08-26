@@ -38,7 +38,10 @@ export const Sidebar: React.FunctionComponent = () => {
           items: tags[tag].map(
             (operationByTag): NavItem => {
               return {
-                name: operationByTag.operation.summary,
+                name:
+                  operationByTag.operation.summary ||
+                  operationByTag.operation.operationId ||
+                  'Summary not set',
                 key: `nav-/operation/${operationByTag.fields.slug}`,
                 to: `/operation/${operationByTag.fields.slug}/`,
                 operation: operationByTag,

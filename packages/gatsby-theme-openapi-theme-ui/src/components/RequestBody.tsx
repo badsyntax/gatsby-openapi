@@ -1,46 +1,53 @@
 /** @jsx jsx */
+import { OpenAPIV3 } from 'openapi-types';
 import React from 'react';
-import { jsx } from 'theme-ui';
-// import {
-//   OpenApiRequestBodiesByName,
-//   OpenApiRequestBody,
-//   OpenApiSchemasByName,
-// } from '../types';
-import { getRequestBodyContent } from '../util/getRequestBodyContent';
-import { SchemaExamples } from './SchemaExamples';
-import { SchemaExplorer } from './SchemaExplorer';
+import { Box, jsx, Select } from 'theme-ui';
+import { useDeferenceOpenApiSchema } from '../hooks/useDeferenceOpenApiSchema';
+import { SchemaExplorer } from './SchemaExplorer/SchemaExplorer';
+import { SchemaMediaExamples } from './SchemaMediaExamples';
 import { TabItem, Tabs } from './Tabs';
 
 interface RequestBodyProps {
-  requestBody: OpenApiRequestBody;
-  allSchemasByName: OpenApiSchemasByName;
-  allRequestBodiesByName: OpenApiRequestBodiesByName;
+  requestBody: OpenAPIV3.ReferenceObject | OpenAPIV3.RequestBodyObject;
 }
 
 export const RequestBody: React.FunctionComponent<RequestBodyProps> = ({
   requestBody,
-  allSchemasByName,
-  allRequestBodiesByName,
 }) => {
-  const content = getRequestBodyContent(requestBody, allRequestBodiesByName);
+  const dereference = useDeferenceOpenApiSchema<OpenAPIV3.RequestBodyObject>();
+  const dereferencedRequestBody = dereference(requestBody);
+  const requestBodyTypes = Object.keys(dereferencedRequestBody.content);
   return (
     <React.Fragment>
-      {content.map((content) => {
+      <Box
+        mb={2}
+        sx={{
+          maxWidth: 400,
+        }}
+      >
+        <Select defaultValue="application/x-www-form-urlencoded">
+          {requestBodyTypes.map((type) => {
+            return <option key={type}>{type}</option>;
+          })}
+        </Select>
+      </Box>
+      {requestBodyTypes.map((contentType) => {
+        const media: OpenAPIV3.MediaTypeObject =
+          dereferencedRequestBody.content[contentType];
         return (
-          <Tabs>
-            <TabItem label="Schema" itemKey="tabs-schema">
-              <SchemaExplorer
-                schema={JSON.parse(content.schema)}
-                allSchemasByName={allSchemasByName}
-              />
-            </TabItem>
-            <TabItem label="Example" itemKey="tabs-example">
-              <SchemaExamples
-                content={content}
-                allSchemasByName={allSchemasByName}
-              />
-            </TabItem>
-          </Tabs>
+          <React.Fragment key={contentType}>
+            {/* <Box mb={2}>Type: {contentType}</Box> */}
+            <Tabs>
+              {media.schema && (
+                <TabItem label="Schema" itemKey="tabs-schema">
+                  <SchemaExplorer schema={media.schema} expandEnum={false} />
+                </TabItem>
+              )}
+              <TabItem label="Example" itemKey="tabs-example">
+                <SchemaMediaExamples media={media} />
+              </TabItem>
+            </Tabs>
+          </React.Fragment>
         );
       })}
     </React.Fragment>

@@ -9,11 +9,13 @@ import { SchemaTree } from './SchemaTree';
 interface SchemaRefProps {
   schema: OpenAPIV3.ReferenceObject;
   dereference: Dereference<OpenAPIV3.SchemaObject>;
+  expandEnum: boolean;
 }
 
 export const SchemaRef: React.FunctionComponent<SchemaRefProps> = ({
   schema,
   dereference,
+  expandEnum,
 }) => {
   const refSchemaName = schema['$ref'].split('/').pop();
   const refSchema = dereference(schema);
@@ -23,7 +25,11 @@ export const SchemaRef: React.FunctionComponent<SchemaRefProps> = ({
     <React.Fragment>
       {!isComplexSchema && (
         <Link to={`/model/${refSchemaName}`}>
-          <SchemaTree schema={refSchema} dereference={dereference} />
+          <SchemaTree
+            schema={refSchema}
+            dereference={dereference}
+            expandEnum={expandEnum}
+          />
           <code
             sx={{
               ml: 1,
@@ -34,7 +40,11 @@ export const SchemaRef: React.FunctionComponent<SchemaRefProps> = ({
         </Link>
       )}
       {isComplexSchema && (
-        <SchemaTree schema={refSchema} dereference={dereference} />
+        <SchemaTree
+          schema={refSchema}
+          dereference={dereference}
+          expandEnum={expandEnum}
+        />
       )}
     </React.Fragment>
   );

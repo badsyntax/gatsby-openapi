@@ -52,6 +52,7 @@ export const Nav: React.FunctionComponent<NavProps> = ({
         sx={{
           margin: 0,
           padding: 0,
+          pb: 2,
           position: 'sticky',
           li: {
             listStyleType: 'none',

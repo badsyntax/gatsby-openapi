@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { OpenApiInfo_XLogo } from 'gatsby-theme-openapi-core/src/types';
+import { OpenApiInfo_XLogo } from 'gatsby-source-openapi/types';
 import React from 'react';
 import { Container, Image, jsx } from 'theme-ui';
 

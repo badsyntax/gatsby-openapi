@@ -10,11 +10,13 @@ import { SchemaTree } from './SchemaTree';
 interface SchemaObject {
   schema: OpenAPIV3.SchemaObject;
   dereference: Dereference<OpenAPIV3.SchemaObject>;
+  expandEnum: boolean;
 }
 
 export const SchemaObject: React.FunctionComponent<SchemaObject> = ({
   schema,
   dereference,
+  expandEnum,
 }) => {
   return (
     <React.Fragment>
@@ -37,6 +39,7 @@ export const SchemaObject: React.FunctionComponent<SchemaObject> = ({
                     <SchemaTree
                       schema={schema.properties![key]}
                       dereference={dereference}
+                      expandEnum={expandEnum}
                     />
                   </td>
                 </tr>

@@ -6,7 +6,7 @@ import { Heading } from 'theme-ui';
 import { Layout } from '../../components/Layout';
 import { useOpenApiInfo } from '../../hooks/useOpenapiInfo';
 import { renderMarkdown } from '../../util/renderMarkdown';
-import { SchemaSingleExample } from '../SchemaExamples';
+import { SchemaExampleFromSchema } from '../SchemaExampleFromSchema';
 import { SchemaExplorer } from '../SchemaExplorer/SchemaExplorer';
 import { TabItem, Tabs } from '../Tabs';
 
@@ -32,7 +32,7 @@ export const Model: React.FunctionComponent<ModelProps> = ({ data }) => {
           <SchemaExplorer schema={schemaObj} />
         </TabItem>
         <TabItem label="Example" itemKey="tabs-example">
-          <SchemaSingleExample schema={schemaObj} />
+          <SchemaExampleFromSchema schema={schemaObj} />
         </TabItem>
       </Tabs>
     </Layout>
