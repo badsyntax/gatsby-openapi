@@ -23,9 +23,9 @@ function sanitizeFieldNames<T>(obj): T {
 function isOperationObject(
   obj:
     | OpenAPIV3.OperationObject
-    | string
     | OpenAPIV3.ServerObject[]
     | Array<OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject>
+    | string
 ): obj is OpenAPIV3.OperationObject {
   if (typeof obj === 'string') {
     return false;
@@ -36,30 +36,30 @@ function isOperationObject(
   return true;
 }
 
+function getObjectAsArray(
+  openApiObject: OpenAPIV3ObjectConvertToArray | undefined
+): GraphQLOpenApiObjectAsArray[] {
+  return openApiObject
+    ? Object.keys(openApiObject).map(
+        (name): GraphQLOpenApiObjectAsArray => {
+          return {
+            name,
+            value: JSON.stringify(openApiObject[name]),
+          };
+        }
+      )
+    : [];
+}
+
 export class OpenAPITransformer {
   constructor(public readonly document: OpenAPIV3.Document) {}
-
-  getObjectAsArray(
-    openApiObject: OpenAPIV3ObjectConvertToArray | undefined
-  ): GraphQLOpenApiObjectAsArray[] {
-    return openApiObject
-      ? Object.keys(openApiObject).map(
-          (name): GraphQLOpenApiObjectAsArray => {
-            return {
-              name,
-              value: JSON.stringify(openApiObject[name]),
-            };
-          }
-        )
-      : [];
-  }
 
   getInfo(): OpenAPIV3.InfoObject {
     return sanitizeFieldNames<OpenAPIV3.InfoObject>(this.document.info);
   }
 
   getPaths(): GraphQLOpenApiPath[] {
-    return this.getObjectAsArray(this.document.paths);
+    return getObjectAsArray(this.document.paths);
   }
 
   getSchemas(): GraphQLOpenApiSchema[] {
@@ -98,14 +98,14 @@ export class OpenAPITransformer {
     return security
       ? security
           .map((securityItem): GraphQLOpenApiObjectAsArray[] => {
-            return this.getObjectAsArray(securityItem);
+            return getObjectAsArray(securityItem);
           })
           .flat()
       : [];
   }
 
   getComponents(): GraphQLOpenApiComponent[] {
-    return this.getObjectAsArray(this.document.components);
+    return getObjectAsArray(this.document.components);
   }
 
   getServers(): GraphQLOpenApiServer[] {

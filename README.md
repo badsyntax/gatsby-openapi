@@ -23,15 +23,15 @@ __NOTE:__ This repo is in the very early stages of development.
 
 ## Developing
 
-1\. Install deps:
+### Setup
 
 ```sh
 npm install
 npm run bootstrap
-npm run build
+npm run build:typescript
 ```
 
-2\. Run the example:
+### Run the example
 
 ```sh
 npm start

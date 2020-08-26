@@ -9,7 +9,8 @@
     "node": ">=12.0"
   },
   "scripts": {
-    "build": "tsc -p .",
+    "build": "tsc gatsby-node.ts",
+    "build:typescript": "npm run build",
     "watch": "npm run build -- -w"
   },
   "dependencies": {
