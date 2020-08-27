@@ -20,6 +20,8 @@ export const SchemaExplorer: React.FunctionComponent<SchemaExplorerProps> = ({
       sx={{
         backgroundColor: 'codeBlockBG',
         p: 2,
+        border: (theme) => `1px solid ${theme.colors.muted}`,
+        borderRadius: '4px',
       }}
     >
       <SchemaTree

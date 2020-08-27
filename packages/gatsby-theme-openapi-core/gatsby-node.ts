@@ -32,7 +32,8 @@ export const createPages = async ({
   graphql,
   actions,
   reporter,
-}: NodePluginArgs): Promise<void> => {
+}: NodePluginArgs): // options: PluginOptions
+Promise<void> => {
   const { createPage } = actions;
 
   async function createOperationPages() {

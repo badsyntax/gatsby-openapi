@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc gatsby-node.ts",
     "build:typescript": "npm run build",
-    "watch": "npm run build -- -w"
+    "watch:typescript": "npm run build -- -w"
   },
   "dependencies": {
     "gatsby-source-openapi": "^0.0.1"

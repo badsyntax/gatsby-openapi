@@ -25,6 +25,7 @@ export const Samples: React.FunctionComponent<SamplesProps> = ({ samples }) => {
             label={sample.label || sample.lang}
             itemKey={lang}
             key={lang}
+            variant="pill"
           >
             <Prism className={`language-${lang}`}>
               {decodeURIComponent(sample.source)}

@@ -2,9 +2,12 @@
 import React, { useState } from 'react';
 import { Flex, jsx } from 'theme-ui';
 
+const DEFAULT_TAB_ITEM_VARIANT = 'default';
+
 interface TabItemProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string;
   itemKey: string;
+  variant?: 'default' | 'pill';
 }
 
 export const TabItem: React.FunctionComponent<TabItemProps> = () => null;
@@ -44,28 +47,16 @@ function renderTabItems(
   return (
     <React.Fragment>
       {tabItems.map((tabItem) => {
+        const variant = tabItem.variant || DEFAULT_TAB_ITEM_VARIANT;
         return (
           <button
             type="button"
             onClick={() => onTabClick(tabItem)}
             key={`button-${tabItem.itemKey}`}
             sx={{
-              p: 2,
-              mr: 2,
-              border: 0,
-              backgroundColor: 'transparent',
-              fontSize: 1,
-              cursor: 'pointer',
-              '&:focus': {
-                outline: 'none',
-              },
-              '&:hover': {
-                backgroundColor: (theme) => theme.colors.codeBlockBG,
-              },
-              ...(tabItem.itemKey === selectedKey && {
-                borderBottom: (theme) => `2px solid ${theme.colors.primary}`,
-              }),
+              variant: `tabs.${variant}.item`,
             }}
+            className={tabItem.itemKey === selectedKey ? 'active' : undefined}
           >
             {tabItem.label}
           </button>

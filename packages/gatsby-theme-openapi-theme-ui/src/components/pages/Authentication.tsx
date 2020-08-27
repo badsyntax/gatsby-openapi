@@ -8,6 +8,7 @@ import { useOpenApiInfo } from '../../hooks/useOpenapiInfo';
 import { isOAuth2SecurityScheme } from '../../types';
 import { renderMarkdown } from '../../util/renderMarkdown';
 import { Layout } from '../Layout';
+import { Panel } from '../Panel';
 import { SecuritySchemaTable } from '../SecuritySchemaTable';
 
 interface SecuritySchemes {
@@ -40,15 +41,15 @@ export const Authentication: React.FunctionComponent<AuthenticationProps> = ({
       </Heading>
       {dereferencedSecuritySchemes.map((securityScheme) => {
         return (
-          <React.Fragment key={securityScheme.name}>
-            <Heading as="h2" mb={3} mt={4} id={securityScheme.name}>
+          <Panel key={securityScheme.name}>
+            <Heading as="h2" mb={3} id={securityScheme.name}>
               {securityScheme.name}
             </Heading>
             <SecuritySchemaTable scheme={securityScheme.scheme} />
             {!isOAuth2SecurityScheme(securityScheme.scheme) &&
               securityScheme.scheme.description &&
               renderMarkdown(securityScheme.scheme.description)}
-          </React.Fragment>
+          </Panel>
         );
       })}
     </Layout>

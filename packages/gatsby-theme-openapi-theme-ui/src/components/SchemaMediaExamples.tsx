@@ -24,7 +24,7 @@ export const SchemaMediaExamples: React.FunctionComponent<SchemaMediaExamplesPro
         {Object.keys(media.examples).map((name) => {
           const example = dereferenceExample(media.examples![name]);
           return (
-            <TabItem key={name} itemKey={name} label={name}>
+            <TabItem key={name} itemKey={name} label={name} variant="pill">
               <SchemaExample example={example.value} type={type} />
             </TabItem>
           );

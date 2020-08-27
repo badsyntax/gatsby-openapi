@@ -6,15 +6,21 @@
   "license": "0BSD",
   "author": "Richard Willis <willis.rh@gmail.com>",
   "scripts": {
+    "prestart": "ensure-node-env",
+    "preinstall": "npx ensure-node-env",
     "start": "npm --prefix ./packages/example-theme-ui run start",
     "clean": "npm --prefix ./packages/example-theme-ui run clean",
+    "watch:typescript": "lerna run watch:typescript",
     "build:typescript": "lerna run build:typescript",
+    "build": "lerna run build",
     "bootstrap": "lerna bootstrap --hoist"
   },
   "engines": {
-    "node": ">=12.0"
+    "node": ">=12.0",
+    "npm": ">=6.14.6"
   },
   "devDependencies": {
+    "ensure-node-env": "^1.2.3",
     "lerna": "^3.22.1"
   }
 }

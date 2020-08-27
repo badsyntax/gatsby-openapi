@@ -38,11 +38,11 @@ export const RequestBody: React.FunctionComponent<RequestBodyProps> = ({
           <React.Fragment key={contentType}>
             <Tabs>
               {media.schema && (
-                <TabItem label="Schema" itemKey="tabs-schema">
+                <TabItem label="Schema" itemKey="tabs-schema" variant="pill">
                   <SchemaExplorer schema={media.schema} expandEnum={false} />
                 </TabItem>
               )}
-              <TabItem label="Example" itemKey="tabs-example">
+              <TabItem label="Example" itemKey="tabs-example" variant="pill">
                 <SchemaMediaExamples media={media} type={contentType} />
               </TabItem>
             </Tabs>

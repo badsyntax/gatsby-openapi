@@ -1,6 +1,9 @@
+/** @jsx jsx */
+
 import { OpenAPIV3 } from 'openapi-types';
 import React, { useState } from 'react';
-import { Box, Heading, Select, Text } from 'theme-ui';
+import { VscChevronDown, VscChevronRight } from 'react-icons/vsc';
+import { Box, Heading, jsx, Select, Text } from 'theme-ui';
 import { SchemaExplorer } from './SchemaExplorer/SchemaExplorer';
 import { SchemaMediaExamples } from './SchemaMediaExamples';
 import { TabItem, Tabs } from './Tabs';
@@ -31,33 +34,40 @@ export const Response: React.FunctionComponent<ResponseProps> = ({
   const [selectedMediaType, setSelectedMediaType] = useState(mediaTypes[0]);
   return (
     <React.Fragment>
-      <Box
-        p={2}
-        mb={2}
+      <Heading
         onClick={onButtonClick}
         sx={{
-          border: (theme) => `1px solid ${theme.colors.muted}`,
-          borderRadius: 2,
-          cursor: 'pointer',
-          backgroundColor: isSuccessResponse
-            ? 'responseOkBG'
-            : 'responseErrorBG',
-          color: isSuccessResponse ? 'responseOkText' : 'responseErrorText',
+          variant: 'response.heading',
         }}
+        className={isSuccessResponse ? 'ok' : 'error'}
+        as="h3"
       >
-        <Heading
+        {isHidden ? (
+          <VscChevronRight
+            sx={{
+              strokeWidth: 1,
+              mr: 1,
+            }}
+          />
+        ) : (
+          <VscChevronDown
+            sx={{
+              strokeWidth: 1,
+              mr: 1,
+            }}
+          />
+        )}
+        <Text
+          variant="text.bold"
+          as="span"
           sx={{
-            fontSize: 1,
-            fontWeight: 'normal',
+            mr: 1,
           }}
-          as="h3"
         >
-          <Text variant="text.bold" as="span">
-            {code}
-          </Text>{' '}
-          {response.description}
-        </Heading>
-      </Box>
+          {code}
+        </Text>
+        {response.description}
+      </Heading>
       {!isHidden && (
         <React.Fragment>
           <Box
@@ -81,14 +91,22 @@ export const Response: React.FunctionComponent<ResponseProps> = ({
                   <Box mb={3}>
                     <Tabs>
                       {media.schema && (
-                        <TabItem label="Schema" itemKey="tabs-schema">
+                        <TabItem
+                          label="Schema"
+                          itemKey="tabs-schema"
+                          variant="pill"
+                        >
                           <SchemaExplorer
                             schema={media.schema}
                             expandEnum={false}
                           />
                         </TabItem>
                       )}
-                      <TabItem label="Example" itemKey="tabs-example">
+                      <TabItem
+                        label="Example"
+                        itemKey="tabs-example"
+                        variant="pill"
+                      >
                         <SchemaMediaExamples media={media} type={mediaType} />
                       </TabItem>
                     </Tabs>

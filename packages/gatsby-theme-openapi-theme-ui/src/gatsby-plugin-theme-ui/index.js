@@ -82,6 +82,78 @@ const theme = merge(tailwind, {
       fontSize: '0.65rem',
     },
   },
+  response: {
+    heading: {
+      p: 2,
+      mb: 2,
+      fontSize: 1,
+      fontWeight: 'normal',
+      border: (theme) => `1px solid ${theme.colors.muted}`,
+      borderRadius: 2,
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      '&.ok': {
+        backgroundColor: 'responseOkBG',
+        color: 'responseOkText',
+        '&:hover': {
+          borderColor: 'responseOkText',
+        },
+      },
+      '&.error': {
+        backgroundColor: 'responseErrorBG',
+        color: 'responseErrorText',
+        '&:hover': {
+          borderColor: 'responseErrorText',
+        },
+      },
+    },
+  },
+  tabs: {
+    default: {
+      item: {
+        p: 2,
+        mr: 2,
+        border: 0,
+        fontSize: 1,
+        bg: 'transparent',
+        cursor: 'pointer',
+        '&:focus': {
+          outline: 'none',
+        },
+        '&:hover': {
+          backgroundColor: (theme) => theme.colors.codeBlockBG,
+        },
+        '&.active': {
+          borderBottom: (theme) => `2px solid ${theme.colors.primary}`,
+        },
+      },
+    },
+    pill: {
+      item: {
+        p: 2,
+        mr: 2,
+        border: 0,
+        fontSize: 1,
+        bg: 'transparent',
+        cursor: 'pointer',
+        borderRadius: 4,
+        '&:focus': {
+          outline: 'none',
+        },
+        '&:hover': {
+          backgroundColor: (theme) => theme.colors.codeBlockBG,
+        },
+        '&.active:hover': {
+          bg: 'primary',
+        },
+        '&.active': {
+          bg: 'primary',
+          color: 'white',
+        },
+      },
+    },
+  },
   table: {
     default: {
       borderCollapse: 'collapse',
@@ -117,6 +189,8 @@ const theme = merge(tailwind, {
     pre: {
       ...syntaxHighlightPreset,
       backgroundColor: 'codeBlockBG',
+      border: (theme) => `1px solid ${theme.colors.muted}`,
+      borderRadius: '4px',
       p: 2,
       '.operator': {
         backgroundColor: 'codeBlockBG',

@@ -133,6 +133,14 @@ export class OpenAPITransformer {
   }
 
   getSecurity(security = this.document.security): GraphQLOpenApiSecurity[] {
+    console.log(
+      'security',
+      security
+        .map((securityItem): GraphQLOpenApiObjectAsArray[] => {
+          return getObjectAsArray(securityItem);
+        })
+        .flat()
+    );
     return security
       ? security
           .map((securityItem): GraphQLOpenApiObjectAsArray[] => {

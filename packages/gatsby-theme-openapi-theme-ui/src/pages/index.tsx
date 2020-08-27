@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Heading } from 'theme-ui';
 import { Layout } from '../components/Layout';
+import { Panel } from '../components/Panel';
 import { useOpenApiInfo } from '../hooks/useOpenapiInfo';
 import { renderMarkdown } from '../util/renderMarkdown';
 
@@ -13,14 +14,15 @@ const Home: React.FunctionComponent = () => {
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <Heading as="h1" mb={2}>
-        Overview
-      </Heading>
-      <div>
+
+      <Panel>
+        <Heading as="h1" mb={2}>
+          Overview
+        </Heading>
         {contact && <>URL: {contact.url}</>} |{' '}
         {license && <>License: {license.name}</>}
-      </div>
-      {markdownReact}
+        {markdownReact}
+      </Panel>
     </Layout>
   );
 };
