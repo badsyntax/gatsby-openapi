@@ -23,19 +23,40 @@ __NOTE:__ This repo is in the very early stages of development.
 
 ## Developing
 
-### Setup
+This is a lerna project. Common dependencies are hoisted into the root `node_modules` directory. This means you must re-bootstrap the project (`npm run boostrap`) after installing any dependencies into any of the packages.
+
+### Getting Started
 
 ```sh
+# install lerna dependencies
 npm install
+
+# install all dependencies and hoist them to root
+# this can take a long time
 npm run bootstrap
-npm run build:typescript
+
+# build node typescript files
+npm run watch:typescript
+# or npm run watch:build
 ```
 
-### Run the example
+### Run the example site
 
 ```sh
 npm start
 ```
+
+### Build the example site
+
+```sh
+npm run build
+```
+
+### Troubleshooting
+
+`Error sourcing OpenAPI data: security.map(...).flat is not a function`
+
+This usually means you're using an older version of node. Use the version as specified in `.nvmrc` or within `package.json`.
 
 ## License
 
