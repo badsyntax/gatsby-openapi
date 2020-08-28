@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import { Heading } from 'theme-ui';
 import { Layout } from '../../components/Layout';
 import { useOpenApiInfo } from '../../hooks/useOpenapiInfo';
-import { renderMarkdown } from '../../util/renderMarkdown';
+import { Markdown } from '../Markdown';
 import { Panel } from '../Panel';
 import { SchemaExampleFromSchema } from '../SchemaExampleFromSchema';
 import { SchemaExplorer } from '../SchemaExplorer/SchemaExplorer';
@@ -14,8 +14,6 @@ import { TabItem, Tabs } from '../Tabs';
 export const Model: React.FunctionComponent<ModelProps> = ({ data }) => {
   const { schema } = data;
   const schemaObj: OpenAPIV3.SchemaObject = JSON.parse(schema.schema);
-  const description =
-    schemaObj.description && renderMarkdown(schemaObj.description);
   const { title } = useOpenApiInfo();
   return (
     <Layout>
@@ -28,7 +26,7 @@ export const Model: React.FunctionComponent<ModelProps> = ({ data }) => {
         <Heading as="h2" mb={3}>
           {schema.name}
         </Heading>
-        {description}
+        <Markdown text={schemaObj.description || ''} />
       </Panel>
       <Panel>
         <Tabs>

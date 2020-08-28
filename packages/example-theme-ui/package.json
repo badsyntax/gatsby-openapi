@@ -39,13 +39,15 @@
       "es6": true,
       "node": true
     },
+    "ignorePatterns": ["public/**"],
     "parserOptions": {
       "ecmaVersion": 2018,
       "sourceType": "module"
     },
     "extends": [
       "react-app",
-      "plugin:prettier/recommended"
+      "plugin:prettier/recommended",
+      "plugin:import/errors"
     ],
     "rules": {
       "import/order": [
