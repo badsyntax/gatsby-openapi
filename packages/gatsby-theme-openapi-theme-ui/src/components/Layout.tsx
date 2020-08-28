@@ -5,7 +5,7 @@ import { useOpenApiInfo } from '../hooks/useOpenapiInfo';
 import { Sidebar } from './Sidebar';
 
 export const Layout: React.FunctionComponent = ({ children }) => {
-  const { title, version, contact, license } = useOpenApiInfo();
+  const { title, version } = useOpenApiInfo();
   return (
     <Flex
       sx={{

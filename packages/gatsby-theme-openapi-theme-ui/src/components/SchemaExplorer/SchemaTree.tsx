@@ -14,13 +14,13 @@ const SCHEMA_TYPE_ARRAY = 'array';
 interface SchemaTreeProps {
   schema: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject;
   dereference: Dereference<OpenAPIV3.SchemaObject>;
-  expandEnum: boolean;
+  expandEnum?: boolean;
 }
 
 export const SchemaTree: React.FunctionComponent<SchemaTreeProps> = ({
   schema,
   dereference,
-  expandEnum,
+  expandEnum = false,
 }) => {
   if (isReferenceObject(schema)) {
     return (

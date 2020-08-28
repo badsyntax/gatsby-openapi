@@ -10,6 +10,7 @@
   },
   "scripts": {
     "lint": "npm run lint:prettier && npm run lint:eslint",
+    "build:typescript": "tsc -p ./",
     "lint:prettier": "prettier --check \"**/*.{ts,tsx,js,json,svg,md,yml}\"",
     "lint:eslint": "eslint . --ext .js,.ts",
     "lint:fix": "npm run lint:fix:prettier && npm run lint:eslint -- --fix",
@@ -34,7 +35,6 @@
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "@types/react-helmet": "^6.1.0",
     "@types/theme-ui": "^0.3.6",
     "@types/unist": "^2.0.3",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
@@ -45,6 +45,7 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
     "gatsby": "^2.24.52",
+    "gatsby-source-openapi": "^0.0.1",
     "prettier-plugin-organize-imports": "^1.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

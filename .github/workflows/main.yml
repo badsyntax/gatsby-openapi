@@ -17,8 +17,8 @@ jobs:
           npm install
           npm run bootstrap
       - name: Lint
-        run: npm run lint
+        run: |
+          npm run lint
       - name: Build
         run: |
-          npm run build:typescript
           npm run build

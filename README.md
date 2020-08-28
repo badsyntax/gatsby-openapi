@@ -1,5 +1,7 @@
 # gatsby-openapi
 
+![Build and Deploy](https://github.com/badsyntax/gatsby-openapi/workflows/Build%20and%20Deploy/badge.svg)
+
 A mono-repo with a set a gatsby plugins that can be used to build API docs from an OpenAPI specification.
 
 __NOTE:__ This repo is in the very early stages of development.
@@ -31,18 +33,10 @@ This is a lerna project. Common dependencies are hoisted into the root `node_mod
 # install lerna dependencies
 npm install
 
-# install all dependencies and hoist them to root
-# this can take a long time
+# install & hoist package dependencies (this can take a long time)
 npm run bootstrap
 
-# build node typescript files
-npm run watch:typescript
-# or npm run watch:build
-```
-
-### Run the example site
-
-```sh
+# run the example site
 npm start
 ```
 

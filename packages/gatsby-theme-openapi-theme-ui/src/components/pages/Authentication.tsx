@@ -6,8 +6,8 @@ import { Heading } from 'theme-ui';
 import { useDeferenceOpenApiSchema } from '../../hooks/useDeferenceOpenApiSchema';
 import { useOpenApiInfo } from '../../hooks/useOpenapiInfo';
 import { isOAuth2SecurityScheme } from '../../types';
-import { renderMarkdown } from '../../util/renderMarkdown';
 import { Layout } from '../Layout';
+import { Markdown } from '../Markdown';
 import { Panel } from '../Panel';
 import { SecuritySchemaTable } from '../SecuritySchemaTable';
 
@@ -47,8 +47,9 @@ export const Authentication: React.FunctionComponent<AuthenticationProps> = ({
             </Heading>
             <SecuritySchemaTable scheme={securityScheme.scheme} />
             {!isOAuth2SecurityScheme(securityScheme.scheme) &&
-              securityScheme.scheme.description &&
-              renderMarkdown(securityScheme.scheme.description)}
+              securityScheme.scheme.description && (
+                <Markdown text={securityScheme.scheme.description || ''} />
+              )}
           </Panel>
         );
       })}

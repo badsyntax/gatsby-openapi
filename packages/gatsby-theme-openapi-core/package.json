@@ -12,6 +12,7 @@
     "build": "tsc gatsby-node.ts",
     "build:typescript": "npm run build",
     "watch:typescript": "npm run build -- -w",
+    "prepublish": "npm run build",
     "lint": "npm run lint:prettier && npm run lint:eslint",
     "lint:prettier": "prettier --check \"**/*.{ts,tsx,js,json,svg,md,yml}\"",
     "lint:eslint": "eslint . --ext .js,.ts",
@@ -57,7 +58,8 @@
       "react-app",
       "plugin:@typescript-eslint/recommended",
       "prettier/@typescript-eslint",
-      "plugin:prettier/recommended"
+      "plugin:prettier/recommended",
+      "plugin:import/errors"
     ],
     "rules": {
       "@typescript-eslint/no-floating-promises": "error",

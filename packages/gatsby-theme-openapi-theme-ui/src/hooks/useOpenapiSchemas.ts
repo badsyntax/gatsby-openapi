@@ -1,7 +1,7 @@
 import { graphql, useStaticQuery } from 'gatsby';
-import { OpenApiSchema } from '../types';
+import { GraphQLOpenApiSchema } from 'gatsby-source-openapi/types';
 
-export function useOpenApiSchemas(): OpenApiSchema[] {
+export function useOpenApiSchemas(): GraphQLOpenApiSchema[] {
   const data = useStaticQuery(graphql`
     query {
       schemas: allOpenApiSchema {
