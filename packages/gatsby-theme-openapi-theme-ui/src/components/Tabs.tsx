@@ -7,7 +7,6 @@ const DEFAULT_TAB_ITEM_VARIANT = 'default';
 interface TabItemProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string;
   itemKey: string;
-  variant?: 'default' | 'pill';
 }
 
 export const TabItem: React.FunctionComponent<TabItemProps> = () => null;
@@ -21,19 +20,24 @@ function isTabItem(item: React.ReactNode): item is React.ReactElement {
   );
 }
 
-function getTabItems(props): TabItemProps[] {
+function getTabItems(children: React.ReactNode): TabItemProps[] {
   const items: TabItemProps[] = [];
 
-  if (props.children) {
-    React.Children.map(props.children, (child: React.ReactChild) => {
-      if (isTabItem(child)) {
-        items.push(child.props);
-      } else {
-        console.warn(
-          'The children of a Tab component must be of type TabItem to be rendered.'
-        );
+  if (children) {
+    React.Children.forEach<React.ReactChild>(
+      children as React.ReactChild,
+      (child: React.ReactChild) => {
+        if (child) {
+          if (isTabItem(child)) {
+            items.push(child.props);
+          } else {
+            console.warn(
+              'The children of a Tab component must be of type TabItem to be rendered.'
+            );
+          }
+        }
       }
-    });
+    );
   }
 
   return items;
@@ -42,12 +46,12 @@ function getTabItems(props): TabItemProps[] {
 function renderTabItems(
   tabItems: TabItemProps[],
   selectedKey: string,
-  onTabClick: (item: TabItemProps) => void
+  onTabClick: (item: TabItemProps) => void,
+  variant?: 'default' | 'pill'
 ) {
   return (
     <React.Fragment>
       {tabItems.map((tabItem) => {
-        const variant = tabItem.variant || DEFAULT_TAB_ITEM_VARIANT;
         return (
           <button
             type="button"
@@ -71,15 +75,22 @@ function renderTabContent(tabItems: TabItemProps[], selectedKey: string) {
   return tabItem ? tabItem.children : null;
 }
 
-export const Tabs: React.FunctionComponent = (props) => {
-  const tabItems = getTabItems(props);
+interface TabsProps {
+  variant?: 'default' | 'pill';
+}
+
+export const Tabs: React.FunctionComponent<TabsProps> = (props) => {
+  const tabItems = getTabItems(props.children);
   const [selectedKey, setSelectedKey] = useState(tabItems[0].itemKey);
   const onTabClick = (item: TabItemProps): void => {
     setSelectedKey(item.itemKey);
   };
+  const variant = props.variant || DEFAULT_TAB_ITEM_VARIANT;
   return (
     <React.Fragment>
-      <Flex mb={3}>{renderTabItems(tabItems, selectedKey, onTabClick)}</Flex>
+      <Flex sx={{ variant: `tabs.${variant}.container` }}>
+        {renderTabItems(tabItems, selectedKey, onTabClick, variant)}
+      </Flex>
       {renderTabContent(tabItems, selectedKey)}
     </React.Fragment>
   );

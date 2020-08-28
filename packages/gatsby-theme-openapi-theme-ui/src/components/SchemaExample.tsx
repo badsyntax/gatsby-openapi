@@ -33,5 +33,14 @@ export const SchemaExample: React.FunctionComponent<SchemaExampleProps> = ({
   const formattedExample =
     type && formatters[type] ? formatters[type](example) : String(example);
 
-  return <Prism className="language-json">{formattedExample}</Prism>;
+  return (
+    <Prism
+      sx={{
+        mb: 0,
+      }}
+      className="language-json"
+    >
+      {formattedExample}
+    </Prism>
+  );
 };

@@ -22,9 +22,5 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "cSpell.language": "en-GB",
-  "cSpell.words": [
-    "openapi",
-    "apiv",
-    "sidenav"
-  ]
+  "cSpell.words": ["openapi", "apiv", "sidenav"]
 }

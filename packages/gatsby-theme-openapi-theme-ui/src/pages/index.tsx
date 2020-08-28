@@ -14,11 +14,10 @@ const Home: React.FunctionComponent = () => {
       <Helmet>
         <title>{title}</title>
       </Helmet>
-
+      <Heading as="h1" mb={4}>
+        Overview
+      </Heading>
       <Panel>
-        <Heading as="h1" mb={2}>
-          Overview
-        </Heading>
         {contact && <>URL: {contact.url}</>} |{' '}
         {license && <>License: {license.name}</>}
         {markdownReact}

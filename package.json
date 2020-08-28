@@ -13,7 +13,8 @@
     "watch:typescript": "lerna run watch:typescript",
     "build:typescript": "lerna run build:typescript",
     "build": "lerna run build",
-    "bootstrap": "lerna bootstrap --hoist"
+    "bootstrap": "lerna bootstrap --hoist",
+    "lint": "lerna run lint"
   },
   "engines": {
     "node": ">=12.0",
@@ -22,5 +23,6 @@
   "devDependencies": {
     "ensure-node-env": "^1.2.3",
     "lerna": "^3.22.1"
-  }
+  },
+  "dependencies": {}
 }

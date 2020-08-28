@@ -1,6 +1,8 @@
+/** @jsx jsx */
 import Prism from '@theme-ui/prism';
 import { OpenApiXCodeSample } from 'gatsby-source-openapi/types';
 import React from 'react';
+import { jsx } from 'theme-ui';
 import { TabItem, Tabs } from './Tabs';
 
 const langMap = {
@@ -25,9 +27,13 @@ export const Samples: React.FunctionComponent<SamplesProps> = ({ samples }) => {
             label={sample.label || sample.lang}
             itemKey={lang}
             key={lang}
-            variant="pill"
           >
-            <Prism className={`language-${lang}`}>
+            <Prism
+              sx={{
+                mb: 0,
+              }}
+              className={`language-${lang}`}
+            >
               {decodeURIComponent(sample.source)}
             </Prism>
           </TabItem>

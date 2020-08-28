@@ -74,6 +74,8 @@ export const Sidebar: React.FunctionComponent = () => {
         height: '100vh',
         flexGrow: 1,
         flexBasis: 'sidebar',
+        boxShadow:
+          'rgba(0,0,0,0.133) 0px 1px 3px 0px, rgba(0,0,0,0.11) 0px 0.5px 1.8px 0px',
       }}
     >
       {x_logo && <Logo logo={x_logo} />}

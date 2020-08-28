@@ -39,7 +39,10 @@ export const Response: React.FunctionComponent<ResponseProps> = ({
         sx={{
           variant: 'response.heading',
         }}
-        className={isSuccessResponse ? 'ok' : 'error'}
+        className={[
+          isSuccessResponse ? 'ok' : 'error',
+          !isHidden ? 'active' : '',
+        ].join(' ')}
         as="h3"
       >
         {isHidden ? (
@@ -69,14 +72,9 @@ export const Response: React.FunctionComponent<ResponseProps> = ({
         {response.description}
       </Heading>
       {!isHidden && (
-        <React.Fragment>
-          <Box
-            mb={2}
-            sx={{
-              maxWidth: 400,
-            }}
-          >
-            <Select onChange={onMediaTypeChange}>
+        <Box pb={3} pt={2}>
+          <Box mb={3}>
+            <Select variant="select.small" sx={{}} onChange={onMediaTypeChange}>
               {mediaTypes.map((type) => {
                 return <option key={type}>{type}</option>;
               })}
@@ -88,25 +86,17 @@ export const Response: React.FunctionComponent<ResponseProps> = ({
               const media = response.content![mediaType];
               return (
                 <React.Fragment key={mediaType}>
-                  <Box mb={3}>
+                  <Box>
                     <Tabs>
                       {media.schema && (
-                        <TabItem
-                          label="Schema"
-                          itemKey="tabs-schema"
-                          variant="pill"
-                        >
+                        <TabItem label="Schema" itemKey="tabs-schema">
                           <SchemaExplorer
                             schema={media.schema}
                             expandEnum={false}
                           />
                         </TabItem>
                       )}
-                      <TabItem
-                        label="Example"
-                        itemKey="tabs-example"
-                        variant="pill"
-                      >
+                      <TabItem label="Example" itemKey="tabs-example">
                         <SchemaMediaExamples media={media} type={mediaType} />
                       </TabItem>
                     </Tabs>
@@ -114,7 +104,7 @@ export const Response: React.FunctionComponent<ResponseProps> = ({
                 </React.Fragment>
               );
             })}
-        </React.Fragment>
+        </Box>
       )}
     </React.Fragment>
   );

@@ -22,7 +22,7 @@ export const Responses: React.FunctionComponent<ResponsesProps> = ({
   });
 
   return (
-    <div>
+    <React.Fragment>
       {dereferencedResponses.map((response) => {
         return (
           <Response
@@ -32,6 +32,6 @@ export const Responses: React.FunctionComponent<ResponsesProps> = ({
           />
         );
       })}
-    </div>
+    </React.Fragment>
   );
 };

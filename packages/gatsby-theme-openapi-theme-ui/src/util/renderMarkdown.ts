@@ -3,7 +3,7 @@ import remark2react from 'remark-react';
 import unified from 'unified';
 import { Link } from '../components/Link';
 
-export function renderMarkdown(contents: string): unknown {
+export function renderMarkdown(contents: string): React.ReactElement {
   return (
     unified()
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

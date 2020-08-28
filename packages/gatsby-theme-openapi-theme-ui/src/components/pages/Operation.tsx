@@ -7,9 +7,9 @@ import { VscLock } from 'react-icons/vsc';
 import { Box, Flex, Heading, jsx } from 'theme-ui';
 import { useOpenApiInfo } from '../../hooks/useOpenapiInfo';
 import { useOpenApiOperationSecurity } from '../../hooks/useOpenApiOperationSecurity';
-import { renderMarkdown } from '../../util/renderMarkdown';
 import { Layout } from '../Layout';
 import { Link } from '../Link';
+import { Markdown } from '../Markdown';
 import { Panel } from '../Panel';
 import { RequestBody } from '../RequestBody';
 import { RequestMethodBadge } from '../RequestMethodBadge';
@@ -32,9 +32,6 @@ export const Operation: React.FunctionComponent<OperationProps> = ({
       securityItems.push(name);
     });
   });
-
-  const description =
-    operationObject.description && renderMarkdown(operationObject.description);
   return (
     <Layout>
       <Helmet>
@@ -84,7 +81,7 @@ export const Operation: React.FunctionComponent<OperationProps> = ({
             </Box>
           )}
         </Flex>
-        {description}
+        <Markdown text={operationObject.description || ''} />
       </Panel>
       <Panel>
         <Tabs>
@@ -99,7 +96,7 @@ export const Operation: React.FunctionComponent<OperationProps> = ({
             </TabItem>
           )}
           {operationObject.x_codeSamples && (
-            <TabItem label="Samples" itemKey="samples">
+            <TabItem label="Request Samples" itemKey="samples">
               <Samples samples={operationObject.x_codeSamples} />
             </TabItem>
           )}

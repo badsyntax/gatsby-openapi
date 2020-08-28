@@ -93,24 +93,36 @@ const theme = merge(tailwind, {
       cursor: 'pointer',
       display: 'flex',
       alignItems: 'center',
+      '&:last-child': {
+        mb: 0,
+      },
       '&.ok': {
         backgroundColor: 'responseOkBG',
         color: 'responseOkText',
         '&:hover': {
-          borderColor: 'responseOkText',
+          borderColor: tailwind.colors.green[3],
+        },
+        '&.active': {
+          borderColor: tailwind.colors.green[3],
         },
       },
       '&.error': {
         backgroundColor: 'responseErrorBG',
         color: 'responseErrorText',
         '&:hover': {
-          borderColor: 'responseErrorText',
+          borderColor: tailwind.colors.red[3],
+        },
+        '&.active': {
+          borderColor: tailwind.colors.red[3],
         },
       },
     },
   },
   tabs: {
     default: {
+      container: {
+        mb: 3,
+      },
       item: {
         p: 2,
         mr: 2,
@@ -130,6 +142,9 @@ const theme = merge(tailwind, {
       },
     },
     pill: {
+      container: {
+        mb: 1,
+      },
       item: {
         p: 2,
         mr: 2,
@@ -160,8 +175,7 @@ const theme = merge(tailwind, {
       'td, th': {
         border: (theme) => `1px solid ${theme.colors.muted}`,
         textAlign: 'left',
-        pr: 1,
-        pl: 1,
+        p: 2,
         verticalAlign: 'top',
       },
     },
@@ -175,6 +189,17 @@ const theme = merge(tailwind, {
       },
     },
   },
+  select: {
+    small: {
+      borderColor: '#ccc',
+      borderRadius: 4,
+      width: 'auto',
+      pr: 4,
+      pt: 1,
+      pl: 2,
+      pb: 1,
+    },
+  },
   styles: {
     root: {
       color: 'text',
@@ -185,6 +210,11 @@ const theme = merge(tailwind, {
       textRendering: 'optimizeLegibility',
       WebkitFontSmoothing: 'antialiased',
       MozOsxFontSmoothing: 'grayscale',
+      p: {
+        '&:last-child': {
+          marginBottom: 0,
+        },
+      },
     },
     pre: {
       ...syntaxHighlightPreset,
@@ -199,6 +229,7 @@ const theme = merge(tailwind, {
     code: {
       ...syntaxHighlightPreset,
     },
+
     p: {
       fontSize: [1, 2],
       letterSpacing: '-0.003em',
