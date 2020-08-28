@@ -1,5 +1,5 @@
 {
-  "name": "gatsby-starter-theme-workspace",
+  "name": "gatsby-openapi",
   "private": true,
   "version": "0.0.1",
   "main": "index.js",
@@ -12,7 +12,7 @@
     "clean": "npm --prefix ./packages/example-theme-ui run clean",
     "watch:typescript": "lerna run watch:typescript",
     "build:typescript": "lerna run build:typescript",
-    "build": "lerna run build",
+    "build": "lerna run build --stream",
     "bootstrap": "lerna bootstrap --hoist",
     "lint": "lerna run lint"
   },

@@ -96,7 +96,7 @@ export const Operation: React.FunctionComponent<OperationProps> = ({
             </TabItem>
           )}
           {operationObject.x_codeSamples && (
-            <TabItem label="Request Samples" itemKey="samples">
+            <TabItem label="Samples" itemKey="samples">
               <Samples samples={operationObject.x_codeSamples} />
             </TabItem>
           )}
