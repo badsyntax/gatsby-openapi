@@ -19,7 +19,10 @@ import { TabItem, Tabs } from '../Tabs';
 
 export const Operation: React.FunctionComponent<OperationProps> = ({
   data,
+  ...rest
 }) => {
+  console.log('dta', data);
+  console.log('rest', rest);
   const { title } = useOpenApiInfo();
   const operationObject: OpenApiOperationObjectWithExtensions = JSON.parse(
     data.operation.operation

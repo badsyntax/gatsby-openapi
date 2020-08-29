@@ -1,4 +1,4 @@
-import { NodePluginArgs } from 'gatsby';
+import { CreateNodeArgs, NodePluginArgs } from 'gatsby';
 import { OpenAPIV3 } from 'openapi-types';
 import { OpenApiParser } from './openapi/OpenApiParser';
 import { OpenAPITransformer } from './openapi/OpenAPITransformer';
@@ -16,6 +16,23 @@ import {
   GRAPHQL_NODE_OPENAPI_TAG,
 } from './types';
 import { defaultPluginOptions } from './util/defaultPluginOptions';
+
+export const onCreateNode = ({ node, actions }: CreateNodeArgs): void => {
+  const { createNodeField } = actions;
+  if (
+    node.internal.type === 'SitePlugin' &&
+    node.name === 'gatsby-source-openapi'
+  ) {
+    const pluginOptions = defaultPluginOptions(
+      node.pluginOptions as CustomPluginOptions
+    );
+    createNodeField({
+      node,
+      name: 'pluginOptionsWithDefaults',
+      value: pluginOptions,
+    });
+  }
+};
 
 export const createSchemaCustomization = ({
   actions,

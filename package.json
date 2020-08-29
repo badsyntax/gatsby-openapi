@@ -7,6 +7,7 @@
   "author": "Richard Willis <willis.rh@gmail.com>",
   "scripts": {
     "prestart": "ensure-node-env",
+    "prebootstrap": "ensure-node-env",
     "preinstall": "npx ensure-node-env",
     "start": "npm --prefix ./packages/example-theme-ui run start",
     "clean": "npm --prefix ./packages/example-theme-ui run clean",

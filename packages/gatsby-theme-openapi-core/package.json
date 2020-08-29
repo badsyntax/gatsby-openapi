@@ -58,8 +58,7 @@
       "react-app",
       "plugin:@typescript-eslint/recommended",
       "prettier/@typescript-eslint",
-      "plugin:prettier/recommended",
-      "plugin:import/errors"
+      "plugin:prettier/recommended"
     ],
     "rules": {
       "@typescript-eslint/no-floating-promises": "error",

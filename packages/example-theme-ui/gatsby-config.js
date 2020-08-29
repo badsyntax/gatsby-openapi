@@ -8,6 +8,7 @@ module.exports = {
       resolve: 'gatsby-theme-openapi-theme-ui',
       options: {
         specPath: require.resolve('./spec/openapi.yml'),
+        singlePage: true,
       },
     },
   ],

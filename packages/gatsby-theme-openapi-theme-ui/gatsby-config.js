@@ -7,6 +7,7 @@ module.exports = (themeOptions) => {
           specPath: themeOptions.specPath,
           generateCodeSamples: themeOptions.generateCodeSamples,
           codeSampleTargets: themeOptions.codeSampleTargets,
+          singlePage: themeOptions.singlePage,
         },
       },
       'gatsby-plugin-theme-ui',

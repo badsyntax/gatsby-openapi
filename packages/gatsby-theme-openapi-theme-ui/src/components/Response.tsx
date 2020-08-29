@@ -73,7 +73,7 @@ export const Response: React.FunctionComponent<ResponseProps> = ({
       </Heading>
       {!isHidden && (
         <Box pb={3} pt={2}>
-          <Box mb={3}>
+          <Box mb={2}>
             <Select variant="select.small" sx={{}} onChange={onMediaTypeChange}>
               {mediaTypes.map((type) => {
                 return <option key={type}>{type}</option>;
