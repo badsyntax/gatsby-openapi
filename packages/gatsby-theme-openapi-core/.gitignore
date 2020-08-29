@@ -71,3 +71,4 @@ yarn-error.log
 # generated files
 /gatsby-node.js
 /src/util/**/*.js
+/src/types/**/*.js
