@@ -3,7 +3,6 @@ import { CustomPluginOptions } from '../types';
 export const defaultPluginOptions = ({
   generateCodeSamples,
   codeSampleTargets,
-  singlePage,
   ...rest
 }: CustomPluginOptions): Required<CustomPluginOptions> => {
   return {
@@ -14,6 +13,5 @@ export const defaultPluginOptions = ({
       'python_python3',
       'php_curl',
     ],
-    singlePage: singlePage ?? false,
   };
 };

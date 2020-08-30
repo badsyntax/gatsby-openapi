@@ -47,7 +47,9 @@
   },
   "eslintConfig": {
     "ignorePatterns": [
-      "gatsby-node.js"
+      "gatsby-node.js",
+      "src/util/**/*.js",
+      "src/types/**/*.js"
     ],
     "parserOptions": {
       "project": "./tsconfig.json",
