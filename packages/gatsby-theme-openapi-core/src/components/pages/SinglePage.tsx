@@ -1,10 +1,15 @@
 import { PageProps } from 'gatsby';
 import React from 'react';
+import { AuthenticationDataProps } from './Authentication';
 
-export interface SinglePageDataProps {
-  securitySchemes: {
-    value: string;
-    name: string;
+export interface SinglePageDataProps extends AuthenticationDataProps {
+  allOpenApiSecurity: {
+    edges: Array<{
+      node: {
+        name: string;
+        value: string;
+      };
+    }>;
   };
   allOpenApiSchema: {
     edges: Array<{

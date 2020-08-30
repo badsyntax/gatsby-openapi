@@ -9,6 +9,14 @@ export const query = graphql`
       name
       value
     }
+    allOpenApiSecurity {
+      edges {
+        node {
+          name
+          value
+        }
+      }
+    }
     allOpenApiSchema {
       edges {
         node {
@@ -23,12 +31,12 @@ export const query = graphql`
     allOpenApiOperation {
       edges {
         node {
+          path
+          method
+          operation
           fields {
             slug
           }
-          method
-          operation
-          path
         }
       }
     }

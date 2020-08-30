@@ -25,8 +25,6 @@ export const Layout: React.FunctionComponent = ({ children }) => {
     }
   `);
 
-  console.log('data', data.sitePlugin.fields.pluginOptionsWithDefaults);
-
   const pluginOptions: Required<CustomPluginOptions> = defaultPluginOptions(
     data.sitePlugin.fields.pluginOptionsWithDefaults
   );
