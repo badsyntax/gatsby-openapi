@@ -4,6 +4,7 @@ import React from 'react';
 export interface AuthenticationDataProps {
   securitySchemes: {
     value: string;
+    name: string;
   };
 }
 

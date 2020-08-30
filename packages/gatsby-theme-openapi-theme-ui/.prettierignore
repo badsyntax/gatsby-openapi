@@ -1,4 +1,4 @@
-gatsby-node.js
+**/*.js
 package-lock.json
 gatsby-node.js
 src/util/**/*.js

@@ -8,7 +8,7 @@ const theme = merge(tailwind, {
   colors: {
     primary: '#C52',
     secondary: tailwind.colors.orange[6],
-    codeBlockBG: tailwind.colors.gray[2],
+    codeBlockBG: tailwind.colors.gray[1],
     codeBlockText: tailwind.colors.gray[9],
     backgroundContent: tailwind.colors.gray[1],
     textHeading: tailwind.colors.black,

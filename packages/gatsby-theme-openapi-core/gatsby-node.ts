@@ -4,6 +4,8 @@ import {
   GRAPHQL_NODE_OPENAPI_SCHEMA,
 } from 'gatsby-source-openapi/types';
 import { OpenAPIV3 } from 'openapi-types';
+import { CustomPluginOptions } from './src/types';
+import { defaultPluginOptions } from './src/util/defaultPluginOptions';
 
 export const onCreateNode = ({ node, actions }: CreateNodeArgs): void => {
   const { createNodeField } = actions;
@@ -24,6 +26,19 @@ export const onCreateNode = ({ node, actions }: CreateNodeArgs): void => {
       node,
       name: 'slug',
       value: slug,
+    });
+  }
+  if (
+    node.internal.type === 'SitePlugin' &&
+    node.name === 'gatsby-theme-openapi-core'
+  ) {
+    const pluginOptions = defaultPluginOptions(
+      node.pluginOptions as CustomPluginOptions
+    );
+    createNodeField({
+      node,
+      name: 'pluginOptionsWithDefaults',
+      value: pluginOptions,
     });
   }
 };
@@ -88,6 +103,18 @@ Promise<void> => {
     reporter.success('create authentication page');
   }
 
+  function createHomePage() {
+    const component = require.resolve('./src/templates/SinglePage.tsx');
+    createPage({
+      path: '/',
+      component,
+      context: {
+        slug: 'home',
+      },
+    });
+    reporter.success('create home page');
+  }
+
   async function createSchemaModelPages(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -134,6 +161,7 @@ Promise<void> => {
     await createOperationPages();
     await createSchemaModelPages();
     createAuthenticationPage();
+    createHomePage();
   } catch (e) {
     reporter.panicOnBuild(`Error creating pages: ${e.message}`);
   }

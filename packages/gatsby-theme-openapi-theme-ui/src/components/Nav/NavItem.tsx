@@ -1,9 +1,10 @@
 /* eslint jsx-a11y/anchor-has-content: 0 */
 /** @jsx jsx */
 import { useNavigate } from '@reach/router';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { VscChevronDown, VscChevronRight } from 'react-icons/vsc';
 import { Box, jsx } from 'theme-ui';
+import { PluginOptionsContext } from '../../context/PluginOptionsContext';
 import { OpenApiOperationByTag } from '../../hooks/useOpenApiOperationsByTag';
 import { LinkProps } from '../Link';
 import { RequestMethodBadge } from '../RequestMethodBadge';
@@ -59,6 +60,7 @@ export const NavItem: React.FunctionComponent<NavItemProps> = ({
   ...props
 }) => {
   const navigate = useNavigate();
+  const pluginOptions = useContext(PluginOptionsContext);
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const linkProps: LinkProps = {
     to: item.to || '#',
@@ -70,7 +72,7 @@ export const NavItem: React.FunctionComponent<NavItemProps> = ({
       setShouldAnimate(true);
       onItemToggle(item);
     };
-  } else {
+  } else if (!pluginOptions.singlePage) {
     linkProps.onClick = (event: React.SyntheticEvent) => {
       event.preventDefault();
       if (item.to) {
